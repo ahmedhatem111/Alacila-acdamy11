@@ -458,8 +458,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const saved = readSaved();
         const exists = saved.some((item) => item.id === courseId);
         const updated = exists ?
-            saved.filter((item) => item.id !== courseId) :
-            [...saved, { id: courseId, title: course.title, savedAt: Date.now() }].slice(-30);
+            saved.filter((item) => item.id !== courseId) : [...saved, { id: courseId, title: course.title, savedAt: Date.now() }].slice(-30);
         try { localStorage.setItem(bookmarkKey, JSON.stringify(updated)); } catch (e) {}
         updateSaveButton();
     });
@@ -489,5 +488,21 @@ document.addEventListener("DOMContentLoaded", () => {
         await deferred.userChoice;
         deferred = null;
         b.hidden = true;
+    });
+})();
+
+/* Add the shared social links to every page footer. */
+(() => {
+    const footers = document.querySelectorAll(".footer__inner");
+    if (!footers.length) return;
+
+    const links = document.createElement("div");
+    links.className = "socials";
+    links.setAttribute("role", "group");
+    links.setAttribute("aria-label", "تابع أهلية أكاديمي على التواصل الاجتماعي");
+    links.innerHTML = '<a href="https://www.facebook.com/profile.php?id=61594780539498" aria-label="Facebook" title="Facebook" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M13.5 22v-8.2h2.8l.5-3.3h-3.3V8.4c0-.9.4-1.7 1.8-1.7h1.6V3.8c-.3 0-1.3-.2-2.5-.2-2.6 0-4.2 1.5-4.2 4.3v2.6H7.4v3.3h2.8V22z"></path></svg></a><a href="https://www.instagram.com/ahliyahacademy?stkn=MTkyZnB0NmY5MTJtNg==" aria-label="Instagram" title="Instagram" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"></circle></svg></a><a href="https://www.linkedin.com/company/ahliyah-academy/" aria-label="LinkedIn" title="LinkedIn" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M3 3h18v18H3zm5 7H5.5v8.5H8zm-1.2-3.8a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11.7 12.3v-4.8c0-2.3-1.2-3.8-3.2-3.8-1.1 0-1.8.6-2.2 1.2V10h-2.5v8.5h2.5v-4.6c0-1.2.6-1.9 1.5-1.9s1.4.7 1.4 1.9v4.6z"></path></svg></a>';
+
+    footers.forEach((footer) => {
+        if (!footer.querySelector(".socials")) footer.append(links.cloneNode(true));
     });
 })();

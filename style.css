@@ -902,6 +902,30 @@ main,
     transform: translateY(-2px);
 }
 
+.socials a:focus-visible {
+    color: var(--cyan);
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+}
+
+.team-home {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    white-space: nowrap;
+}
+
+.team-home svg {
+    width: 17px;
+    height: 17px;
+    flex: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
 
 /* Reveal (single, subtle) */
 
@@ -4637,6 +4661,18 @@ body.search-open {
         padding: 0;
     }
     .header__actions #authBtn span {
+        display: none;
+    }
+    .team-header .header__actions {
+        gap: 4px;
+    }
+    .team-header .team-home {
+        width: 40px;
+        min-width: 40px;
+        padding: 0;
+        justify-content: center;
+    }
+    .team-header .team-home span {
         display: none;
     }
 }
