@@ -877,7 +877,7 @@
                 desc: "تنظيم العمل والتنسيق بين الفرق",
                 icon: "mgmt",
                 members: [
-                    { name: "احمد حاتم", role: "إدارة المشروع", photo: "Ahmed Hatem.jfif", linkedin: "www.linkedin.com/in/ahmed-hatem11", facebook: "" },
+                    { name: "احمد حاتم", role: "إدارة المشروع", photo: "Ahmed Hatem.jfif", linkedin: "https://www.linkedin.com/in/ahmed-hatem11/", facebook: "https://www.facebook.com/profile.php?id=100030429453407" },
                     { name: "احمد رمضان", role: "إدارة المشروع", photo: "Ahmed Ramadan.png", linkedin: "", facebook: "https://www.facebook.com/ahmed.ramadan.478181" },
                 ],
             },
