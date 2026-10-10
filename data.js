@@ -12,6 +12,193 @@
     var ICON = { programming: "code", design: "design", data: "data", media: "media", security: "security", year1: "pc", year2: "tree", cs: "cs", ai: "ai", is: "is" };
     var LEVELS = { programming: "مبتدئ", design: "مبتدئ", data: "مبتدئ", media: "مبتدئ", security: "مبتدئ", year1: "مبتدئ", year2: "متوسط", cs: "متقدم", ai: "متقدم", is: "متقدم" };
     var PREFIX = { programming: "prog", design: "des", data: "dat", media: "med", security: "sec", year1: "y1", year2: "y2", cs: "cs", ai: "ai", is: "is" };
+    var DRIVE_PAGE_FOLDERS = {
+        ai: "179qQJac_SxechlM-Dmrkk23geGoAcgDX",
+        cs: "16TqIljNt3fsxKjgPye_RpT0rdw9jQ_tT",
+        data: "17DLet03RJ2uCbzpGP_6Nt3qkHVsezJpK",
+        design: "1pUHQI3GJ1swJSf8Ssqswvk9bKM27260h",
+        is: "19McDsc4jzdb1rQ-XHtoUdZ_ZT1QxlBX1",
+        media: "1j23Pm_TNXPMMhCdfHhND5fZw1xlLSdss",
+        programming: "193RhRTT1IiOQDWQMPJaJmArRBUQW_8DC",
+        security: "1hncdDH_69Ci-7mxmM7kFw2Dav2uloW35",
+        year1: "1FjfiateGORXd6lJKWM0u0LPuFaziOhE0",
+        year2: "1hp6Kww9eJsNJIlaAslK2JxQ8se6oShbp",
+    };
+    var DRIVE_COURSE_FOLDERS = {
+        "cs-algorithms": "1FgnXnE1U2MZD2aGNghI94BvHfIvQKpgK",
+        "cs-ai": "1FHQ_cpA7cMw1UYTVKnQxki6CZdn25jVx",
+        "cs-ds2": "1nDSEAxbzbsAGc145ajC-qTwngn5QK-el",
+        "cs-image-proc": "1sKh0RbEn6MtfX2Q2JiXe9fjMqyx7KEdF",
+        "cs-os": "18uFKalk-xBcuHaVJvjU4Qlo1mUQBOqfI",
+        "cs-se": "1jJWtGxu5306XcmoTA_0wnBpeZEy1UVcA",
+        "y1-computer-laws": "1LYbNaxtnQMNxmwn_-MeZIqzfnd6Y9EqW",
+        "y1-discrete": "1Gi7Yr3KM7GOeIQhNoGjc_4piG6X1VRfj",
+        "y1-org-behavior": "1Z2DPw82aFF9JiTLEQw770liaQx2UczJv",
+        "y1-tech-writing": "1Bd6qty3AnDS6PZSdMrwPkFaXNUsOfn0D",
+        "y2-databases": "1WkcafBLHTritLKlRyCmKIoCU5vNZZFqa",
+        "y2-modeling": "12CDRHa-zy5ygg1G_-63-PP_4dZAkECSM",
+        "y2-networks1": "1iho3jgSQ8p0RIqHY8hqdCetW-OmrwHLZ",
+        "y2-oop": "1GP7RvYt2LhHVbQgfdJS3VsO0AtuWtTrD",
+        "y2-operations-research": "1Qg0zZdrqyRdwkji6rkIQf9Fq5LiAm9g4",
+        "y2-project-mgmt": "1_DyzGhre0YEUxq8BPoC7VBA7pAtjs7dn",
+    };
+    var DRIVE_COURSE_FILES = {
+        "y1-org-behavior": [
+            ["IMG-20250403-WA0006.jpg", "160qL78gHd_Pmc8trAbyfPvbY4dW2SEy3"],
+            ["IMG-20250403-WA0007.jpg", "1Q8Nru38XsNtvk4qQ8q80_z2498L1w3y-"],
+            ["IMG-20250403-WA0008.jpg", "1YHx59sRbK84cTM3cNYL49NmHq3aGJ31z"],
+            ["IMG-20250428-WA0118.jpg", "14G9J-iFPqCaotmNX1EbwaCxYRMIB0Xjn"],
+            ["IMG-20250428-WA0119.jpg", "15dSz4xYOgclEJffOZIRV-SFTbiBFqAYW"],
+            ["IMG-20250428-WA0120.jpg", "1Izl_ztFatN66WHnJyLgwUpXG9ZPkjaa5"],
+            ["Organizational Behavior محاضرة 1.pptx", "1MqptRlAUG3WZ5hc8sfZY5Nq5MSGaOjni"],
+            ["Task for Organization Behavior.pdf", "1iZ_mWz7k4-5n_ISLoanztiqX17_3m2Ia"],
+            ["المرفق.pdf", "1pl8q6XCP9Q6yhfyzh_3dnsqjGlft7oaU"],
+            ["بنك أسئلة -سلوك تنظيمي.pdf", "1ps1otcJW1lBODiC9suoyKNJaLgNMTsQ0"],
+            ["بنك اسئلة للفاينل.pdf", "1vLDWDDqGSG7BfzKCnrnRnqVsw8-Zzoig"],
+            ["حل اسئلة كتاب سلوك الهيئات.pdf", "1W9Fzb847_NuIp4pfshheJQ6zZrjKKG75"],
+            ["سلوك الهيئات اهلية ميد.pdf", "17a9GkOlU18tyG50BgbBn4X2BQp6cA-NI"],
+            ["‎⁨فاينل السلوك⁩.pdf", "1S8byc9qOFXAnBH5gxz1a3ewvBKdI25vN"],
+        ],
+        "y1-discrete": [
+            ["الشابتر الثاني/L3_ Introduction of proofs .pdf", "16Pzps3zEhTtdSl1gp_Z0zV5694dp2ZnK"],
+            ["الشابتر الثاني/Lecture 2-2 (1).pdf", "1oy-HxIif2eyQypbt3vvwQx5E8uVFQQl0"],
+            ["الشابتر الاول/L1.pdf", "1QexORxhSwkhjk9Ngd_4gDrY0Oa4A_kct"],
+            ["الشابتر الاول/Lecture 2-2 (1).pdf", "1D70NRxE2ysow1FF6CxS-I_nWJDLFmD7q"],
+            ["الشابتر التالت/Basic Structures, set.pdf", "1t3pEHKEd6e44G8gpoKb5IeOuAwLCppna"],
+            ["الشابتر الخامس/Number theory (1).pdf", "1ZCivVbleNn2aosbtNj7EKlBNPyrjwABy"],
+            ["الشابتر الخامس/Number theory 2.pdf", "1q3v1a7U8f3S3Nx3_icvQjqS9Dgh0YUGG"],
+            ["امتحانات سابقه/1.jpeg", "1W1jPBeMqASRbbxXhLGXOyOK_r-O4JkqG"],
+            ["امتحانات سابقه/2.jpeg", "18MBWGicRzVxkZvYxVf0CbAK2geiG6g9N"],
+            ["امتحانات سابقه/3.jpeg", "1zJatxOvbmfflwhqguuU_-12bjdGghndz"],
+            ["امتحانات سابقه/4.jpeg", "1TWQqcmIswPT0XhwnxSzNCdc3R7lm1RSA"],
+            ["امتحانات سابقه/الميد.jpeg", "1Li0Jp4oHiCIQBwAUOjCWnFc-td4ARd4O"],
+            ["امتحانات سابقه/WhatsApp Image 2025-05-20 at 6.40.14 PM.jpeg", "1bHlMLNoFBavkOf4JLpnYT3aWT4zNERHI"],
+            ["امتحانات سابقه/WhatsApp Image 2025-05-20 at 11.24.21 PM.jpeg", "13Kzef6fHi4kgC8r5b77Ga5WK_Ejrs8ww"],
+            ["امتحانات سابقه/WhatsApp Image 2025-05-20 at 11.24.22 PM.jpeg", "132jRzBScF0tqJ0A9-o1CFLdfmdQ9_612"],
+            ["امتحانات سابقه/WhatsApp Image 2025-05-20 at 11.24.23 PM.jpeg", "1zgo8T5Tcc8wEmW8r11RCtjGyWNi9xksx"],
+            ["امتحانات سابقه/WhatsApp Image 2025-05-20 at 11.24.24 PM.jpeg", "1VOFDjxEW-kESZP0AqTkqm1LvTc2TjV7B"],
+            ["نسخة من mamdoh Salah_Discrete Definitions-1.pdf", "1Ik0WlaPAl1N2knGjlVeWai2DCHb1ALPE"],
+            ["DM-Course-1.pdf", "1vPMdbrWSIm9XJkks0fkViI6hhgV-q-Nr"],
+            ["DM-Course-2.pdf", "12n55g6ufnnyUTQR1xJRGvFumOVFtzJDJ"],
+            ["DM-Course-3.pdf", "1jjBuki10lonT_3FRFb4SkDDWWHQGcFLy"],
+            ["DM-Course-4.pdf", "1mlGl_WLR0b2n7UI_JKNrJkgVtLJuY4nl"],
+            ["DM-Course-5.pdf", "1xFsG5IBvHVqt_mrg8hcTWZB2GFkZ5-MY"],
+        ],
+        "y1-computer-laws": [
+            ["Ch 6.pdf", "1V1ri2WgytMYfwQh2jLCxC81W2py62JnR"],
+            ["Ch 7.pdf", "10jI1WwUtr_rAssrDVMcErbAH7ufExRY3"],
+            ["Kitty❤️😺.pdf", "165VOA35iyLoFhskJvnoDHFq756vSvSwh"],
+            ["Lecture 1 2025.pdf", "1wwLbY60JH41rAaWMeiSiBBC780hkBJQv"],
+            ["Lecture 2.pdf", "1bnBje7szEkMjX4CAl4JtWMkQuPuOYKkN"],
+            ["Lecture 3.pdf", "1en2miNvJSUL3YF6AHAR7S7_H7d711mDt"],
+            ["Lecture 4.pdf", "1lkhM0XTyUn541Qj5QPkhcqRVLl5tpkLp"],
+            ["Lecture 6.pdf", "1WTzCyimINjDMOvphxbrdAd0Y32XgaVzS"],
+            ["mamdoh Salah ch1 CL.pdf", "1DHIE6df8OpH8BapZY-b-OEwDa4d-Mdge"],
+            ["mamdoh Salah ch2 CL.pdf", "13DaZ8vTVo7uxheTrtXZOGvdo4sODa9TZ"],
+            ["mamdoh Salah قوانين الحاسب .pdf", "17Pcb_AYowdEdGk9GEo7qRzi_CRWLid8e"],
+            ["pdf24_converted.pdf", "1BvcMYD6ZtmxTIhchIOddgoR7Lxss2CTs"],
+            ["اسئله السليدات_merged.pdf", "1Wj_0q35d_Dv6mw4p6bJAIe2W71-hOozs"],
+            ["اسئله.pdf", "1782JoID6Vb17eFuI7HIrmucqddIL16j1"],
+            ["تلخيص الشابتر التاني قانون الحاسب (الجزء الثاني).pdf", "1YCfgQqbDT339ks9tU4EyYEbk5KYEyD4R"],
+            ["تلخيص الشابتر الثالث.pdf", "1HDPaY56p8bN3IAXB_SDp09pQ00JhCYIF"],
+            ["تلخيص الشابتر الثاني (الجزء الاول).pdf", "1OX13dSXK-SmGxttrRCd2IzeR-oivpXcf"],
+            ["قوانين الحاسب.pdf", "1a4wqZ43_xASyGk8DOguxX133FeWnE6qH"],
+            ["قوانين الحاسبات_unlocked_removed.pdf", "1YjjL0kipL9lSgGDoCKzbtIbIaZt3O3g2"],
+            ["ملخص شامل للفصل الأول (الجزء الاول).pdf", "17dQPG9Gxk8HvCu6zq0ZGTswPrWGr2FcJ"],
+            ["ملخص قوي ومبسط للفصل الأول (الجزء الثاني).pdf", "19BQjSOUa6lfzuGCeqoRzvLfEoEgjAF1Z"],
+        ],
+        "y1-tech-writing": [
+            ["الاسلايد الاول/1. The basics of Technical Writing.pdf", "12EuJWgmNT8lFy8FIaCbyT6Igxqeqz088"],
+            ["الاسلايد الاول/chapter 1.pdf", "1ZsDp9URceLyyv87VHyUgBzeWATMfiakI"],
+            ["الاسلايد الاول/TechnicalWritingChapter1.pdf", "1BK2zpLMjYBUeiDoybBg3yT8YV819_WMC"],
+            ["الاسلايد الاول/📘 الملف الشامل لمادة الكتابة التقنية.pdf", "1UmXyCCWEvs2qoTk0jeDVAsJTwdp1qW3q"],
+            ["الاسلايد التاسع/9. Mistakes to Avoid in Technical Writing.pdf", "1GEVe-1GxG5YY-yyvfAIwtt5rvXPhkQAC"],
+            ["الاسلايد التالت/3. The Technical Writing Process.pdf", "1Fieksi_SNl5ynwO_FLvOKuieaGfJ1NTM"],
+            ["الاسلايد التاني/2. The Basics of Technical Writing.pdf", "1H6s5hxDxicIGz914yxlVqOvcWZNyU8hJ"],
+            ["الاسلايد الرابع/4. The Technical Writing Process.pdf", "1aKusBogzAKqToQ0aUMiwRvZ9uu7qoLGd"],
+            ["ch 1 .. technical.pdf", "1P_ZMjTWXUrZ9bqkz0nnyCFkfsV0bRD4q"],
+            ["ch 2 .. technical (1).pdf", "1bGukuodJJ7cjT9QvaR3VsFA1QI39ovP6"],
+            ["image (1).jpeg", "105GkesiZXBiVM_KMGxxS9ntpskzCs-VW"],
+            ["image (2).jpeg", "15eDgWtkinU0inlFcgj-lQxuG0tqE3SFt"],
+            ["image (3).jpeg", "18FxMXPZtCGH2yvOoUHsqeJNpv334D6nd"],
+            ["image (4).jpeg", "1a8b_cTjSJ1DNa0lkuAtJ7CL8HVTwGhFG"],
+            ["image.jpeg", "1rd9ypnLjPt8Q6fXpMFwcmgQa_6zCpDdP"],
+            ["PDF_1748136094143.pdf", "1_Qk27xSrz-K1hFyl_T-0rmbPiJew9JS3"],
+            ["technical_writing_ch1_to_ch3.pdf", "1GVEvj3m4_aUTU3gLOQYQk9LQI5sPNDOV"],
+            ["امتحان سنه سابقه اهليه كتابه تقنيه.pdf", "1Uln3ZEHhcR3HSAZB7swqqIvx4BNWzqsW"],
+            ["تلخيص اماني لتجنب الدور التاني.pdf", "1tZalDubLvJMlaiw-uBzhf2QmM0Hz5LNl"],
+            ["تلخيص محاضره دكتور همام ٣ رمضان.pdf", "1vp9BnloqHsXNejN-df_tI4rxDr429CPF"],
+            ["محاضره دكتور همام ٢٤ فبراير.pdf", "1ZDY9xeiE4aZjH-0Wc6HlZXfwijWw8bEs"],
+            ["📘 Technical Writing.pdf", "1F--NTF1FNJgzgdy9-qIGtF8d3siUYN_D"],
+        ],
+        "y2-project-mgmt": [
+            ["١.pdf", "1bdo_QtsGGh_YQmf3R2aq52wHNFx0yqjq"],
+            ["2.pptx", "1aceNRwgDPT6tsSwYI_9Rss9xsoHfNQcf"],
+            ["3.pdf", "178dFv0ZVJBswp_MmiEeF3eEuONorw-wK"],
+            ["4.pptx", "1hr5jV3CYK77q4fjjcRQ0jN4vxcHKr3fy"],
+            ["5.pptx", "1ImoR81ahPOkWFI83NfnifF4JIyrSsSRm"],
+            ["6.pdf", "17ePXXGQbISuQeklu7P74SJy713omWtnb"],
+            ["7.pdf", "1ZuTcwyXPPkugMmdkJ9c65lzY5K1xJjEn"],
+            ["8.pptx", "1-gS6d4rrqUP8yMIM_vKH42wn9nvLTD-W"],
+            ["9.pdf", "1L64_d1Iaj3wY_UMCnxClyVUGHmZoAwLO"],
+            ["11.pptx", "1wCzo2w0av4TpXQXww1Hx4519Cx5oO7t8"],
+            ["12.pdf", "18T5kRVP-qSSbQrD1FpTlN88jGRZZBPyn"],
+            ["13.docx", "15NCSgsNx28YSEOw3HnmEumChLdEgcANO"],
+            ["15.pdf", "1Fp8tz8l3JHEQYe_nq63oz23IY4PBObL5"],
+            ["16.pdf", "1EWfY92XP5CaugtWx-pgJwOK39ErRjy3f"],
+            ["19.pptx", "1YFeEsK4VZzrOQjismj6JmffdNYpoQyko"],
+            ["20.pdf", "1tkcemTwJT0OknDQCVs-rnX6dVmaEND_4"],
+        ],
+        "y2-oop": [
+            ["الأكواد OOP.pdf", "1mcR5F4Fk2Jr8GPo-JYOwOyCY_JzLbr4r"],
+            ["Lecture1_CPP_Fundamentals.pptx", "178vWd_Oc580PqRTT0_22H2C4g_uvsIkp"],
+            ["Lecture2_Classes_Objects.pptx", "1_KZ-zRyYf-qFZybB3WGMu2a6P82vLWXL"],
+            ["Lecture3_Abstraction.pptx", "1r5JvNVkl44iAVm7yt3ixmVleUTVxi7q9"],
+            ["Lecture5_Inheritance_Polymorphism.pptx", "1xsBKCZpIguK9CE2RHWc2bbtzuJwxiJzk"],
+        ],
+        "y2-operations-research": [
+            ["Lectures/book.pdf", "1zNES1Ji-ByT2rzC5OTrr_pFaWuaTTDvH"],
+            ["Lectures/L1 part 1.pdf", "1CBMSvQrjTlU6pkOKfrWxmgQH6K8h-fAq"],
+            ["Lectures/L1 part 2.pdf", "1-FIyEOZLxA-ht3OPHh6bPChNVDtcX5un"],
+            ["Sections/section 1 dia.pdf", "1KlmD0vI3dQ8S3m8rhhDR-yzeTZ0Bljd2"],
+            ["Sections/section 1 shaimaa.pdf", "1_Kf3gcwBav-x-jVFkoNsb3ri66s5DVyE"],
+            ["Sections/section 2 dia .pdf", "1dHPKfj8Jvx-S1cAl3HLkLM14y1FAwJ_D"],
+            ["Sections/section 2,3 shaima.pdf", "1lbYSh24iEasNzPvCJmqJ_idtyTf99hrV"],
+            ["Sections/section 4 shaima.pdf", "1rtVhTdSvGwSB5hUth8ytn_FjuqJa0CYG"],
+            ["Sections/section 5 shaima.pdf", "1A67c3U_IVvG9CbQeGbC_PElzyfGv3Wtk"],
+            ["OR (1).pdf", "1G-549qSY2rqqCcRBlJLJYNNRp4p-bYDw"],
+            ["OR_2026_L1.pdf", "1qrLptQ40lJlU0j5BUFH8kYwHsIBmiYrY"],
+        ],
+        "y2-databases": [
+            ["Database DrIbrahim.pdf", "1bp3FmJ9n15A8J-MooUWIajGyNtU4-SnQ"],
+            ["DataBase.pdf", "1yIY7e7nSs1hg0tPUtfkcDfIbLtXPgSYH"],
+        ],
+        "y2-networks1": [
+            ["Lectures/book.pdf", "12TysrpVhZj-M_-GrDgO0659DhZTYzt9n"],
+            ["Lectures/CHAPTER 1 Networks 1     .pdf", "1zwhDIGVDa5CIqO9tXAUdDDuHsH9me6sg"],
+            ["Lectures/CHAPTER 1 Networks 1   .pptx", "1PMMUpBq9kPoBNjKG3OokAwHG0dcA4TlP"],
+            ["Sections/Section_1  .pdf", "1kmlTqVJWYWHNR-QndURWu1anrBi4lRO7"],
+            ["Sections/Section_1 [1].pptx", "1kk2zPmCfhqAA04K3BXUmyIkaHxOghg4c"],
+            ["Sections/Section2 .pdf", "1CnuyZiue-PCbzUYJAef5lKBRexM77INq"],
+            ["Sections/Section3.pdf", "1yzIHHeSaScEOppJrLyVdEYBc9YZscJCg"],
+            ["ناس بتشرح Computer Network.pdf", "1fYV3nAYE2qcaS_IXlskrujf0fNSEa3IH"],
+            ["نتورك اول ٣ شباتر.pdf", "1FPV8W0mTaFZyvYLUgwTeT2uL4B72oTET"],
+            ["نسخة من نتورك اول ٣ شباتر.pdf", "1gtkk6Ruz1hyf0QnVRX_xlkAbjzkihK6G"],
+            ["Chapter 1 Part_2-38.pptx", "16QwzWOGrlgTD7KEarsg6PRFhef5PV_Wm"],
+            ["networks.pdf", "1C2uhYuxVM-ydE8RLKd0WzCR4ObBabtzU"],
+        ],
+        "y2-modeling": [
+            ["Chapter 1 Modeling Summary.pdf", "17FanZmOj85y5HYNBeKEeJH_9ftZSrFKx"],
+            ["Lecture1.pdf", "1YxKIb1JuvGdjHoD1E4EPlauQt_rb_tsN"],
+            ["MCQ Ch1.pdf", "1ec80swhPvm1xhHbtJxwmBMD6eDObkTul"],
+            ["MCQ Ch2.pdf", "1_Ak1lxHGV7WH9llFz8P6wU3CPxubXloo"],
+            ["MCQ Ch3.pdf", "1kbPP0CpgknbRq3GSbJDxumFKGMmDIzLI"],
+            ["Modeling (Ch1 + Ch2 ).pdf", "1H48dEOLMfjEDICOu1qhTyc_NalplDhYn"],
+            ["Modeling Final1.pdf", "1_v_Zqe5-jzyp_FiHs5J6BxKIBIezilYu"],
+            ["The_Simulation_Blueprint.pdf", "1wbkYtqEpq74ZUivk7Rh4rMdPP34fSzRb"],
+            ["كتاب modeling and simulation - Copy.pdf", "1E_jJEUTTVVudVIZusi4jOmtg8C5_Srp_"],
+        ],
+    };
 
     /* مادة: C(المجموعة, الاسم المختصر للملف, اسم المادة, [الوصف], [الساعات], [المواضيع], [المستوى], [الأيقونة]) */
     function C(page, slug, title, desc, hours, topics, level, icon) {
@@ -755,6 +942,50 @@ The_Simulation_Blueprint.pdf
                 c.term = t.title;
                 if (!c.desc) c.desc = p.label + " • " + t.title;
                 p.courses.push(c);
+            });
+        });
+    });
+
+    Object.keys(pages).forEach(function(pageKey) {
+        var page = pages[pageKey];
+        var courses = page.courses || [];
+        courses.forEach(function(course) {
+            var driveFiles = DRIVE_COURSE_FILES[course.id];
+            if (driveFiles) {
+                course.files = driveFiles.map(function(file) {
+                    var extension = file[0].match(/\.([^.]+)$/);
+                    var fileUrl = "https://drive.google.com/file/d/" + file[1];
+                    return {
+                        title: file[0],
+                        type: extension ? extension[1].toUpperCase() : "ملف",
+                        url: fileUrl + "/view",
+                        previewUrl: fileUrl + "/preview",
+                        external: true,
+                        drive: true,
+                    };
+                });
+                return;
+            }
+            var folderId = DRIVE_COURSE_FOLDERS[course.id] || DRIVE_PAGE_FOLDERS[pageKey];
+            var existingLinks = (course.files || []).filter(function(file) {
+                return file.external && !/drive\.google\.com\/drive\/folders\//.test(file.url || "");
+            }).map(function(file) {
+                var match = String(file.url || "").match(/drive\.google\.com\/file\/d\/([^/?#]+)/);
+                if (!match) return file;
+                return Object.assign({}, file, {
+                    drive: true,
+                    previewUrl: "https://drive.google.com/file/d/" + match[1] + "/preview",
+                });
+            });
+            course.files = existingLinks;
+            if (!folderId || pageKey === "year1" || pageKey === "year2") return;
+            course.files.push({
+                title: "ملفات المادة على Google Drive",
+                type: "مجلد Google Drive",
+                url: "https://drive.google.com/drive/folders/" + folderId,
+                previewUrl: "https://drive.google.com/embeddedfolderview?id=" + folderId + "#list",
+                external: true,
+                drive: true,
             });
         });
     });

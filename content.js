@@ -235,12 +235,16 @@
                         );
                         return;
                     }
-                    list.replaceChildren(
+                    if (!c.files.length) {
+                        list.replaceChildren(h("p", { class: "panel__desc" }, "لا توجد ملفات موجودة حاليا"));
+                    } else list.replaceChildren(
                         ...c.files.map((f) =>
                             h("div", { class: "row" },
                                 h("span", { class: "row__ico", html: UI.file }),
                                 h("div", { class: "row__text" }, h("strong", {}, f.title), h("small", {}, f.type || "PDF")),
                                 h("div", { class: "row__actions" },
+                                    f.drive ?
+                                    h("button", { class: "btn btn--primary btn--xs", type: "button", onclick: () => go(pdfView(c, f)) }, "فتح في الصفحة") :
                                     f.external ?
                                     h("a", { class: "btn btn--primary btn--xs", href: f.url, target: "_blank", rel: "noopener noreferrer" }, "فتح الرابط") :
                                     f.direct ? [
@@ -271,10 +275,10 @@
         return {
             title: f.title,
             size: "pdf",
-            actions: [h("a", { class: "btn btn--outline btn--xs hide-sm", href: f.url, target: "_blank", rel: "noopener" }, "فتح في تبويب")],
+            actions: f.drive ? [] : [h("a", { class: "btn btn--outline btn--xs hide-sm", href: f.url, target: "_blank", rel: "noopener" }, "فتح في تبويب")],
             body() {
                 return h("div", { class: "panel__body panel__body--flush" },
-                    h("iframe", { class: "viewer", src: f.url, title: f.title }));
+                    h("iframe", { class: "viewer", src: f.previewUrl || f.url, title: f.title }));
             },
         };
     }
