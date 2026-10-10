@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>تطبيقات الدراسة للجوال | أهلية أكاديمي</title>
+    <meta name="description" content="دليل تطبيقات الجوال التي تساعد طلاب الجامعة في تنظيم الدراسة والملفات والملاحظات والبرمجة والتواصل.">
+    <script>
+        try {
+            if (!JSON.parse(localStorage.getItem("ahlia_user"))) throw 0;
+        } catch (e) {
+            location.replace("login.html?next=" + encodeURIComponent(location.pathname.split("/").pop()));
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=20261010">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#050a2a">
+    <link rel="icon" href="icons/icon-192.png">
+    <script src="theme.js"></script>
+    <script src="config.js"></script>
+    <script src="backend.js"></script>
+    <script src="store.js"></script>
+</head>
+
+<body data-page="apps">
+    <canvas id="stars" aria-hidden="true"></canvas>
+    <header class="header">
+        <div class="container header__inner">
+            <a href="index.html" class="logo">
+                <svg class="logo__icon" viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f7bff"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs><path d="M24 3 L44 44 L34 44 L24 22 L14 44 L4 44 Z" fill="url(#lg)"/><path d="M24 30 L30 44 L18 44 Z" fill="#a78bfa"/></svg>
+                <span>أهلية أكاديمي</span>
+            </a>
+            <nav class="nav" id="nav" aria-label="القائمة الرئيسية"></nav>
+            <div class="header__actions">
+                <button type="button" class="theme-toggle" id="themeToggle" aria-pressed="false" aria-label="تفعيل الألوان المريحة للعين" title="تفعيل الألوان المريحة للعين"><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l-1.8-1.8"/></svg><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+                <span class="hello">أهلاً، <b data-user-name></b></span>
+                <button type="button" class="btn btn--outline btn--sm" id="logout">خروج</button>
+                <button class="burger" id="burger" aria-label="فتح القائمة" aria-expanded="false"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container study-apps-page">
+        <p class="crumbs"><a href="index.html">الرئيسية</a> / <span>تطبيقات الدراسة للجوال</span></p>
+        <section class="study-apps-hero">
+            <div>
+                <span class="study-apps-eyebrow">دليل الطالب</span>
+                <h1>تطبيقات تخفف زحمة الدراسة</h1>
+                <p>اختيارات تساعدك على ترتيب وقتك، حفظ ملفاتك، تدوين ملاحظاتك، ومتابعة تعلّم البرمجة من هاتفك.</p>
+            </div>
+        </section>
+
+        <section class="study-apps-directory" aria-labelledby="appsTitle">
+            <div class="study-apps-toolbar">
+                <div>
+                    <h2 id="appsTitle">التطبيقات المقترحة</h2>
+                    <span id="appsCount" aria-live="polite">٢٣ تطبيقًا</span>
+                </div>
+                <label class="study-apps-search">
+                    <span class="sr-only">ابحث عن تطبيق</span>
+                    <input id="appsSearch" type="search" placeholder="ابحث عن تطبيق أو استخدام..." autocomplete="off">
+                </label>
+                <label class="study-apps-filter">
+                    <span class="sr-only">تصفية التطبيقات حسب المجال</span>
+                    <select id="appsCategory" aria-label="تصفية التطبيقات حسب المجال">
+                        <option value="all">كل الاستخدامات</option>
+                        <option value="organization">تنظيم الوقت</option>
+                        <option value="files">الملفات وPDF</option>
+                        <option value="notes">الملاحظات</option>
+                        <option value="programming">البرمجة</option>
+                        <option value="communication">التواصل</option>
+                        <option value="learning">التعلّم والترجمة</option>
+                        <option value="revision">المراجعة والاستذكار</option>
+                        <option value="design">التصميم والعروض</option>
+                        <option value="research">البحث والمراجع</option>
+                    </select>
+                </label>
+            </div>
+
+            <div class="study-apps-grid" id="appsGrid">
+                <article class="card study-app-card" data-app data-category="organization" data-keywords="google calendar تقويم مواعيد محاضرات جدول تذكير تنظيم">
+                    <div class="study-app-card__top"><span class="study-app-mark study-app-mark--calendar" aria-hidden="true" dir="ltr"><img class="study-app-logo" src="https://www.google.com/s2/favicons?domain=calendar.google.com&amp;sz=128" alt="" loading="lazy" referrerpolicy="no-referrer"><span class="study-app-mark__fallback">GCal</span></span>
+                        <span class="study-app-tag">تنظيم الوقت</span>
+                    </div>
+                    <h3>Google Calendar</h3>
+                    <p>رتّب المحاضرات والاختبارات والمواعيد، وأضف تنبيهات تساعدك على الاستعداد مبكرًا.</p>
+                    <a class="btn btn--outline btn--sm study-app-link" href="https://calendar.google.com/" target="_blank" rel="noopener noreferrer">الموقع الرسمي والتطبيق</a>
+                </article>
+                <article class="card study-app-card" data-app data-category="organization" data-keywords="notion ملاحظات مهام مشاريع تنظيم خطة مذاكرة">
+                    <div class="study-app-card__top"><span class="study-app-mark study-app-mark--notion" aria-hidden="true" dir="ltr"><img class="study-app-logo" src="https://www.google.com/s2/favicons?domain=notion.com&amp;sz=128" alt="" loading="lazy" referrerpolicy="no-referrer"><span class="study-app-mark__fallback">N</span></span>
+                        <span class="study-app-tag">تنظيم وملاحظات</span>
+                    </div>
+                    <h3>Notion</h3>
+                    <p>اجمع ملاحظات المواد والمهام وخطط المشاريع في مساحة واحدة قابلة للتخصيص.</p>
+                    <a class="btn btn--outline btn--sm study-app-link" href="https://www.notion.com/mobile" target="_blank" rel="noopener noreferrer">صفحة تطبيق الجوال</a>
+                </article>
+                <article class="card study-app-card" data-app data-category="files" data-keywords="google drive ملفات تخزين سحابي مشاركة مستندات">
+                    <div class="study-app-card__top"><span class="study-app-mark study-app-mark--drive" aria-hidden="true" dir="ltr"><img class="study-app-logo" src="https://www.google.com/s2/favicons?domain=drive.google.com&amp;sz=128" alt="" loading="lazy" referrerpolicy="no-referrer"><span class="study-app-mark__fallback">Drive</span></span>
+                        <span class="study-app-tag">ملفات سحابية</span>
+                    </div>
+                    <h3>Google Drive</h3>
+                    <p>احفظ ملفات المحاضرات والواجبات سحابيًا، وافتحها وشاركها من الهاتف أو الحاسوب.</p>
+                    <a class="btn btn--outline btn--sm study-app-link" href="https://www.google.com/drive/download/" target="_blank" rel="noopener noreferrer">التنزيل من Google</a>
+                </article>
+                <article class="card study-app-card" data-app data-category="files" data-keywords="microsoft 365 office word excel powerpoint أوفيس وورد اكسل باوربوينت">
+                    <div class="study-app-card__top"><span class="study-app-mark study-app-mark--office" aria-hidden="true" dir="ltr"><img class="study-app-logo" src="https://www.google.com/s2/favicons?domain=microsoft.com&amp;sz=128" alt="" loading="lazy" referrerpolicy="no-referrer"><span class="study-app-mark__fallback">365</span></span>
+                        <span class="study-app-tag">مستندات وعروض</span>
+                    </div>
+                    <h3>Microsoft 365</h3>
+                    <p>استخدم Word وExcel وPowerPoint على الجوال لقراءة الملفات وتحريرها وإنشاء العروض.</p>
+                    <a class="btn btn--outline btn--sm study-app-link" href="https://www.microsoft.com/microsoft-365/mobile" target="_blank" rel="noopener noreferrer">صفحة تطبيقات Microsoft</a>
+                </article>
+                <article class="card study-app-card" data-app data-category="notes" data-keywords="onenote microsoft one note ملاحظات محاضرات دفتر كتابة">
+                    <div class="study-app-card__top"><span class="study-app-mark study-app-mark--onenote" aria-hidden="true" dir="ltr"><img class="study-app-logo" src="https://www.google.com/s2/favicons?domain=onenote.com&amp;sz=128" alt="" loading="lazy" referrerpolicy="no-referrer"><span class="study-app-mark__fallback">One</span></span>
+                        <span class="study-app-tag">ملاحظات المحاضرات</span>
+                    </div>
+                    <h3>Microsoft OneNote</h3>
+                    <p>دوّن شرح المحاضرات، أضف الصور والتسجيلات، وقسّم دفاترك حسب المواد.</p>
+                    <a class="btn btn--outline btn--sm study-app-link" href="https://www.onenote.com/download" target="_blank" rel="noopener noreferrer">التنزيل من Microsoft</a>
+                </article>
+                <article class="card study-app-card" data-app data-category="files" data-keywords="adobe scan ماسح ضوئي سكان تصوير مستندات ورق pdf">
+                    <div class="study-app-card__top"><span class="study-app-mark study-app-mark--scan" aria-hidden="true" dir="ltr"><img class="study-app-logo" src="https://www.google.com/s2/favicons?domain=adobe.com&amp;sz=128" alt="" loading="lazy" referrerpolicy="no-referrer"><span class="study-app-mark__fallback">Scan</span></span>
+                        <span class="study-app-tag">مسح المستندات</span>
+                    </div>
+                    <h3>Adobe Scan</h3>
+                    <p>حوّل الأوراق والملاحظات المصورة إلى ملفات PDF قابلة للحفظ والمشاركة.</p>
+                    <a class="btn btn--outline btn--sm study-app-link" href="https://www.adobe.com/acrobat/mobile/scanner-app.html" target="_blank" rel="noopener noreferrer">صفحة Adobe Scan</a>
+                </article>
+                <article class="card study-app-card" data-app data-category="files" data-keywords="adobe acrobat pdf قارئ ملفات قراءة تعليق توقيع">
+                    <div class="study-app-card__top"><span class="study-app-mark study-app-mark--pdf" aria-hidden="true" dir="ltr"><img class="study-app-logo" src="https://www.google.com/s2/favicons?domain=acrobat.adobe.com&amp;sz=128" alt="" loading="lazy" referrerpolicy="no-referrer"><span class="study-app-mark__fallback">PDF</span></span>
+                        <span class="study-app-tag">قراءة PDF</span>
+                    </div>
+                    <h3>Adobe Acrobat Reader</h3>
+                    <p>افتح ملفات PDF، وابحث داخلها، وأضف تعليقات أو علامات للمراجعة.</p>
+                    <a class="btn btn--outline btn--sm study-app-link" href="https://www.adobe.com/acrobat/mobile/acrobat-reader.html" target="_blank" rel="noopener noreferrer">صفحة Acrobat Reader</a>
+                </article>
+                <article class="card study-app-card" data-app data-category="programming" data-keywords="github mobile git مستودعات كود برمجة مشاريع">
+                    <div class="study-app-card__top"><span class="study-app-mark study-app-mark--github" aria-hidden="true" dir="ltr"><img class="study-app-logo" src="https://www.google.com/s2/favicons?domain=github.com&amp;sz=128" alt="" loading="lazy" referrerpolicy="no-referrer"><span class="study-app-mark__fallback">GH</span></span>
+                        <span class="study-app-tag">مشاريع برمجية</span>
+                    </div>
+                    <h3>GitHub Mobile</h3>
+                    <p>تابع المستودعات والتنبيهات وطلبات الدمج، وابقَ على تواصل مع فريق مشروعك.</p>
+                    <a class="btn btn--outline btn--sm study-app-link" href="https://github.com/mobile" target="_blank" rel="noopener noreferrer">صفحة GitHub Mobile</a>
+                </article>
+                <article class="card study-app-card" data-app data-category="programming" data-keywords="sololearn برمجة تعلم بايثون جافاسكريبت دورات">
+                    <div class="study-app-card__top"><span class="study-app-mark study-app-mark--learn" aria-hidden="true" dir="ltr"><img class="study-app-logo" src="https://www.google.com/s2/favicons?domain=sololearn.com&amp;sz=128" alt="" loading="lazy" referrerpolicy="no-referrer"><span class="study-app-mark__fallback">SL</span></span>
+                        <span class="study-app-tag">تعلّم البرمجة</span>
+                    </div>
+                    <h3>Sololearn</h3>
+                    <p>راجع مفاهيم البرمجة عبر دروس قصيرة وتمارين تفاعلية مناسبة لأوقات الانتظار.</p>
+                    <a class="btn btn--outline btn--sm study-app-link" href="https://www.sololearn.com/" target="_blank" rel="noopener noreferrer">موقع Sololearn الرسمي</a>
+                </article>
+                <article class="card study-app-card" data-app data-category="communication" data-keywords="microsoft teams تيمز اجتماعات محاضرات فرق تواصل">
+                    <div class="study-app-card__top"><span class="study-app-mark study-app-mark--teams" aria-hidden="true" dir="ltr"><img class="study-app-logo" src="https://www.google.com/s2/favicons?domain=teams.microsoft.com&amp;sz=128" alt="" loading="lazy" referrerpolicy="no-referrer"><span class="study-app-mark__fallback">Teams</span></span>
+                        <span class="study-app-tag">التواصل والاجتماعات</span>
+                    </div>
+                    <h3>Microsoft Teams</h3>
+                    <p>انضم للاجتماعات ومجموعات العمل وشارك الملفات عندما تستخدمه مقرراتك أو فرقك.</p>
+                    <a class="btn btn--outline btn--sm study-app-link" href="https://www.microsoft.com/microsoft-teams/download-app" target="_blank" rel="noopener noreferrer">تنزيل Teams</a>
+                </article>
+                <article class="card study-app-card" data-app data-category="learning" data-keywords="google translate ترجمة انجليزي عربي لغات قاموس">
+                    <div class="study-app-card__top"><span class="study-app-mark study-app-mark--translate" aria-hidden="true" dir="ltr"><img class="study-app-logo" src="https://www.google.com/s2/favicons?domain=translate.google.com&amp;sz=128" alt="" loading="lazy" referrerpolicy="no-referrer"><span class="study-app-mark__fallback">A文</span></span>
+                        <span class="study-app-tag">ترجمة ومصطلحات</span>
+                    </div>
+                    <h3>Google Translate</h3>
+                    <p>ترجم المصطلحات والنصوص، واستفد من الكاميرا أو التنزيل للاستخدام دون اتصال.</p>
+                    <a class="btn btn--outline btn--sm study-app-link" href="https://translate.google.com/about/" target="_blank" rel="noopener noreferrer">معلومات التطبيق الرسمية</a>
+                </article>
+                <article class="card study-app-card" data-app data-category="notes" data-keywords="google keep ملاحظات سريعة قوائم تذكير افكار">
+                    <div class="study-app-card__top"><span class="study-app-mark study-app-mark--keep" aria-hidden="true" dir="ltr"><img class="study-app-logo" src="https://www.google.com/s2/favicons?domain=keep.google.com&amp;sz=128" alt="" loading="lazy" referrerpolicy="no-referrer"><span class="study-app-mark__fallback">Keep</span></span>
+                        <span class="study-app-tag">ملاحظات سريعة</span>
+                    </div>
+                    <h3>Google Keep</h3>
+                    <p>سجّل الأفكار السريعة وأنشئ قوائم للواجبات والمشتريات مع تذكيرات بسيطة.</p>
+                    <a class="btn btn--outline btn--sm study-app-link" href="https://keep.google.com/" target="_blank" rel="noopener noreferrer">Google Keep</a>
+                </article>
+                <article class="card study-app-card" data-app data-category="revision" data-keywords="anki ankidroid بطاقات مراجعة حفظ متباعد فلاش كارد">
+                    <div class="study-app-card__top"><span class="study-app-mark study-app-mark--anki" aria-hidden="true" dir="ltr"><img class="study-app-logo" src="https://www.google.com/s2/favicons?domain=ankidroid.org&amp;sz=128" alt="" loading="lazy" referrerpolicy="no-referrer"><span class="study-app-mark__fallback">Anki</span></span>
+                        <span class="study-app-tag">بطاقات مراجعة</span>
+                    </div>
+                    <h3>AnkiDroid</h3>
+                    <p>راجع المصطلحات والأسئلة ببطاقات التكرار المتباعد. هذا الإصدار مخصص لأجهزة Android.</p>
+                    <a class="btn btn--outline btn--sm study-app-link" href="https://www.ankidroid.org/" target="_blank" rel="noopener noreferrer">الموقع الرسمي لـ AnkiDroid</a>
+                </article>
+                <article class="card study-app-card" data-app data-category="design" data-keywords="canva تصميم عروض تقديمية انفوجرافيك ملصقات مشاريع">
+                    <div class="study-app-card__top"><span class="study-app-mark study-app-mark--canva" aria-hidden="true" dir="ltr"><img class="study-app-logo" src="https://www.google.com/s2/favicons?domain=canva.com&amp;sz=128" alt="" loading="lazy" referrerpolicy="no-referrer"><span class="study-app-mark__fallback">Canva</span></span>
+                        <span class="study-app-tag">تصميم وعروض</span>
+                    </div>
+                    <h3>Canva</h3>
+                    <p>أنشئ عروضًا وملصقات ومواد بصرية للمشاريع والأنشطة الطلابية من هاتفك.</p>
+                    <a class="btn btn--outline btn--sm study-app-link" href="https://www.canva.com/download/" target="_blank" rel="noopener noreferrer">تنزيل Canva</a>
+                </article>
+                <article class="card study-app-card" data-app data-category="communication" data-keywords="zoom اجتماعات محاضرات عن بعد اتصال فيديو دروس">
+                    <div class="study-app-card__top"><span class="study-app-mark study-app-mark--zoom" aria-hidden="true" dir="ltr"><img class="study-app-logo" src="https://www.google.com/s2/favicons?domain=zoom.us&amp;sz=128" alt="" loading="lazy" referrerpolicy="no-referrer"><span class="study-app-mark__fallback">Zoom</span></span>
+                        <span class="study-app-tag">اجتماعات عن بُعد</span>
+                    </div>
+                    <h3>Zoom Workplace</h3>
+                    <p>احضر المحاضرات والاجتماعات عن بُعد عندما يرسل لك المدرس أو الفريق رابط Zoom.</p>
+                    <a class="btn btn--outline btn--sm study-app-link" href="https://zoom.us/download" target="_blank" rel="noopener noreferrer">تنزيل Zoom</a>
+                </article>
+                <article class="card study-app-card" data-app data-category="research" data-keywords="zotero مراجع بحث علمي مصادر توثيق اقتباسات bibliography">
+                    <div class="study-app-card__top"><span class="study-app-mark study-app-mark--zotero" aria-hidden="true" dir="ltr"><img class="study-app-logo" src="https://www.google.com/s2/favicons?domain=zotero.org&amp;sz=128" alt="" loading="lazy" referrerpolicy="no-referrer"><span class="study-app-mark__fallback">Z</span></span>
+                        <span class="study-app-tag">مراجع وأبحاث</span>
+                    </div>
+                    <h3>Zotero</h3>
+                    <p>اجمع مصادر مشروعك البحثي ونظّم المراجع والاقتباسات. راجع توافق تطبيق الجوال مع جهازك.</p>
+                    <a class="btn btn--outline btn--sm study-app-link" href="https://www.zotero.org/download/" target="_blank" rel="noopener noreferrer">تنزيل Zotero</a>
+                </article>
+                <article class="card study-app-card" data-app data-category="learning" data-keywords="chatgpt openai مساعد دراسي شرح افكار تلخيص ذكاء اصطناعي">
+                    <div class="study-app-card__top"><span class="study-app-mark study-app-mark--chatgpt" aria-hidden="true" dir="ltr"><img class="study-app-logo" src="https://www.google.com/s2/favicons?domain=chatgpt.com&amp;sz=128" alt="" loading="lazy" referrerpolicy="no-referrer"><span class="study-app-mark__fallback">AI</span></span>
+                        <span class="study-app-tag">مساعد للتعلّم</span>
+                    </div>
+                    <h3>ChatGPT</h3>
+                    <p>استخدمه لطلب شرح مبسّط أو أسئلة تدريبية، وراجع الإجابات من مراجع المقرر قبل الاعتماد عليها.</p>
+                    <a class="btn btn--outline btn--sm study-app-link" href="https://chatgpt.com/download/" target="_blank" rel="noopener noreferrer">تطبيق ChatGPT الرسمي</a>
+                </article>
+                <article class="card study-app-card" data-app data-category="revision" data-keywords="quizlet بطاقات مراجعة مصطلحات اختبارات حفظ مذاكرة">
+                    <div class="study-app-card__top"><span class="study-app-mark study-app-mark--quizlet" aria-hidden="true" dir="ltr"><img class="study-app-logo" src="https://www.google.com/s2/favicons?domain=quizlet.com&amp;sz=128" alt="" loading="lazy" referrerpolicy="no-referrer"><span class="study-app-mark__fallback">Q</span></span>
+                        <span
+                            class="study-app-tag">مراجعة واختبارات</span>
+                    </div>
+                    <h3>Quizlet</h3>
+                    <p>أنشئ بطاقات للمصطلحات وراجعها بأساليب اختبار قصيرة قبل الكويزات والامتحانات.</p>
+                    <a class="btn btn--outline btn--sm study-app-link" href="https://quizlet.com/" target="_blank" rel="noopener noreferrer">موقع Quizlet الرسمي</a>
+                </article>
+                <article class="card study-app-card" data-app data-category="organization" data-keywords="forest تركيز مؤقت منع تشتت دراسة شجر">
+                    <div class="study-app-card__top"><span class="study-app-mark study-app-mark--forest" aria-hidden="true" dir="ltr"><img class="study-app-logo" src="https://www.google.com/s2/favicons?domain=forestapp.cc&amp;sz=128" alt="" loading="lazy" referrerpolicy="no-referrer"><span class="study-app-mark__fallback">F</span></span>
+                        <span
+                            class="study-app-tag">جلسات تركيز</span>
+                    </div>
+                    <h3>Forest</h3>
+                    <p>قسّم المذاكرة إلى جلسات تركيز قصيرة، وقلّل فتح التطبيقات المشتتة أثناءها.</p>
+                    <a class="btn btn--outline btn--sm study-app-link" href="https://www.forestapp.cc/" target="_blank" rel="noopener noreferrer">موقع Forest الرسمي</a>
+                </article>
+                <article class="card study-app-card" data-app data-category="organization" data-keywords="trello فريق مشروع مهام لوحة تنظيم مواعيد تعاون">
+                    <div class="study-app-card__top"><span class="study-app-mark study-app-mark--trello" aria-hidden="true" dir="ltr"><img class="study-app-logo" src="https://www.google.com/s2/favicons?domain=trello.com&amp;sz=128" alt="" loading="lazy" referrerpolicy="no-referrer"><span class="study-app-mark__fallback">T</span></span>
+                        <span
+                            class="study-app-tag">مشاريع جماعية</span>
+                    </div>
+                    <h3>Trello</h3>
+                    <p>وزّع مهام المشروع بين أعضاء الفريق، وتابع ما أُنجز وما يحتاج إلى متابعة.</p>
+                    <a class="btn btn--outline btn--sm study-app-link" href="https://trello.com/platforms" target="_blank" rel="noopener noreferrer">تطبيق Trello الرسمي</a>
+                </article>
+                <article class="card study-app-card" data-app data-category="learning" data-keywords="wolframalpha ولفرام حساب معادلات رياضيات رسم دوال علوم">
+                    <div class="study-app-card__top"><span class="study-app-mark study-app-mark--wolfram" aria-hidden="true" dir="ltr"><img class="study-app-logo" src="https://www.google.com/s2/favicons?domain=wolframalpha.com&amp;sz=128" alt="" loading="lazy" referrerpolicy="no-referrer"><span class="study-app-mark__fallback">W</span></span>
+                        <span
+                            class="study-app-tag">حسابات ورياضيات</span>
+                    </div>
+                    <h3>WolframAlpha</h3>
+                    <p>استكشف خطوات حل بعض المسائل وارسم الدوال؛ استخدم النتائج للفهم والتحقق لا كبديل عن الحل.</p>
+                    <a class="btn btn--outline btn--sm study-app-link" href="https://www.wolframalpha.com/" target="_blank" rel="noopener noreferrer">موقع WolframAlpha</a>
+                </article>
+                <article class="card study-app-card" data-app data-category="programming" data-keywords="termux اندرويد android طرفية لينكس سطر اوامر برمجة">
+                    <div class="study-app-card__top"><span class="study-app-mark study-app-mark--termux" aria-hidden="true" dir="ltr"><img class="study-app-logo" src="https://www.google.com/s2/favicons?domain=termux.dev&amp;sz=128" alt="" loading="lazy" referrerpolicy="no-referrer"><span class="study-app-mark__fallback">$_</span></span>
+                        <span
+                            class="study-app-tag">طرفية Android</span>
+                    </div>
+                    <h3>Termux</h3>
+                    <p>جرّب أوامر Linux وأدوات سطر الأوامر على Android. ليس متاحًا كتطبيق iPhone رسمي.</p>
+                    <a class="btn btn--outline btn--sm study-app-link" href="https://github.com/termux/termux-app" target="_blank" rel="noopener noreferrer">المصدر الرسمي على GitHub</a>
+                </article>
+                <article class="card study-app-card" data-app data-category="files" data-keywords="google docs مستندات كتابة تعاونية بحث تقارير مشاركة">
+                    <div class="study-app-card__top"><span class="study-app-mark study-app-mark--docs" aria-hidden="true" dir="ltr"><img class="study-app-logo" src="https://www.google.com/s2/favicons?domain=docs.google.com&amp;sz=128" alt="" loading="lazy" referrerpolicy="no-referrer"><span class="study-app-mark__fallback">Docs</span></span>
+                        <span
+                            class="study-app-tag">كتابة تعاونية</span>
+                    </div>
+                    <h3>Google Docs</h3>
+                    <p>اكتب التقارير وشارك المستند مع فريقك للتعديل والتعليق في الوقت نفسه.</p>
+                    <a class="btn btn--outline btn--sm study-app-link" href="https://docs.google.com/" target="_blank" rel="noopener noreferrer">Google Docs</a>
+                </article>
+            </div>
+            <p class="study-apps-empty" id="appsEmpty" hidden>لا توجد تطبيقات مطابقة. جرّب كلمة بحث أخرى أو اختر كل الاستخدامات.</p>
+            <p class="study-apps-note">بعض التطبيقات تتطلب حسابًا أو توفر مزايا مدفوعة. تحقّق من التوافق والأسعار وسياسة الخصوصية، ولا ترفع بيانات جامعية أو شخصية إلى خدمة خارجية دون إذن.</p>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer__inner">
+            <p class="footer__text">معاً نحو مستقبل أفضل &nbsp;|&nbsp; طلاب أهلية &nbsp;|&nbsp; <a href="team.html" class="footer__link">فريق العمل</a></p>
+        </div>
+    </footer>
+    <script src="script.js?v=20261010"></script>
+    <script src="page.js"></script>
+    <script src="mobile.js"></script>
+    <script src="apps.js"></script>
+</body>
+
+</html>

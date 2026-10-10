@@ -88,12 +88,14 @@ create table if not exists public.team_posts (
   subject     text not null check (char_length(subject) between 1 and 120),
   role        text not null check (char_length(role) between 1 and 120),
   year        text not null default '' check (char_length(year) <= 30),
+  major       text not null default '' check (major in ('','cs','ai','is')),
   count       int  not null default 1 check (count between 1 and 20),
   description text not null default '' check (char_length(description) <= 600),
   contact     text not null check (char_length(contact) between 1 and 200),
   closed      boolean not null default false,
   created_at  timestamptz not null default now()
 );
+alter table public.team_posts add column if not exists major text not null default '';
 create index if not exists idx_posts_created on public.team_posts(created_at desc);
 
 -- اسم صاحب الطلب بيتاخد من البروفايل (مش من المتصفح) + حد أقصى 10 طلبات مفتوحة

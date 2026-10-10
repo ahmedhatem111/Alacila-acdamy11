@@ -1,3 +1,104 @@
+(() => {
+    const header = document.querySelector(".header__inner");
+    if (!header) return;
+
+    let nav = header.querySelector("#nav");
+    if (!nav) {
+        nav = document.createElement("nav");
+        nav.id = "nav";
+        nav.className = "nav";
+        nav.setAttribute("aria-label", "القائمة الرئيسية");
+        const actions = header.querySelector(".header__actions");
+        actions ? header.insertBefore(nav, actions) : header.append(nav);
+        if (actions && !actions.querySelector("#burger")) {
+            const burger = document.createElement("button");
+            burger.className = "burger";
+            burger.id = "burger";
+            burger.type = "button";
+            burger.setAttribute("aria-label", "فتح القائمة");
+            burger.setAttribute("aria-expanded", "false");
+            burger.innerHTML = "<span></span><span></span><span></span>";
+            actions.append(burger);
+        }
+    }
+
+    const file = location.pathname.split("/").pop() || "index.html";
+    const hash = location.hash;
+    const onHome = file === "index.html" || file === "";
+    const homeHref = onHome ? "#home" : "index.html#home";
+    const sectionHref = (id) => onHome ? "#" + id : "index.html#" + id;
+    const items = [
+        { key: "home", label: "الرئيسية", href: homeHref, group: "main" },
+        { key: "years", label: "السنوات الدراسية", href: sectionHref("years"), group: "main" },
+        { key: "majors", label: "التخصصات", href: sectionHref("majors"), group: "main" },
+        { key: "courses", label: "الكورسات", href: onHome ? "#courses" : "courses.html", group: "main" },
+        { key: "paths", label: "المسارات المهنية", href: "paths.html", menuGroup: "الدراسة والتخصصات" },
+        { key: "year1", label: "السنة الأولى", href: "year1.html", menuGroup: "الدراسة والتخصصات" },
+        { key: "year2", label: "السنة الثانية", href: "year2.html", menuGroup: "الدراسة والتخصصات" },
+        { key: "cs", label: "علوم الحاسب", href: "cs.html", menuGroup: "الدراسة والتخصصات" },
+        { key: "ai", label: "الذكاء الاصطناعي", href: "ai.html", menuGroup: "الدراسة والتخصصات" },
+        { key: "is", label: "نظم المعلومات", href: "is.html", menuGroup: "الدراسة والتخصصات" },
+        { key: "staff", label: "هيئة التدريس", href: "staff.html", menuGroup: "خدمات الطالب" },
+        { key: "schedule", label: "جدولي", href: "schedule.html", menuGroup: "خدمات الطالب" },
+        { key: "apps", label: "تطبيقات الدراسة", href: "apps.html", menuGroup: "خدمات الطالب" },
+        { key: "locations", label: "مواقع المحاضرات", href: "locations.html", menuGroup: "خدمات الطالب" },
+        { key: "library", label: "المكتبة", href: "library.html", menuGroup: "خدمات الطالب" },
+        { key: "certificate", label: "الشهادات", href: "certificate-info.html", menuGroup: "خدمات الطالب" },
+        { key: "ai-tools", label: "أدوات الذكاء الاصطناعي", href: "ai-tools.html", menuGroup: "مصادر التقنية" },
+        { key: "movies", label: "الأفلام", href: "movies.html", menuGroup: "مصادر التقنية" },
+        { key: "videos", label: "فيديوهات تقنية", href: "videos.html", menuGroup: "مصادر التقنية" },
+        { key: "memes", label: "اضحك يا مبرمج", href: "memes.html", menuGroup: "مصادر التقنية" },
+        { key: "news", label: "أخبار التقنية", href: "news.html", menuGroup: "مصادر التقنية" },
+        { key: "laptops", label: "دليل اللابتوب", href: "laptops.html", menuGroup: "مصادر التقنية" },
+        { key: "opportunities", label: "فرص العمل والتدريب", href: "opportunities.html", menuGroup: "المشاريع والمجتمع" },
+        { key: "volunteering", label: "التطوع والأنشطة الطلابية", href: "volunteering.html", menuGroup: "المشاريع والمجتمع" },
+        { key: "projects", label: "معرض مشاريع الطلاب", href: "projects.html", menuGroup: "المشاريع والمجتمع" },
+        { key: "teams", label: "زملاء المشروع", href: "teams.html", menuGroup: "المشاريع والمجتمع" },
+        { key: "team", label: "فريق العمل", href: "team.html", menuGroup: "المشاريع والمجتمع" },
+    ];
+    const pageFor = { year1: "year1.html", year2: "year2.html", cs: "cs.html", ai: "ai.html", is: "is.html", courses: "courses.html", paths: "paths.html", staff: "staff.html", "ai-tools": "ai-tools.html", movies: "movies.html", videos: "videos.html", memes: "memes.html", news: "news.html", laptops: "laptops.html", library: "library.html", schedule: "schedule.html", apps: "apps.html", locations: "locations.html", opportunities: "opportunities.html", volunteering: "volunteering.html", projects: "projects.html", teams: "teams.html", team: "team.html" };
+    const isActive = (key) => {
+        if (key === "home") return file === "welcome.html" || (onHome && (!hash || hash === "#home"));
+        if (key === "years") return ["year1.html", "year2.html"].includes(file) || (onHome && hash === "#years");
+        if (key === "majors") return ["cs.html", "ai.html", "is.html"].includes(file) || (onHome && hash === "#majors");
+        if (key === "courses") return ["courses.html", "course.html"].includes(file) || (onHome && hash === "#courses");
+        if (key === "certificate") return file === "certificate-info.html" || (onHome && hash === "#certificate");
+        return file === pageFor[key];
+    };
+    const makeLink = (item) => {
+        const link = document.createElement("a");
+        link.href = item.href;
+        link.textContent = item.label;
+        if (isActive(item.key)) {
+            link.classList.add("active");
+            link.setAttribute("aria-current", "page");
+        }
+        return link;
+    };
+    const more = document.createElement("div");
+    more.className = "nav-more";
+    more.innerHTML = '<button class="nav-more__btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="navMoreMenu">المزيد <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 6 5 5 5-5"/></svg></button><div class="nav-more__menu" id="navMoreMenu" aria-label="روابط الموقع الإضافية"></div>';
+    const menuGroups = new Map();
+    items.filter((item) => item.group !== "main").forEach((item) => {
+        const label = item.menuGroup || "روابط أخرى";
+        if (!menuGroups.has(label)) menuGroups.set(label, []);
+        menuGroups.get(label).push(item);
+    });
+    more.querySelector(".nav-more__menu").replaceChildren(...[...menuGroups].map(([label, links]) => {
+        const group = document.createElement("div");
+        group.className = "nav-more__group";
+        group.setAttribute("role", "group");
+        group.setAttribute("aria-label", label);
+        const heading = document.createElement("h3");
+        heading.className = "nav-more__heading";
+        heading.textContent = label;
+        group.append(heading, ...links.map(makeLink));
+        return group;
+    }));
+    if (items.some((item) => item.group !== "main" && isActive(item.key))) more.querySelector(".nav-more__btn").classList.add("active");
+    nav.replaceChildren(...items.filter((item) => item.group === "main").map(makeLink), more);
+})();
+
 document.addEventListener("DOMContentLoaded", () => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -110,7 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const KEY_USER = "ahlia_user";
     const PAGES = { cs: "cs.html", ai: "ai.html", is: "is.html", year1: "year1.html", year2: "year2.html" };
     /* every page except index.html, login.html and team.html needs a signed-in user */
-    const PROTECTED = /^(welcome|courses|course|teams|staff|year1|year2|cs|ai|is|mylearning|schedule|paths|movies|certificate)\.html(\?[\w%.\-=&]*)?$/;
+    const PROTECTED = /^(welcome|courses|course|teams|staff|year1|year2|cs|ai|is|mylearning|schedule|locations|opportunities|paths|movies|certificate|ai-tools)\.html(\?[\w%.\-=&]*)?$/;
 
     const getUser = () => { try { return JSON.parse(localStorage.getItem(KEY_USER)); } catch (e) { return null; } };
     const loginUrl = (next) => "login.html" + (next ? "?next=" + encodeURIComponent(next) : "");
@@ -184,7 +285,8 @@ document.addEventListener("DOMContentLoaded", () => {
     /* ordinary links to protected pages (nav, ...) */
     document.querySelectorAll("a[href]").forEach((a) => {
         const href = a.getAttribute("href");
-        if (a.hasAttribute("data-open-auth") || a.classList.contains("major") || !PROTECTED.test(href)) return;
+        const protectedPage = PROTECTED.test(href) || href.split("?")[0] === "projects.html";
+        if (a.hasAttribute("data-open-auth") || a.classList.contains("major") || !protectedPage) return;
         a.addEventListener("click", (e) => {
             if (getUser()) {
                 const msg = blocked(href);
@@ -227,10 +329,19 @@ document.addEventListener("DOMContentLoaded", () => {
         ["الذكاء الاصطناعي", "ai.html"],
         ["نظم المعلومات", "is.html"],
         ["الكورسات", "courses.html"],
+        ["أدوات الذكاء الاصطناعي", "ai-tools.html"],
+        ["المسارات المهنية", "paths.html"],
         ["المواد والمحاضرات", "course.html"],
         ["هيئة التدريس", "staff.html"],
         ["جدولي", "schedule.html"],
+        ["تطبيقات الدراسة للجوال", "apps.html"],
+        ["مواقع المحاضرات والسكاشن", "locations.html"],
+        ["فرص العمل والتدريب", "opportunities.html"],
+        ["التطوع والأنشطة الطلابية", "volunteering.html"],
+        ["معرض مشاريع الطلاب", "projects.html"],
         ["الأفلام التعليمية", "movies.html"],
+        ["أخبار التقنية", "news.html"],
+        ["دليل اللابتوب", "laptops.html"],
         ["زملاء المشروع", "teams.html"],
         ["الشهادات", "certificate.html"],
         ["فريق العمل", "team.html"],

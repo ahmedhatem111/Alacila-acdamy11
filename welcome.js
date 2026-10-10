@@ -19,7 +19,7 @@
     const stat = {
         courses: all.length,
         files: all.reduce((n, c) => n + c.files.length, 0),
-        slides: all.reduce((n, c) => n + c.slides.length, 0),
+        topics: all.reduce((n, c) => n + c.topics.length, 0),
         staff: (D.staff || []).length,
     };
     $$("[data-stat]").forEach((e) => (e.textContent = stat[e.dataset.stat] || 0));

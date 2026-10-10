@@ -1,9 +1,9 @@
 /* =====================================================================
    بيانات الموقع — عدّل هذا الملف فقط لتغيير:
-   الكورسات (المواد) والترمات، الملفات، السلايد، هيئة التدريس، فريق العمل.
+    الكورسات (المواد) والترمات، الملفات، موضوعات الشرح، هيئة التدريس، فريق العمل.
    * المواد مأخوذة من جدول الخطة الدراسية (الترم 1-1 … 4-2).
    * الملفات: ضع ملف PDF في المسار المكتوب في url (مثال: files/cs/algorithms-summary.pdf).
-   * السلايد: إمّا مصفوفة slides (عنوان t + نقاط p)، أو url لملف PDF للسلايد.
+    * موضوعات الشرح: تظهر داخل المادة مع رابط بحث لفيديوهات الشرح على YouTube.
    * أسماء الدكاترة والمعيدين هنا أسماء تجريبية — استبدلها بالأسماء الحقيقية.
    * staff -> teaches: أرقام (ids) المواد التي يدرّسها العضو، وهي تظهر تحت اسمه.
    ===================================================================== */
@@ -13,24 +13,9 @@
     var LEVELS = { programming: "مبتدئ", design: "مبتدئ", data: "مبتدئ", media: "مبتدئ", security: "مبتدئ", year1: "مبتدئ", year2: "متوسط", cs: "متقدم", ai: "متقدم", is: "متقدم" };
     var PREFIX = { programming: "prog", design: "des", data: "dat", media: "med", security: "sec", year1: "y1", year2: "y2", cs: "cs", ai: "ai", is: "is" };
 
-    /* يبني سلايد تجريبية من عناوين المحاضرات */
-    function makeSlides(title, topics, part) {
-        return [
-                { cover: true, t: title, p: [part] },
-                { t: "ماذا ستتعلم؟", p: topics },
-            ]
-            .concat(
-                topics.map(function(t) {
-                    return { t: t, p: ["تعريف المفهوم وأهميته", "مثال تطبيقي خطوة بخطوة", "نقاط مهمة للمراجعة"] };
-                })
-            )
-            .concat([{ t: "الخلاصة", p: ["راجع النقاط الأساسية", "حلّ التمارين المرفقة", "انتقل إلى المحاضرة التالية"] }]);
-    }
-
     /* مادة: C(المجموعة, الاسم المختصر للملف, اسم المادة, [الوصف], [الساعات], [المواضيع], [المستوى], [الأيقونة]) */
     function C(page, slug, title, desc, hours, topics, level, icon) {
         topics = topics || GENERIC_TOPICS;
-        var half = Math.ceil(topics.length / 2);
         return {
             id: PREFIX[page] + "-" + slug,
             group: page,
@@ -42,18 +27,15 @@
             topics: topics,
             files: [
                 { title: "ملخص المحاضرات", type: "PDF", url: "files/" + page + "/" + slug + "-summary.pdf" },
+                { title: "كتاب المادة", type: "PDF", url: "files/" + page + "/" + slug + "-book.pdf" },
                 { title: "تمارين ونماذج امتحانات", type: "PDF", url: "files/" + page + "/" + slug + "-exercises.pdf" },
-            ],
-            slides: [
-                { title: "سلايد المحاضرات — الجزء الأول", slides: makeSlides(title, topics.slice(0, half), "الجزء الأول") },
-                { title: "سلايد المحاضرات — الجزء الثاني", slides: makeSlides(title, topics.slice(half), "الجزء الثاني") },
             ],
         };
     }
 
     /* ترم: T(عنوان الترم, [ مواد ]) */
-    function T(title, courses) {
-        return { title: title, courses: courses };
+    function T(title, courses, comingSoon) {
+        return { title: title, courses: courses, comingSoon: !!comingSoon };
     }
 
     var pages = {
@@ -161,7 +143,7 @@
                     C("cs", "image-proc", "معالجة الصور"),
                     C("cs", "ai", "الذكاء الاصطناعي"),
                     C("cs", "ds2", "هياكل البيانات 2"),
-                    C("cs", "algorithms", "الخوارزميات"),
+                    C("cs", "algorithms", "تحليل وتنظيم الخوارزميات"),
                     C("cs", "os", "نظم التشغيل"),
                 ]),
                 T("السنة الثالثة • الترم الثاني", [
@@ -171,7 +153,7 @@
                     C("cs", "graphics", "الرسم بالحاسب"),
                     C("cs", "pl-concepts", "مفاهيم لغات الحاسب"),
                     C("cs", "visual-prog", "البرمجة المرئية"),
-                ]),
+                ], true),
                 T("السنة الرابعة • الترم الأول", [
                     C("cs", "theory", "نظرية الحاسبات"),
                     C("cs", "ml", "تعلم الآلة"),
@@ -179,7 +161,7 @@
                     C("cs", "mobile", "برمجة الأجهزة المحمولة"),
                     C("cs", "cloud", "الحوسبة السحابية"),
                     C("cs", "grad1", "مشروع التخرج"),
-                ]),
+                ], true),
                 T("السنة الرابعة • الترم الثاني", [
                     C("cs", "compilers", "المترجمات"),
                     C("cs", "fuzzy", "الحوسبة الضبابية"),
@@ -187,21 +169,27 @@
                     C("cs", "big-data", "معالجة البيانات الضخمة"),
                     C("cs", "nlp", "معالجة اللغات الطبيعية"),
                     C("cs", "grad2", "مشروع التخرج"),
-                ]),
+                ], true),
             ],
         },
         ai: {
             icon: "ai",
             label: "الذكاء الاصطناعي",
             terms: [
-                T("الترم الأول", [
-                    C("ai", "ml", "تعلم الآلة", "مفاهيم وتطبيقات عملية", 10, ["التعلم الموجّه", "التعلم غير الموجّه", "تقييم النماذج", "تقليل الإفراط في التعلم"]),
-                    C("ai", "dl", "التعلم العميق", "الشبكات العصبية من الصفر", 12, ["الشبكات العصبية", "الانتشار الخلفي", "الشبكات الالتفافية", "الشبكات المتكررة"]),
+                T("السنة الثالثة • الترم الأول", [
+                    C("ai", "probabilistic-reasoning", "التفكير الاحتمالي"),
+                    C("ai", "os", "نظم التشغيل"),
+                    C("ai", "artificial-intelligence", "الذكاء الاصطناعي"),
+                    C("ai", "algorithms", "تحليل وتنظيم الخوارزميات"),
+                    C("ai", "data-science", "علوم البيانات"),
+                    C("ai", "field-training", "التدريب الميداني"),
                 ]),
-                T("الترم الثاني", [
+                T("السنة الثالثة • الترم الثاني", [
                     C("ai", "cv", "الرؤية الحاسوبية", "تحليل الصور والفيديو", 9, ["معالجة الصور", "اكتشاف الحواف والميزات", "تصنيف الصور", "اكتشاف الكائنات"]),
                     C("ai", "nlp", "معالجة اللغات الطبيعية", "فهم النصوص العربية والإنجليزية", 8, ["معالجة النصوص", "تمثيل الكلمات", "نماذج اللغة", "تطبيقات على اللغة العربية"]),
-                ]),
+                ], true),
+                T("السنة الرابعة • الترم الأول", [], true),
+                T("السنة الرابعة • الترم الثاني", [], true),
             ],
         },
         is: {
@@ -213,7 +201,8 @@
                     C("is", "data-comm", "تراسل البيانات"),
                     C("is", "signals", "الإشارات والنظم"),
                     C("is", "field-training", "التدريب الميداني"),
-                    C("is", "algorithms", "الخوارزميات"),
+                    C("is", "ai", "الذكاء الاصطناعي"),
+                    C("is", "algorithms", "تحليل وتنظيم الخوارزميات"),
                     C("is", "os", "نظم التشغيل"),
                 ]),
                 T("السنة الثالثة • الترم الثاني", [
@@ -223,7 +212,7 @@
                     C("is", "pattern1", "التعرف على الأنماط 1"),
                     C("is", "dsp", "معالجة الإشارات الرقمية"),
                     C("is", "networks2", "شبكات الحاسب 2"),
-                ]),
+                ], true),
                 T("السنة الرابعة • الترم الأول", [
                     C("is", "concurrent", "الحوسبة المتزامنة"),
                     C("is", "grad1", "مشروع التخرج"),
@@ -231,7 +220,7 @@
                     C("is", "pattern2", "التعرف على الأنماط 2"),
                     C("is", "internet-protocols", "برمجة وبروتوكولات الإنترنت"),
                     C("is", "network-security", "تأمين شبكات الحاسبات"),
-                ]),
+                ], true),
                 T("السنة الرابعة • الترم الثاني", [
                     C("is", "robotics", "الإنسان الآلي"),
                     C("is", "grad2", "مشروع التخرج"),
@@ -239,10 +228,521 @@
                     C("is", "speech", "معالجة الكلام"),
                     C("is", "telecom", "تكنولوجيا الاتصالات"),
                     C("is", "cybersecurity", "الأمن السيبراني"),
-                ]),
+                ], true),
             ],
         },
     };
+
+    var softwareEngineering = pages.cs.terms[0].courses.find(function(course) {
+        return course.id === "cs-se";
+    });
+    softwareEngineering.files = softwareEngineering.files.filter(function(file) {
+        return file.title !== "ملخص المحاضرات" && file.title !== "تمارين ونماذج امتحانات";
+    });
+
+    ["cs-image-proc", "cs-ai", "cs-ds2", "cs-algorithms"].forEach(function(courseId) {
+        var course = pages.cs.terms[0].courses.find(function(item) {
+            return item.id === courseId;
+        });
+        course.files = course.files.filter(function(file) {
+            return file.title !== "ملخص المحاضرات" && file.title !== "تمارين ونماذج امتحانات";
+        });
+    });
+
+    var dataStructures2 = pages.cs.terms[0].courses.find(function(course) {
+        return course.id === "cs-ds2";
+    });
+    dataStructures2.files.push({ title: "هياكل البيانات 2 - الفصل الأول", type: "رابط Google Drive", url: "https://drive.google.com/drive/folders/1e8fCHgcFcTV_4MEm9XSZM8zOGC3ZgTv6", external: true }, { title: "هياكل البيانات 2 - المحاضرة 4", type: "رابط Google Drive", url: "https://drive.google.com/file/d/1IfzxKWhc6xSVDiusd5FFvC2BIKrxWqTI/view?usp=drive_link", external: true }, { title: "هياكل البيانات 2 - المحاضرة 2", type: "رابط Google Drive", url: "https://drive.google.com/file/d/1Q-p_TnlT66KB9mr42WPYX0WHAb46tuJa/view?usp=drive_link", external: true }, { title: "هياكل البيانات 2 - المحاضرة 3", type: "رابط Google Drive", url: "https://drive.google.com/file/d/1dNlSYHsjVTmGAJR7V4pLe0EHb19VkRIe/view?usp=drive_link", external: true }, { title: "هياكل البيانات 2 - Removed", type: "رابط Google Drive", url: "https://drive.google.com/file/d/1sk7s4hy4sYfiLktSPguiJixuAY4YlmLj/view?usp=drive_link", external: true }, { title: "هياكل البيانات 2 - الكتاب (صفحات 67-94)", type: "رابط Google Drive", url: "https://drive.google.com/file/d/1so6ev2K20d9qaAkhGN3zrwJtrRWbKyd6/view?usp=drive_link", external: true }, { title: "هياكل البيانات 2", type: "رابط Google Drive", url: "https://drive.google.com/file/d/1KfQ0cmiYvxt_3pZKP2rK4NtSpDoaMqWJ/view?usp=drive_link", external: true });
+    dataStructures2.files.push({ title: "هياكل البيانات 2 - Overleaf package", type: "رابط Google Drive", url: "https://drive.google.com/file/d/1taXTrqg9YFVAM1uxM627NU3UAhLGCl7c/view?usp=drive_link", external: true });
+
+    var csCourseFolders = {
+        "cs-algorithms": "Algorithms Analysis",
+        "cs-ai": "Artificial Intelligence",
+        "cs-ds2": "Data Structures II",
+        "cs-image-proc": "Image Processing",
+        "cs-os": "Operating Systems I",
+        "cs-se": "Software Engineering",
+    };
+    var csCourseFiles = {
+        "cs-algorithms": `algorithms Book.pdf
+Algorithms.pdf
+Algorithm_questions.pdf
+ch(4)_Algorithm.pdf
+Data Structures and Algorithms (2).pdf
+Exams.rar
+Lab 1-1.pdf
+Lab 2.pdf
+Lab 3.pdf
+Lab 4.pdf
+Sheet algorithm.pdf
+حل شابتر 4.docx
+algorithms/algorithms/Heapsort.pdf
+algorithms/algorithms/lecture 1-algorithms.pdf
+algorithms/algorithms/Lecture 2_Algorithms.pdf
+algorithms/algorithms/lecture 3 algorithms.pdf
+algorithms/algorithms/Lecture 4 algorithms.pdf
+algorithms/algorithms/Lecture 5 algorithms.pdf
+algorithms/algorithms/Lecture 6-algorityms.pdf
+algorithms/algorithms/Lecture 6-algorityms.ppt
+algorithms/algorithms/lecture 7-algorithms.pdf
+algorithms/algorithms/Priority Queues.pdf
+algorithms/algorithms/Quicksort.pdf
+algorithms/algorithms/كتاب.pdf
+Exams/algorithm it-1.pdf
+Exams/Algorithm كلية علوم-1.pdf
+Exams/photo_2023-12-25_13-48-41.jpg
+Exams/photo_2023-12-25_13-49-03.jpg
+Exams/photo_2023-12-25_13-49-27.jpg
+Exams/photo_2023-12-25_13-49-34.jpg
+Exams/photo_2023-12-25_13-49-52.jpg
+Exams/ميد algorithm cs-1.pdf
+Exams/exam2022/photo_2023-12-29_00-02-04.jpg
+Exams/exam2022/photo_2023-12-29_00-03-31.jpg
+Exams/exam2022/photo_2023-12-29_00-03-36.jpg
+Exams/exam2022/photo_2023-12-29_00-03-45.jpg
+lectures/algorithms 3 .pdf
+lectures/CHAPTER 2 Algorithms .pdf
+lectures/Chapter 3  Algorithms.pdf
+lectures/chapter 3 part 2.pdf
+lectures/CHAPTER 4 Algorithms .pdf
+lectures/Divide and Conquer part 2lect 7.pdf
+lectures/Introduction To Algorithms lecture 1.pdf
+lectures/Introduction To Algorithms lecture 1.pptx
+sections/algorithm section 7.pdf
+sections/algorithm section 8.pdf
+sections/IMG-20251203-WA0013.jpg
+sections/IMG-20251203-WA0014.jpg
+sections/IMG-20251203-WA0015.jpg
+sections/IMG-20251203-WA0016.jpg
+sections/IMG-20251203-WA0017.jpg
+sections/mamdoh Salah _ سكاشن algorithm.pdf
+امتحانات al/Algo.pdf
+امتحانات al/algorithm it.pdf
+امتحانات al/Algorithm كلية علوم.pdf
+امتحانات al/Algorithm_questions (1).pdf
+امتحانات al/All exams of algorithm.pdf
+امتحانات al/CamScanner ١١-١٦-٢٠٢٣ ٢٢.٢٦_2.pdf
+امتحانات al/Final.docx
+امتحانات al/Final.pdf
+امتحانات al/prac-quiz1-sol.pdf
+امتحانات al/ميد algorithm cs.pdf`,
+        "cs-ai": `Ahlea - AI midterm.pdf
+AI Book.pdf
+AI Book_unlocked.pdf
+AI IBM Book.pdf
+ai.pdf
+quiz1_review.pdf
+Three_KNN_Problems.docx
+Three_KNN_Problems.pdf
+WhatsApp Image 2026-01-04 at 6.26.26 AM.jpeg
+WhatsApp Image 2026-01-04 at 6.26.27 AM.jpeg
+WhatsApp Image 2026-01-04 at 6.26.28 AM.jpeg
+WhatsApp Image 2026-01-04 at 6.26.29 AM.jpeg
+lectures/AI Lecture 1.pptx
+lectures/quiz1_review.pdf
+lectures/picture lec2/WhatsApp Image 2025-10-16 at 23.22.01_854e3408.jpg
+lectures/picture lec2/WhatsApp Image 2025-10-16 at 23.22.01_fb9ab881.jpg
+lectures/picture lec2/WhatsApp Image 2025-10-16 at 23.22.02_cf23db2b.jpg
+lectures/picture lec2/WhatsApp Image 2025-10-16 at 23.22.02_d74c8da1.jpg
+project/ai_task_ziad_and_fawy (1).ipynb
+project/github_repos_2000.csv
+sections/data.csv
+sections/Data_Preprocessing_and_Analysis_Functions.pdf
+sections/HeartAttack.csv
+sections/Python Practice.pdf
+sections/Python.pdf
+sections/section 2-list-tuple.pdf
+sections/section 4 ai.pdf
+sections/section 5- student-scores.ipynb
+sections/section 7- HeartAttack classification -part 1.ipynb
+sections/Section5 - Student_Scores_Linear_Regression.pdf
+sections/Setion 9- Breast_Cancer Classification.ipynb
+sections/student_scores.csv
+sections/New folder/J.ipynb
+صور/WhatsApp Image 2025-11-04 at 23.01.32_aba26adf.jpg
+صور/WhatsApp Image 2025-11-04 at 23.12.54_31b79689.jpg
+صور/WhatsApp Image 2025-11-04 at 23.13.49_1e02af4f.jpg`,
+        "cs-ds2": `Data structure 2 lec 2.pptx
+Data Strucutre 2 Book.pdf
+data strucutre 2.pdf
+code/Task1BST Taha Mohammed Fawy.zip
+code/Task2_Taha Mohammed Fawy.zip
+code/fbn/main.cpp
+code/Task1BST/main.cpp
+code/Task2_Taha Mohammed Fawy/Task2_AVL Taha Mohammed Fawy/main.cpp
+code/Task2_Taha Mohammed Fawy/Task2_Tree__Taha Mohammed Fawy/main.cpp
+code/Task1BST/Task1BST.cbp
+code/fbn/fbn.cbp
+code/Task2_Taha Mohammed Fawy/Task2_Tree__Taha Mohammed Fawy/Task2_Tree__Taha Mohammed Fawy.cbp
+code/Task2_Taha Mohammed Fawy/Task2_AVL Taha Mohammed Fawy/Task2_AVL.cbp
+lectures/Chapter 1 data structure2.pdf
+lectures/data structur2 les 4 AVL.pdf
+lectures/Data structure 2 lec 2.pdf
+lectures/Data structure 2 lec 3.pdf
+lectures/Data Structures II (1)_removed.pdf
+lectures/Data Strucutre 2 Book-67-94.pdf
+lectures/Data_Structure_II_Overleaf_Package (1)_removed.pdf
+lectures/WhatsApp Image 2025-10-22 at 10.30.41_6c7e5182.jpg`,
+        "cs-image-proc": `Digital Image Processing.pdf
+Image Processing Book.pdf
+Image Processing _students.rar
+Image Processing.zip
+lectures.rar
+WhatsApp Image 2025-11-19 at 19.46.34_df495d29.jpg
+WhatsApp Image 2025-11-19 at 19.46.35_4b1fe90e.jpg
+Image Processing/e-book.pdf
+Image Processing/Revision.docx
+Image Processing/Exames/Final 2023.pdf
+Image Processing/Exames/Medterm.pdf
+Image Processing/Exames/Quiz.pdf
+Image Processing/Lecture #1/Image Processing Lecture#1.pdf
+Image Processing/Lecture #2/Image Processing Lecture#2 Part_1.pdf
+Image Processing/Lecture #2/Image Processing Lecture#2 Part_2.pdf
+Image Processing/Lecture #2/Image Processing Lecture#2 Part_3.pdf
+Image Processing/Lecture #3/Image Processing Lecture#3 Part_1.pdf
+Image Processing/Lecture #3/Image Processing Lecture#3 Part_2.pdf
+Image Processing/Lecture #4/Image Processing Lecture#4 Part_1.pdf
+Image Processing/Lecture #4/Image Processing Lecture#4 Part_2.pdf
+Image Processing/Lecture #4/Image Processing Lecture#4 Part_3.pdf
+Image Processing/Lecture #5/Image Processing Lecture#5.pdf
+Image Processing/Lecture #6/Image Processing Lecture#6 Part_1.pdf
+Image Processing/Lecture #6/Image Processing Lecture#6 Part_2.pdf
+Image Processing/Lecture #7/Image Compression-Lecture#7.pdf
+Image Processing _students/compare between image preprocessing and image enhancement.docx
+Image Processing _students/compare between spatial and frequency domain.docx
+Image Processing _students/example - robert operator.docx
+Image Processing _students/example prewitt operator.docx
+Image Processing _students/Final Mideterm حكومى Image Processing.docx
+Image Processing _students/Fundamental of Image Processing-Lecture##2.pdf
+Image Processing _students/Fundamental of Image Processing-Lecture#2.pdf
+Image Processing _students/Fundamentals of Spatial Filtering-Lecture#5.pdf
+Image Processing _students/Image Compression-Lecture#7.pptx
+Image Processing _students/Image Edge Detection Operators in Digital Image Processing.pptx
+Image Processing _students/Image Enhancement in spatial domain-part2_lecture#4.pdf
+Image Processing _students/Image Enhancement in spatial domain-part2_lecture#4.pptx
+Image Processing _students/Image Enhancement-Lecture#3.pdf
+Image Processing _students/Image Enhancement-Lecture#3.pptx
+Image Processing _students/Image Processing-Lecture#1.pdf
+Image Processing _students/image segmentation -part3.pptx
+Image Processing _students/INTENSITY TRANSFORMATIONAND SPATIAL FILTERING-Lecture#2.pptx
+Image Processing _students/Introduction to image Segmentation- part1.pdf
+Image Processing _students/Introduction to image Segmentation-final# part1.pdf
+Image Processing _students/Introduction to image Segmentation-final# part1.pptx
+Image Processing _students/Modified - Fundamental image processing _Lecture#2.pptx
+Image Processing _students/Order-Statistic (Nonlinear) Filters-Lecture#6.pdf
+Image Processing _students/Order-Statistic (Nonlinear) Filters-Lecture-final#6.pdf
+Image Processing _students/What are Sharpening Filters.docx
+lecture/example - robert operator.docx
+lecture/example prewitt operator.docx
+lecture/Fundamental of Image Processing-Lecture#2.pdf
+lecture/Fundamentals of Spatial Filtering-Lecture#5.pdf
+lecture/Image Compression-Lecture#7.pdf
+lecture/Image Edge Detection Operators in Digital Image Processing.pptx
+lecture/Image Enhancement in spatial domain-part2_lecture#4.pdf
+lecture/Image Enhancement-Lecture#3.pdf
+lecture/Image Processing-Lecture#1.pdf
+lecture/image segmentation -part3.pptx
+lecture/Image segmentation- part2.pptx
+lecture/Introduction to image Segmentation-final# part1.pptx
+lecture/Order-Statistic (Nonlinear) Filters-Lecture-final#6.pdf
+lecture/Prewitt  operator.docx
+lecture/Robert example.docx
+lectures/example - robert operator.docx
+lectures/example prewitt operator.docx
+lectures/Fundamental of Image Processing-Lecture#2.pdf
+lectures/Fundamentals of Spatial Filtering-Lecture#5.pdf
+lectures/Image Compression-Lecture#7.pdf
+lectures/Image Edge Detection Operators in Digital Image Processing.pptx
+lectures/Image Enhancement in spatial domain-part2_lecture#4.pdf
+lectures/Image Enhancement-Lecture#3.pdf
+lectures/Image Processing-Lecture#1.pdf
+lectures/image segmentation -part3.pptx
+lectures/Image segmentation- part2.pptx
+lectures/Introduction to image Segmentation-final# part1.pptx
+lectures/Order-Statistic (Nonlinear) Filters-Lecture-final#6.pdf
+lectures/Prewitt  operator.docx
+lectures/Robert example.docx
+lectures/New folder/example - robert operator.docx
+lectures/New folder/example prewitt operator.docx
+lectures/New folder/Image Edge Detection Operators in Digital Image Processing.pptx
+lectures/New folder/image segmentation -part3.pptx
+lectures/New folder/Image segmentation- part2.pptx
+lectures/New folder/Introduction to image Segmentation-final# part1.pptx
+lectures/New folder/Prewitt  operator.docx
+lectures/New folder/Robert example.docx
+sections/download.jpg
+sections/list2025.pdf
+sections/lists in Python.pdf
+sections/output.png
+sections/pngg.png
+sections/Python.pdf
+sections/python.py
+sections/section 5-image processing.ipynb
+sections/section 6- image processing.ipynb
+sections/section 7- image processing.ipynb
+sections/Section 8- Image Processing.ipynb
+sections/section3-image processing.ipynb
+sections/section4 - image processing.ipynb
+sections/New folder/img.py`,
+        "cs-os": `Operating System 1.pdf
+Operating System Book.pdf
+OPerating System Concepts chapter 1 .pdf
+OPerating System Concepts chapter 2 مترجم.pdf
+OPerating System Concepts chapter 2.pdf
+OPerating System Concepts-chapter (1) مترجم.pdf
+Software Engineering Book.pdf
+WhatsApp Image 2025-12-01 at 14.26.55_817006bb.jpg
+أساسيات أوامر linux.pdf
+lectures/ch1 - 01-30.pdf
+lectures/ch1 - 1-19.pdf
+lectures/OPerating System Concepts.pdf
+sections/section 3.pdf
+sections/section 4.pdf
+sections/section 5.pdf
+sections/section 6.pdf
+sections/section 7.pdf
+امتحانات/operating system mcq.docx
+امتحانات/operating system.pdf
+امتحانات/OS CH1 MCQs solved.pptx.pdf.PDF
+امتحانات/OS Exams.pdf
+امتحانات/OS_Solution_v3.pdf
+امتحانات/حل فاينل os.pdf
+امتحانات/فاينل +ميد د_سارة.pdf
+امتحانات/فاينيل +ميد د_سامح.pdf
+تلخيص/1752330685552.pdf
+تلخيص/All_C#_Basic_maked by_Tharwat_Abdulhamed_250829_001643.pdf
+تلخيص/Chapter1-OS.pdf
+تلخيص/Chapter2-OS.pdf
+تلخيص/Chapter3-OS.pdf
+تلخيص/Chapter4-OS.pdf
+تلخيص/CPU Scheduling (4).pdf
+تلخيص/CPU Scheduling.pdf
+تلخيص/Deadlock (2).pdf
+تلخيص/Deadlock.pdf
+تلخيص/Introduction os.pdf
+تلخيص/Memory Management (1).pdf
+تلخيص/OS Structure .pdf
+تلخيص/Process Synchronization & Semaphora.pdf
+تلخيص/Process Synchronization .pdf
+تلخيص/Processes.pdf
+تلخيص/Threads.pdf`,
+        "cs-se": `answer30q.docx
+Answers.pdf
+Qbankforstudent.pdf
+Software Engineering Book.pdf
+Software Engineering.pdf
+software engineering.rar
+Software_Engineering_Exam_QA.pdf
+Software_Engineering_Final_Exam_1-30.pdf
+projects/Results  Rating Page and Competition Page.docx
+software engineering/4_Requirements.pdf
+software engineering/ch1_introduction.ppt
+software engineering/Software Eng 1.pptx
+software engineering/Software Eng 2.pdf
+software engineering/Software Engineering, 9th Edition.pdf
+software engineering/SRS_DeliveryApp.pdf
+software engineering/software engineering/4_Requirements.pdf
+software engineering/software engineering/ch1_introduction.ppt
+software engineering/software engineering/Software Eng 1.pptx
+software engineering/software engineering/Software Eng 2.pdf
+software engineering/software engineering/Software Engineering, 9th Edition.pdf
+software engineering/software engineering/Software Engineering.pdf`,
+    };
+
+    Object.keys(csCourseFiles).forEach(function(courseId) {
+        var course;
+        pages.cs.terms.some(function(term) {
+            course = term.courses.find(function(item) { return item.id === courseId; });
+            return !!course;
+        });
+        if (!course) return;
+        course.files = course.files.filter(function(file) { return file.external; });
+        csCourseFiles[courseId].split("\n").forEach(function(relativePath) {
+            var fullPath = csCourseFolders[courseId] + "/" + relativePath;
+            var extension = relativePath.slice(relativePath.lastIndexOf(".")).toLowerCase();
+            course.files.push({
+                title: relativePath.split("/").join(" / ").replace(/\.[^.]+$/, ""),
+                type: extension.slice(1).toUpperCase(),
+                url: "files/cs/" + fullPath.split("/").map(encodeURIComponent).join("/"),
+                direct: extension !== ".pdf",
+            });
+        });
+    });
+
+    var yearCourseFolders = {
+        "y1-org-behavior": { page: "year1", path: "السلوك التنظيمي" },
+        "y1-discrete": { page: "year1", path: "ديسكريت" },
+        "y1-computer-laws": { page: "year1", path: "قانون الحاسب" },
+        "y1-tech-writing": { page: "year1", path: "كتابه تقنيه" },
+        "y2-project-mgmt": { page: "year2", path: "اداره مشروعات" },
+        "y2-oop": { page: "year2", path: "البرمجه الشيئيه" },
+        "y2-operations-research": { page: "year2", path: "بحوث عمليه" },
+        "y2-databases": { page: "year2", path: "قواعد البيانات" },
+        "y2-networks1": { page: "year2", path: "نتيورك" },
+        "y2-modeling": { page: "year2", path: "نمذجه ومحاكاه" },
+    };
+    var yearCourseFiles = {
+        "y1-org-behavior": `IMG-20250403-WA0006.jpg
+IMG-20250403-WA0007.jpg
+IMG-20250403-WA0008.jpg
+IMG-20250428-WA0118.jpg
+IMG-20250428-WA0119.jpg
+IMG-20250428-WA0120.jpg
+Organizational Behavior محاضرة 1.pptx
+Task for Organization Behavior.pdf
+المرفق.pdf
+بنك أسئلة -سلوك تنظيمي.pdf
+بنك اسئلة  للفاينل.pdf
+حل اسئلة كتاب سلوك الهيئات.pdf
+سلوك الهيئات اهلية ميد.pdf
+‎⁨فاينل السلوك⁩.pdf`,
+        "y1-discrete": `DM-Course-1.pdf
+DM-Course-2.pdf
+DM-Course-3.pdf
+DM-Course-4.pdf
+DM-Course-5.pdf
+نسخة من mamdoh Salah_Discrete Definitions-1.pdf
+الشابتر  الثاني/L3_ Introduction of proofs .pdf
+الشابتر  الثاني/Lecture 2-2 (1).pdf
+الشابتر الاول/L1.pdf
+الشابتر الاول/Lecture 2-2 (1).pdf
+الشابتر التالت/Basic Structures, set.pdf
+الشابتر الخامس/Number theory (1).pdf
+الشابتر الخامس/Number theory 2.pdf
+امتحانات سابقه/1.jpeg
+امتحانات سابقه/2.jpeg
+امتحانات سابقه/3.jpeg
+امتحانات سابقه/4.jpeg
+امتحانات سابقه/WhatsApp Image 2025-05-20 at 11.24.21 PM.jpeg
+امتحانات سابقه/WhatsApp Image 2025-05-20 at 11.24.22 PM.jpeg
+امتحانات سابقه/WhatsApp Image 2025-05-20 at 11.24.23 PM.jpeg
+امتحانات سابقه/WhatsApp Image 2025-05-20 at 11.24.24 PM.jpeg
+امتحانات سابقه/WhatsApp Image 2025-05-20 at 6.40.14 PM.jpeg
+امتحانات سابقه/الميد.jpeg`,
+        "y1-computer-laws": `Ch 6.pdf
+Ch 7.pdf
+Kitty❤️😺.pdf
+Lecture 1 2025.pdf
+Lecture 2.pdf
+Lecture 3.pdf
+Lecture 4.pdf
+Lecture 6.pdf
+mamdoh Salah ch1 CL.pdf
+mamdoh Salah ch2 CL.pdf
+mamdoh Salah قوانين الحاسب .pdf
+pdf24_converted.pdf
+اسئله السليدات_merged.pdf
+اسئله.pdf
+تلخيص الشابتر التاني قانون الحاسب (الجزء الثاني).pdf
+تلخيص الشابتر الثالث.pdf
+تلخيص الشابتر الثاني (الجزء الاول).pdf
+قوانين الحاسب.pdf
+قوانين الحاسبات_unlocked_removed.pdf
+ملخص شامل للفصل الأول (الجزء الاول).pdf
+ملخص قوي ومبسط للفصل الأول (الجزء الثاني).pdf`,
+        "y1-tech-writing": `ch 1 .. technical.pdf
+ch 2 .. technical (1).pdf
+image (1).jpeg
+image (2).jpeg
+image (3).jpeg
+image (4).jpeg
+image.jpeg
+PDF_1748136094143.pdf
+technical_writing_ch1_to_ch3.pdf
+امتحان سنه سابقه اهليه كتابه تقنيه.pdf
+تلخيص اماني لتجنب الدور التاني.pdf
+تلخيص محاضره دكتور همام ٣ رمضان.pdf
+محاضره دكتور همام ٢٤ فبراير.pdf
+📘 Technical Writing.pdf
+الاسلايد الاول/1. The basics of Technical Writing.pdf
+الاسلايد الاول/chapter 1.pdf
+الاسلايد الاول/TechnicalWritingChapter1.pdf
+الاسلايد الاول/📘 الملف الشامل لمادة الكتابة التقنية.pdf
+الاسلايد التاسع/9. Mistakes to Avoid in Technical Writing.pdf
+الاسلايد التالت/3. The Technical Writing Process.pdf
+الاسلايد التاني/2. The Basics of Technical Writing.pdf
+الاسلايد الرابع/4. The Technical Writing Process.pdf`,
+        "y2-project-mgmt": `11.pptx
+12.pdf
+13.docx
+15.pdf
+16.pdf
+19.pptx
+2.pptx
+20.pdf
+24.pptx
+26.pdf
+27.pdf
+28.pdf
+29.pdf
+3.pdf
+4.pptx
+5.pptx
+6.pdf
+7.pdf
+8.pptx
+9.pdf
+١.pdf`,
+        "y2-oop": `Lecture1_CPP_Fundamentals.pptx
+Lecture2_Classes_Objects.pptx
+Lecture3_Abstraction.pptx
+Lecture5_Inheritance_Polymorphism.pptx
+الأكواد OOP.pdf`,
+        "y2-operations-research": `OR (1).pdf
+OR_2026_L1.pdf
+Lectures/book.pdf
+Lectures/L1 part 1.pdf
+Lectures/L1 part 2.pdf
+Sections/section 1 dia.pdf
+Sections/section 1 shaimaa.pdf
+Sections/section 2 dia .pdf
+Sections/section 2,3 shaima.pdf
+Sections/section 4 shaima.pdf
+Sections/section 5 shaima.pdf`,
+        "y2-databases": `Database DrIbrahim.pdf
+DataBase.pdf`,
+        "y2-networks1": `Chapter 1 Part_2-38.pptx
+networks.pdf
+ناس بتشرح Computer Network.pdf
+نتورك اول ٣ شباتر.pdf
+نسخة من نتورك اول ٣ شباتر.pdf
+Lectures/book.pdf
+Lectures/CHAPTER 1 Networks 1     .pdf
+Lectures/CHAPTER 1 Networks 1   .pptx
+Sections/Section2 .pdf
+Sections/Section3.pdf
+Sections/Section_1  .pdf
+Sections/Section_1 [1].pptx`,
+        "y2-modeling": `Chapter 1 Modeling Summary.pdf
+Lecture1.pdf
+MCQ Ch1.pdf
+MCQ Ch2.pdf
+MCQ Ch3.pdf
+Modeling (Ch1 + Ch2 ).pdf
+Modeling Final1.pdf
+The_Simulation_Blueprint.pdf
+كتاب modeling and simulation - Copy.pdf`,
+    };
+    Object.keys(yearCourseFiles).forEach(function(courseId) {
+        var config = yearCourseFolders[courseId];
+        var course;
+        pages[config.page].terms.some(function(term) {
+            course = term.courses.find(function(item) { return item.id === courseId; });
+            return !!course;
+        });
+        if (!course) return;
+        course.files = course.files.filter(function(file) { return file.external; });
+        yearCourseFiles[courseId].split("\n").forEach(function(relativePath) {
+            var fullPath = "files/" + config.page + "/" + config.path + "/" + relativePath;
+            var extension = relativePath.slice(relativePath.lastIndexOf(".")).toLowerCase();
+            course.files.push({
+                title: relativePath.split("/").join(" / ").replace(/\.[^.]+$/, ""),
+                type: extension.slice(1).toUpperCase(),
+                url: fullPath.split("/").map(encodeURIComponent).join("/"),
+                direct: extension !== ".pdf",
+            });
+        });
+    });
 
     /* يجمع مواد كل الترمات في page.courses ويضيف اسم الترم لكل مادة */
     Object.keys(pages).forEach(function(k) {
@@ -250,6 +750,7 @@
         if (!p.terms) return;
         p.courses = [];
         p.terms.forEach(function(t) {
+            if (t.comingSoon) return;
             t.courses.forEach(function(c) {
                 c.term = t.title;
                 if (!c.desc) c.desc = p.label + " • " + t.title;
@@ -317,7 +818,7 @@
                     "category": "hacking",
                     "categoryLabel": "الهكر والأمن",
                     "poster": "https://m.media-amazon.com/images/M/MV5BNmExMTkyYjItZTg0YS00NWYzLTkwMjItZWJiOWQ2M2ZkYjE4XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_.jpg",
-                    "video": "",
+                    "video": "https://vk.ru/video_ext.php?oid=848028866&id=456258334",
                     "rating": 3.8,
                     "ratingCount": 890,
                     "director": "إيان سوفتلي",
@@ -341,7 +842,7 @@
                     "category": "programming",
                     "categoryLabel": "البرمجة",
                     "poster": "https://m.media-amazon.com/images/M/MV5BOTgwMzFiMWYtZDhlNS00ODNkLWJiODAtZDVhNzgyNzJhYjQ4L2ltYWdlXkEyXkFqcGdeQXVyNzEzOTYxNTQ@._V1_.jpg",
-                    "video": "",
+                    "video": "https://vk.ru/video_ext.php?oid=848084895&id=456239017&hd=2",
                     "rating": 4.5,
                     "ratingCount": 2100,
                     "director": "مورتن تيلدوم",
@@ -352,8 +853,7 @@
                         "خوارزميات",
                         "الحوسبة"
                     ]
-                },
-                {
+                }, {
                     "id": "m4",
                     "section": "movies",
                     "kind": "فيلم",
@@ -365,7 +865,7 @@
                     "category": "hacking",
                     "categoryLabel": "الهكر والأمن",
                     "poster": "https://upload.wikimedia.org/wikipedia/en/2/29/Wargames.jpg",
-                    "video": "",
+                    "video": "https://vk.ru/video_ext.php?oid=848028866&id=456256624&hd=2",
                     "rating": 4,
                     "ratingCount": 760,
                     "director": "جون بادهام",
@@ -389,7 +889,7 @@
                     "category": "ai",
                     "categoryLabel": "الذكاء الاصطناعي",
                     "poster": "https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_.jpg",
-                    "video": "",
+                    "video": "https://vk.ru/video_ext.php?oid=848028866&id=456259613",
                     "rating": 4.7,
                     "ratingCount": 3500,
                     "director": "الأختان واتشوسكي",
@@ -510,7 +1010,7 @@
                     "category": "cybersecurity",
                     "categoryLabel": "الأمن السيبراني",
                     "poster": "https://upload.wikimedia.org/wikipedia/ar/7/79/Blackhat.jpg",
-                    "video": "",
+                    "video": "https://vkvideo.ru/video848077136_456239459?ref_domain=dal.ahwaktv.net",
                     "rating": 3.5,
                     "ratingCount": 720,
                     "director": "مايكل مان",
@@ -596,14 +1096,14 @@
             {
                 "id": "ai",
                 "title": "مهندس ذكاء اصطناعي",
-                "desc": "ابدأ ببايثون والبيانات ثم تعلم الآلة والتعلم العميق.",
+                "desc": "ابدأ ببايثون وتحليل البيانات ثم تعرّف إلى الذكاء الاصطناعي ومفاهيمه.",
                 "icon": "ai",
                 "steps": [
                     "prog-python",
                     "dat-py-data",
-                    "ai-ml",
-                    "ai-dl",
-                    "ai-nlp"
+                    "ai-algorithms",
+                    "ai-data-science",
+                    "ai-artificial-intelligence"
                 ],
                 "advice": []
             },
@@ -636,28 +1136,26 @@
             {
                 "id": "security",
                 "title": "متخصص أمن سيبراني",
-                "desc": "ابدأ بالشبكات ثم مفاهيم الأمن وحماية الشبكات والتشفير.",
+                "desc": "ابدأ بأساسيات الشبكات ثم تعلم حمايتها واختبار الاختراق الأخلاقي.",
                 "icon": "security",
                 "steps": [
                     "y2-networks1",
                     "sec-sec-basics",
                     "sec-network-sec",
-                    "is-cryptography",
-                    "is-cybersecurity"
+                    "sec-ethical"
                 ],
                 "advice": []
             },
             {
                 "id": "network",
                 "title": "مهندس شبكات",
-                "desc": "من شبكات الحاسب إلى تأمينها وتكنولوجيا الاتصالات.",
+                "desc": "من شبكات الحاسب إلى تراسل البيانات والإشارات وحماية الشبكات.",
                 "icon": "is",
                 "steps": [
                     "y2-networks1",
-                    "is-networks2",
+                    "is-data-comm",
                     "sec-network-sec",
-                    "is-network-security",
-                    "is-telecom"
+                    "is-signals"
                 ],
                 "advice": []
             }
@@ -667,7 +1165,7 @@
         announcements: [{
                 "id": "a1",
                 "title": "مرحباً بك في أهلية أكاديمي",
-                "text": "كل موادك من السنة الأولى حتى التخصص، بملفات وسلايد، في مكان واحد.",
+                "text": "كل موادك من السنة الأولى حتى التخصص، بملفات وموضوعات شرح، في مكان واحد.",
                 "tag": "المنصة"
             },
             {
@@ -801,28 +1299,33 @@
         /* ---------------- هيئة التدريس (دكاترة ومعيدين) ----------------
            type: "doctor" أو "assistant" | teaches: ids المواد التي يدرّسها */
         staff: [
-            { "name": "سامح محمد مصطفى سيد", "title": "مدرس", "type": "doctor", "teaches": ["y1-history", "y1-cs-basics", "y1-scientific-thinking", "y1-math2", "y1-tech-writing"] },
-            { "name": "احمد عطيتو عبد العاطى الحداد", "title": "مدرس", "type": "doctor", "teaches": ["y1-electronics", "y1-english", "y1-discrete", "y1-prob1", "y1-org-behavior"] },
-            { "name": "د. احمد العربي", "title": "أستاذ دكتور", "type": "doctor", "teaches": ["y1-math1", "y1-ethics", "y1-computer-laws", "y1-programming-basics"] },
-            { "name": "أ.د.م/ محمود حسب الله محمود علي", "title": "أستاذ دكتور", "type": "doctor", "teaches": ["y1-history", "y1-math1", "y1-english", "y1-scientific-thinking", "y1-computer-laws", "y1-prob1", "y1-tech-writing"] },
-            { "name": "نهلة فتحى احمد عمران", "title": "مدرس مساعد", "type": "assistant", "teaches": ["y1-electronics", "y1-cs-basics", "y1-ethics", "y1-discrete", "y1-math2", "y1-programming-basics", "y1-org-behavior"] },
-            { "name": "همام عبد العال همام الشاذلى", "title": "معيد", "type": "assistant", "teaches": ["y2-logic-design", "y2-prob2", "y2-project-mgmt", "y2-databases", "y2-parallel", "y2-web-tech"] },
-            { "name": "بسمه احمد عبد الحافظ خلف الله", "title": "معيد", "type": "assistant", "teaches": ["y2-operations-research", "y2-oop", "y2-networks1", "y2-physics", "y2-ds1", "y2-modeling"] },
-            { "name": "عبده مكى موسى حسين", "title": "مدرس مساعد", "type": "assistant", "teaches": ["y2-logic-design", "y2-prob2", "y2-project-mgmt", "y2-databases", "y2-parallel", "y2-web-tech"] },
+            { "name": "سامح محمد مصطفى سيد", "title": "مدرس", "type": "doctor", "teaches": ["y1-history", "y1-cs-basics", "y1-scientific-thinking", "y1-math2", "y1-tech-writing", "y1-english", "cs-os", "is-os", "ai-os"] },
+            { "name": "د. هاني", "title": "دكتور", "type": "doctor", "teaches": ["y1-electronics"] },
+            { "name": "احمد عطيتو عبد العاطى الحداد", "title": "مدرس", "type": "doctor", "teaches": ["y1-discrete", "y1-prob1", "y1-org-behavior"] },
+            { "name": "د. احمد العربي", "title": "أستاذ دكتور", "type": "doctor", "teaches": ["y1-math1", "y1-computer-laws"] },
+            { "name": "عماد", "title": "مدرس", "type": "doctor", "teaches": ["y1-programming-basics"] },
+            { "name": "أ.د.م/ محمود حسب الله محمود علي", "title": "أستاذ دكتور", "type": "doctor", "teaches": ["y1-history", "y1-math1", "y1-scientific-thinking", "y1-computer-laws", "y1-prob1"] },
+            { "name": "نهلة فتحى احمد عمران", "title": "مدرس مساعد", "type": "doctor", "teaches": ["y1-cs-basics", "y1-ethics"] },
+            { "name": "همام عبد العال همام الشاذلى", "title": "دكتور", "type": "doctor", "teaches": ["y2-logic-design", "y2-prob2", "y2-project-mgmt", "y2-databases", "y2-parallel", "y2-web-tech"] },
+            { "name": "بسمه احمد عبد الحافظ خلف الله", "title": "معيد", "type": "doctor", "teaches": ["y2-operations-research", "y2-oop", "y2-networks1", "y2-physics", "y2-ds1", "y2-modeling"] },
+            { "name": "عبده مكى موسى حسين", "title": "مدرس مساعد", "type": "doctor", "teaches": ["y2-logic-design", "y2-prob2", "y2-project-mgmt", "y2-databases", "y2-parallel", "y2-web-tech"] },
             { "name": "ندا مبارك أحمد مبارك", "title": "معيد", "type": "assistant", "teaches": ["y2-operations-research", "y2-oop", "y2-networks1", "y2-physics", "y2-ds1", "y2-modeling"] },
-            { "name": "رضا محمد أحمد علي", "title": "مدرس", "type": "doctor", "teaches": ["cs-se", "cs-algorithms", "cs-cryptography", "cs-theory", "cs-cloud", "cs-vision"] },
-            { "name": "هيلانه رافت تامر", "title": "أستاذ دكتور", "type": "doctor", "teaches": ["cs-image-proc", "cs-os", "cs-graphics", "cs-ml", "cs-grad1", "cs-big-data"] },
-            { "name": "رندا محمد عبد الحميد محمد", "title": "أستاذ مساعد", "type": "doctor", "teaches": ["is-microcontrollers", "is-algorithms", "is-cryptography", "is-concurrent", "is-internet-protocols", "is-multimedia-mining"] },
-            { "name": "نغم احمد عبد المجيد محمد", "title": "مدرس", "type": "doctor", "teaches": ["cs-ai", "cs-comp-arch", "cs-pl-concepts", "cs-knowledge-discovery", "cs-compilers", "cs-nlp"] },
-            { "name": "عمرو مجدى ربيع", "title": "مدرس", "type": "doctor", "teaches": ["cs-ds2", "cs-field-training", "cs-visual-prog", "cs-mobile", "cs-fuzzy", "cs-grad2"] },
-            { "name": "احمد حمادة محمد", "title": "معيد", "type": "assistant", "teaches": ["cs-se", "cs-ds2", "cs-comp-arch", "cs-graphics", "cs-theory", "cs-mobile", "cs-compilers", "cs-big-data"] },
-            { "name": "امال احمد محمد راشد", "title": "مدرس مساعد", "type": "assistant", "teaches": ["cs-image-proc", "cs-algorithms", "cs-field-training", "cs-pl-concepts", "cs-ml", "cs-cloud", "cs-fuzzy", "cs-nlp"] },
-            { "name": "أحمد فاروق متولى سالم", "title": "معيد", "type": "assistant", "teaches": ["cs-ai", "cs-os", "cs-cryptography", "cs-visual-prog", "cs-knowledge-discovery", "cs-grad1", "cs-vision", "cs-grad2"] },
-            { "name": "عبدالرحمن عبدالنظير عبدالكريم محمود", "title": "أستاذ دكتور", "type": "doctor", "teaches": ["ai-ml", "ai-dl", "ai-cv", "ai-nlp"] },
-            { "name": "سارة فراج عبد الغني", "title": "أستاذ مساعد", "type": "doctor", "teaches": ["ai-ml", "ai-dl", "ai-cv", "ai-nlp"] },
-            { "name": "اسراء مختار محمد حامد", "title": "مدرس مساعد", "type": "assistant", "teaches": ["is-microcontrollers", "is-algorithms", "is-cryptography", "is-concurrent", "is-internet-protocols", "is-multimedia-mining"] },
-            { "name": "يونس صلاح يونس عبدالوارث", "title": "مدرس", "type": "doctor", "teaches": ["is-data-comm", "is-os", "is-pattern1", "is-grad1", "is-network-security", "is-speech"] },
-            { "name": "اماني اسعد عبدالسميع احمد", "title": "أستاذ دكتور", "type": "doctor", "teaches": ["is-signals", "is-comp-arch", "is-dsp", "is-embedded", "is-robotics", "is-telecom"] },
+            { "name": "رضا محمد أحمد علي", "title": "دكتور", "type": "doctor", "teaches": ["cs-se", "cs-cryptography", "cs-theory", "cs-cloud", "cs-vision"] },
+            { "name": "هيلانه رافت تامر", "title": "أستاذ دكتور", "type": "doctor", "teaches": ["cs-image-proc", "cs-graphics", "cs-ml", "cs-grad1", "cs-big-data"] },
+            { "name": "رندا محمد عبد الحميد محمد", "title": "أستاذ مساعد", "type": "doctor", "teaches": ["cs-os", "is-os", "ai-os", "cs-ai", "ai-artificial-intelligence", "is-ai", "is-cryptography", "is-concurrent", "is-internet-protocols", "is-multimedia-mining"] },
+            { "name": "نغم احمد عبد المجيد محمد", "title": "دكتور", "type": "doctor", "teaches": ["cs-comp-arch", "cs-pl-concepts", "cs-knowledge-discovery", "cs-compilers", "cs-nlp"] },
+            { "name": "عمرو مجدى ربيع", "title": "دكتور", "type": "doctor", "teaches": ["cs-ds2", "cs-field-training", "cs-visual-prog", "cs-mobile", "cs-fuzzy", "cs-grad2"] },
+            { "name": "احمد حمادة محمد", "title": "معيد", "type": "doctor", "teaches": ["cs-se", "cs-ds2", "cs-comp-arch", "cs-graphics", "cs-theory", "cs-mobile", "cs-compilers", "cs-big-data"] },
+            { "name": "امال احمد محمد راشد", "title": "مدرس مساعد", "type": "doctor", "teaches": ["cs-image-proc", "cs-field-training", "cs-pl-concepts", "cs-ml", "cs-cloud", "cs-fuzzy", "cs-nlp"] },
+            { "name": "أحمد فاروق متولى سالم", "title": "معيد", "type": "doctor", "teaches": ["cs-cryptography", "cs-visual-prog", "cs-knowledge-discovery", "cs-grad1", "cs-vision", "cs-grad2"] },
+            { "name": "عبدالرحمن عبدالنظير عبدالكريم محمود", "title": "أستاذ دكتور", "type": "doctor", "teaches": ["is-microcontrollers", "is-data-comm"] },
+            { "name": "احمد جمعه", "title": "مدرس مساعد", "type": "assistant", "teaches": ["is-cryptography", "is-concurrent", "is-internet-protocols", "is-multimedia-mining"] },
+            { "name": "سارة فراج عبد الغني", "title": "أستاذ مساعد", "type": "doctor", "teaches": [] },
+            { "name": "محمد يوسف", "title": "مدرس مساعد", "type": "assistant", "teaches": ["is-cryptography", "is-concurrent", "is-internet-protocols", "is-multimedia-mining"] },
+            { "name": "فاطمه", "title": "مدرس مساعد", "type": "assistant", "teaches": ["is-cryptography", "is-concurrent", "is-internet-protocols", "is-multimedia-mining", "cs-os", "is-os", "ai-os"] },
+            { "name": "رحمه خالد", "title": "مدرس مساعد", "type": "assistant", "teaches": ["is-cryptography", "is-concurrent", "is-internet-protocols", "is-multimedia-mining"] },
+            { "name": "يونس صلاح يونس عبدالوارث", "title": "دكتور", "type": "doctor", "teaches": ["is-pattern1", "is-grad1", "is-network-security", "is-speech"] },
+            { "name": "اماني اسعد عبدالسميع احمد", "title": "أستاذ دكتور", "type": "doctor", "teaches": ["is-comp-arch", "is-dsp", "is-embedded", "is-robotics", "is-telecom"] },
         ],
 
         /* ---------------- فريق العمل (صفحة team.html) ----------------
@@ -836,40 +1339,28 @@
                 title: "فريق المراجعة",
                 desc: "مراجعة المحتوى والتأكد من دقته",
                 icon: "review",
-                members: [
-                    { name: "اسم العضو (1)", role: "مراجع محتوى", photo: "team/review-1.jpg", linkedin: "", facebook: "" },
-                    { name: "اسم العضو (2)", role: "مراجع محتوى", photo: "team/review-2.jpg", linkedin: "", facebook: "" },
-                ],
+                members: [],
             },
             {
                 id: "design",
                 title: "فريق التصميم",
                 desc: "تصميم الواجهات وتجربة المستخدم",
                 icon: "design",
-                members: [
-                    { name: "اسم العضو (1)", role: "مصمم UI/UX", photo: "team/design-1.jpg", linkedin: "", facebook: "" },
-                    { name: "اسم العضو (2)", role: "مصمم UI/UX", photo: "team/design-2.jpg", linkedin: "", facebook: "" },
-                ],
+                members: [],
             },
             {
                 id: "code",
                 title: "فريق البرمجة",
                 desc: "بناء الموقع وبرمجة صفحاته",
                 icon: "code",
-                members: [
-                    { name: "اسم العضو (1)", role: "مبرمج", photo: "team/code-1.jpg", linkedin: "", facebook: "" },
-                    { name: "اسم العضو (2)", role: "مبرمج", photo: "team/code-2.jpg", linkedin: "", facebook: "" },
-                ],
+                members: [],
             },
             {
                 id: "dev",
                 title: "فريق التطوير",
                 desc: "تطوير المحتوى والميزات الجديدة",
                 icon: "dev",
-                members: [
-                    { name: "اسم العضو (1)", role: "مطوّر", photo: "team/dev-1.jpg", linkedin: "", facebook: "" },
-                    { name: "اسم العضو (2)", role: "مطوّر", photo: "team/dev-2.jpg", linkedin: "", facebook: "" },
-                ],
+                members: [],
             },
             {
                 id: "mgmt",

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>التطوع والأنشطة الطلابية | أهلية أكاديمي</title>
+    <script>
+        try {
+            if (!JSON.parse(localStorage.getItem("ahlia_user"))) throw 0;
+        } catch (e) {
+            location.replace("login.html?next=" + encodeURIComponent(location.pathname.split("/").pop()));
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=20261010">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#050a2a">
+    <link rel="icon" href="icons/icon-192.png">
+    <script src="theme.js"></script>
+    <script src="config.js"></script>
+    <script src="backend.js"></script>
+    <script src="store.js"></script>
+</head>
+
+<body data-page="volunteering">
+    <canvas id="stars" aria-hidden="true"></canvas>
+    <header class="header">
+        <div class="container header__inner">
+            <a href="index.html" class="logo">
+                <svg class="logo__icon" viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f7bff"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs><path d="M24 3 L44 44 L34 44 L24 22 L14 44 L4 44 Z" fill="url(#lg)"/><path d="M24 30 L30 44 L18 44 Z" fill="#a78bfa"/></svg>
+                <span>أهلية أكاديمي</span>
+            </a>
+            <nav class="nav" id="nav" aria-label="القائمة الرئيسية"></nav>
+            <div class="header__actions">
+                <button type="button" class="theme-toggle" id="themeToggle" aria-pressed="false" aria-label="تفعيل الألوان المريحة للعين" title="تفعيل الألوان المريحة للعين"><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+                <span class="hello">أهلاً، <b data-user-name></b></span>
+                <button type="button" class="btn btn--outline btn--sm" id="logout">خروج</button>
+                <button class="burger" id="burger" aria-label="فتح القائمة" aria-expanded="false"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container volunteering-page">
+        <p class="crumbs"><a href="index.html">الرئيسية</a> / <span>التطوع والأنشطة الطلابية</span></p>
+        <section class="opportunities-hero volunteering-hero">
+            <span class="opportunities-eyebrow">مجتمع الجامعة</span>
+            <h1>التطوع والأنشطة الطلابية</h1>
+            <p>تعرّف على مجموعات ومبادرات طلابية يمكنك التواصل معها للمشاركة في الأنشطة وخدمة مجتمع الجامعة.</p>
+            <a class="btn btn--primary btn--sm" href="#places">استكشف الجهات الطلابية <span aria-hidden="true">←</span></a>
+        </section>
+
+        <section class="volunteering-directory" id="places" aria-labelledby="placesTitle">
+            <div class="volunteering-heading">
+                <div>
+                    <h2 id="placesTitle">جهات ومجموعات طلابية</h2>
+                    <p>استفسر من الجهة نفسها عن المبادرات الحالية وطريقة الانضمام.</p>
+                </div>
+                <span class="volunteering-count">٣ جهات</span>
+            </div>
+            <div class="volunteering-grid volunteering-grid--places">
+                <article class="card volunteering-card volunteering-place-card">
+                    <span class="volunteering-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20v-1a6 6 0 0112 0v1M16 5.5a3 3 0 010 5.8M18 14a5 5 0 013 4.5V20"/></svg></span>
+                    <span class="volunteering-tag">مبادرات طلابية</span>
+                    <h3>أسرة طلاب من أجل مصر</h3>
+                    <p>جامعة جنوب الوادي الأهلية</p>
+                    <span class="volunteering-skill">اسأل عن المبادرات المجتمعية والأنشطة الطلابية المعلنة ووسيلة الانضمام.</span>
+                    <a class="btn btn--outline btn--sm volunteering-place-link" href="https://www.tiktok.com/@sfe.cai.qnu" target="_blank" rel="noopener noreferrer">صفحة الأسرة الرسمية</a>
+                </article>
+                <article class="card volunteering-card volunteering-place-card">
+                    <span class="volunteering-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-5h6v5M9 9h.01M15 9h.01M9 12h.01M15 12h.01"/></svg></span>
+                    <span class="volunteering-tag">أنشطة الكلية</span>
+                    <h3>كلية الحاسبات والمعلومات</h3>
+                    <p>جامعة جنوب الوادي الأهلية</p>
+                    <span class="volunteering-skill">تابع إعلانات الكلية عن تنظيم الفعاليات والورش والمبادرات الطلابية.</span>
+                    <a class="btn btn--outline btn--sm volunteering-place-link" href="http://www.svnu.edu.eg/com/admission.html" target="_blank" rel="noopener noreferrer">الموقع الرسمي للكلية</a>
+                </article>
+                <article class="card volunteering-card volunteering-place-card">
+                    <span class="volunteering-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m8 7-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/><circle cx="12" cy="12" r="10"/></svg></span>
+                    <span class="volunteering-tag">برمجة تنافسية</span>
+                    <h3>ICPC SVNU</h3>
+                    <p>مجتمع البرمجة التنافسية بالجامعة</p>
+                    <span class="volunteering-skill">استفسر عن مساعدة الفريق في الورش أو تنظيم المسابقات والفعاليات.</span>
+                    <a class="btn btn--outline btn--sm volunteering-place-link" href="https://www.facebook.com/ICPCxSVNU/" target="_blank" rel="noopener noreferrer">صفحة ICPC SVNU الرسمية</a>
+                </article>
+            </div>
+        </section>
+
+        <section class="volunteering-directory" id="fields" aria-labelledby="volunteeringTitle">
+            <div class="volunteering-heading">
+                <div>
+                    <h2 id="volunteeringTitle">مجالات التطوع</h2>
+                    <p>اختر الدور الذي يناسب مهاراتك عند الإعلان عن فرص المشاركة.</p>
+                </div>
+                <span class="volunteering-count">٦ مجالات</span>
+            </div>
+            <div class="volunteering-grid">
+                <article class="card volunteering-card">
+                    <span class="volunteering-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m4 20 4.5-1L19 8.5 15.5 5 5 15.5 4 20zM13.5 6.5l4 4M14 4l2-2 4 4-2 2"/></svg></span>
+                    <span class="volunteering-tag">محتوى بصري</span>
+                    <h3>التصميم</h3>
+                    <p>صمّم منشورات وإعلانات ومواد بصرية تساعد على تعريف الطلاب بالفعاليات والمبادرات.</p>
+                    <span class="volunteering-skill">مناسب لمن لديه حس بصري ويجيد أدوات التصميم</span>
+                </article>
+                <article class="card volunteering-card">
+                    <span class="volunteering-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m10 9 5 3-5 3zM7 2l2 3M15 2l2 3"/></svg></span>
+                    <span class="volunteering-tag">إنتاج مرئي</span>
+                    <h3>المونتاج</h3>
+                    <p>حرّر مقاطع الفعاليات والورش، وجهّز فيديوهات قصيرة توثّق الأنشطة وتنشر رسالتها.</p>
+                    <span class="volunteering-skill">مناسب لمن يهتم بتحرير الفيديو ورواية القصص</span>
+                </article>
+                <article class="card volunteering-card">
+                    <span class="volunteering-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 01-12.2 7.6L3 21l1.9-5.1A8.5 8.5 0 1121 11.5z"/><path d="M8 12h.01M12 12h.01M16 12h.01"/></svg></span>
+                    <span class="volunteering-tag">تواصل وعلاقات</span>
+                    <h3>العلاقات العامة</h3>
+                    <p>تواصل مع المشاركين، أجب عن استفساراتهم، وساعد في تقديم صورة واضحة عن الفعالية.</p>
+                    <span class="volunteering-skill">مناسب لمن يجيد التواصل والكتابة والتعامل مع الجمهور</span>
+                </article>
+                <article class="card volunteering-card">
+                    <span class="volunteering-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6" r="3"/><circle cx="5" cy="18" r="3"/><circle cx="19" cy="18" r="3"/><path d="m10.5 8.5-4 7M13.5 8.5l4 7M8 18h8"/></svg></span>
+                    <span class="volunteering-tag">عمل جماعي</span>
+                    <h3>تنظيم الفريق</h3>
+                    <p>نسّق المهام بين المتطوعين، تابع جاهزية الفريق، وساعد على توزيع الأدوار بوضوح.</p>
+                    <span class="volunteering-skill">مناسب لمن يجيد التخطيط والمتابعة والعمل ضمن فريق</span>
+                </article>
+                <article class="card volunteering-card">
+                    <span class="volunteering-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1116 0z"/><circle cx="12" cy="10" r="2.5"/><path d="M3 3l2 2M21 3l-2 2"/></svg></span>
+                    <span class="volunteering-tag">إدارة الفعاليات</span>
+                    <h3>التنظيم الميداني</h3>
+                    <p>استقبل الحضور، نظّم التسجيل والحركة، وأرشد المشاركين أثناء الفعاليات والأنشطة.</p>
+                    <span class="volunteering-skill">مناسب لمن يحب العمل الميداني والانتباه للتفاصيل</span>
+                </article>
+                <article class="card volunteering-card">
+                    <span class="volunteering-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/><path d="M8 7h8M8 11h6"/></svg></span>
+                    <span class="volunteering-tag">تعليم ومساندة</span>
+                    <h3>الشرح</h3>
+                    <p>اشرح فكرة أو مهارة تعرفها في ورشة أو لقاء طلابي، وساعد زملاءك على فهمها خطوة بخطوة.</p>
+                    <span class="volunteering-skill">مناسب لمن يحب تبسيط المعلومات ومساعدة الآخرين</span>
+                </article>
+            </div>
+        </section>
+
+        <section class="volunteering-next" aria-labelledby="volunteeringNextTitle">
+            <div>
+                <span class="opportunities-eyebrow">خطوتك التالية</span>
+                <h2 id="volunteeringNextTitle">اختر الجهة الأقرب لاهتمامك</h2>
+                <p>تابع إعلانات الجامعة والكلية والمجموعات الطلابية لمعرفة الفرص والمواعيد وطريقة المشاركة.</p>
+            </div>
+            <div class="volunteering-links">
+                <a class="btn btn--primary btn--sm" href="#places">الجهات الطلابية</a>
+                <a class="btn btn--outline btn--sm" href="#fields">مجالات التطوع</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer__inner">
+            <p class="footer__text">معاً نحو مستقبل أفضل &nbsp;|&nbsp; طلاب أهلية &nbsp;|&nbsp; <a href="team.html" class="footer__link">فريق العمل</a></p>
+        </div>
+    </footer>
+    <script src="script.js?v=20261010"></script>
+    <script src="page.js"></script>
+    <script src="mobile.js"></script>
+</body>
+
+</html>

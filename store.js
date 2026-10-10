@@ -110,6 +110,7 @@
                     subject: String(body.subject || "").trim().slice(0, 120),
                     role: String(body.role || "").trim().slice(0, 120),
                     year: String(body.year || "").slice(0, 30),
+                    major: String(body.major || "").slice(0, 30),
                     count: Math.max(1, Math.min(20, Number(body.count) || 1)),
                     desc: String(body.desc || "").slice(0, 600),
                     contact: String(body.contact || "").slice(0, 200),

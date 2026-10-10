@@ -45,11 +45,12 @@
             }
             .head {
                 display: flex;
-                justify-content: space-between;
+                flex-direction: column;
+                justify-content: center;
                 align-items: center;
                 gap: 12px;
-                flex-wrap: wrap;
-                margin-bottom: 16px
+                margin: 16px auto 24px;
+                text-align: center
             }
             h1 {
                 font-size: 1.5rem;
@@ -85,10 +86,17 @@
                 outline-offset: 2px
             }
             .bar {
-                display: flex;
+                display: grid;
+                grid-template-columns: repeat(4, minmax(0, 1fr));
                 gap: 10px;
-                flex-wrap: wrap;
-                margin-bottom: 14px
+                margin: 12px 0 18px;
+                height: auto;
+                overflow: visible;
+                border-radius: 0;
+                background: transparent;
+                position: relative;
+                z-index: 2;
+                isolation: isolate
             }
             .tab {
                 padding: 8px 16px;
@@ -107,11 +115,17 @@
                 border-radius: 10px;
                 border: 1px solid var(--line);
                 background: var(--bg);
-                min-width: 150px
+                width: 100%;
+                min-width: 0;
+                max-width: 100%;
+                min-height: 46px
+            }
+            #fq {
+                grid-column: span 3
             }
             .list {
                 display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
                 gap: 14px
             }
             .card {
@@ -121,7 +135,9 @@
                 padding: 16px;
                 display: flex;
                 flex-direction: column;
-                gap: 10px
+                gap: 10px;
+                min-width: 0;
+                overflow-wrap: anywhere
             }
             .card.closed {
                 opacity: .55
@@ -158,7 +174,8 @@
                 padding: 3px 10px;
                 border-radius: 8px;
                 background: var(--panel2);
-                font-size: .8rem
+                font-size: .8rem;
+                overflow-wrap: anywhere
             }
             .card p {
                 margin: 0;
@@ -168,22 +185,35 @@
             .foot {
                 margin-top: auto;
                 display: flex;
-                justify-content: space-between;
-                align-items: center;
+                flex-direction: column;
+                align-items: stretch;
                 gap: 8px;
-                flex-wrap: wrap
+                min-width: 0
             }
-            .foot .b {
-                padding: 6px 12px;
-                font-size: .85rem;
+            .card__actions {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr));
+                gap: 8px;
+                min-width: 0
+            }
+            .card__actions .b {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 0;
+                min-height: 44px;
+                padding: 7px 10px;
                 text-decoration: none;
-                color: var(--tx)
+                color: var(--tx);
+                text-align: center;
+                overflow-wrap: anywhere
             }
             .contact-method {
                 display: flex;
                 flex-direction: column;
-                align-items: flex-start;
-                gap: 4px
+                align-items: stretch;
+                gap: 6px;
+                min-width: 0
             }
             .contact-method__label {
                 color: var(--mut);
@@ -196,12 +226,17 @@
                 border-radius: 14px
             }
             dialog {
+                position: fixed;
+                inset: 0;
+                margin: auto;
                 background: var(--panel2);
                 color: var(--tx);
                 border: 1px solid var(--line);
-                border-radius: 16px;
+                border-radius: 12px;
                 padding: 20px;
-                width: min(480px, 94vw)
+                width: min(560px, calc(100vw - 24px));
+                max-height: calc(100dvh - 24px);
+                overflow-y: auto
             }
             dialog::backdrop {
                 background: #000a
@@ -210,6 +245,9 @@
                 display: block;
                 margin-top: 12px;
                 font-size: .9rem
+            }
+            dialog label[hidden] {
+                display: none
             }
             dialog .fld {
                 width: 100%;
@@ -264,6 +302,34 @@
                 z-index: 50
             }
         }
+        
+        @media (max-width: 700px) {
+            #tp .bar {
+                grid-template-columns: repeat(2, minmax(0, 1fr))
+            }
+            #tp #fq,
+            #tp #clearFilters {
+                grid-column: 1 / -1
+            }
+        }
+        
+        @media (max-width: 420px) {
+            #tp {
+                padding-top: 12px
+            }
+            #tp .bar {
+                grid-template-columns: minmax(0, 1fr)
+            }
+            #tp h1 {
+                font-size: 1.3rem
+            }
+            #tp .acts {
+                flex-direction: column
+            }
+            #tp dialog {
+                padding: 16px
+            }
+        }
     </style>
 </head>
 
@@ -284,6 +350,7 @@
                 <a href="courses.html">الكورسات</a>
                 <a href="staff.html">هيئة التدريس</a>
                 <a href="movies.html">الأفلام</a>
+                <a href="videos.html">فيديوهات</a>
                 <a href="schedule.html">جدولي</a>
                 <a href="teams.html" class="active">زملاء المشروع</a>
             </nav>
@@ -297,22 +364,23 @@
     </header>
     <main id="tp" class="container">
         <div class="head">
-            <div>
+            <div class="head__copy">
                 <h1>ابحث عن تيم أو زميل مشروع</h1>
                 <div class="mut">محتاج حد يشتغل معاك؟ أو معاك تيم ناقصه أعضاء؟ اكتب طلبك هنا.</div>
             </div>
-            <button class="b p" id="add">+ إضافة طلب</button>
+            <button class="b p" id="add" type="button">إضافة طلب</button>
         </div>
 
         <div class="bar" role="group" aria-label="نوع الطلب">
-            <button class="tab on" data-t="">الكل</button>
-            <button class="tab" data-t="need">🔎 محتاج تيم</button>
-            <button class="tab" data-t="have">👥 معايا تيم ومحتاج أعضاء</button>
+            <select class="fld" id="ft" aria-label="نوع الطلب"><option value="">كل أنواع الطلبات</option><option value="need">محتاج تيم</option><option value="have">معايا تيم ومحتاج أعضاء</option></select>
             <select class="fld" id="fy" aria-label="السنة الدراسية"><option value="">كل السنوات</option><option>الأولى</option><option>الثانية</option><option>الثالثة</option><option>الرابعة</option></select>
-            <input class="fld" id="fq" type="search" placeholder="ابحث بالمادة أو الدور..." aria-label="بحث" style="flex:1">
+            <select class="fld" id="fs" aria-label="حالة الطلب"><option value="">كل الحالات</option><option value="open">طلبات مفتوحة</option><option value="closed">طلبات مكتملة</option></select>
+            <select class="fld" id="fo" aria-label="ترتيب الطلبات"><option value="newest">الأحدث أولًا</option><option value="oldest">الأقدم أولًا</option></select>
+            <input class="fld" id="fq" type="search" placeholder="ابحث بالمادة أو الدور أو التفاصيل..." aria-label="بحث">
+            <button class="b" id="clearFilters" type="button">مسح الفلاتر</button>
         </div>
         <p class="mut" id="cnt" aria-live="polite"></p>
-        <div class="list" id="list"></div>
+        <div class="list" id="list" aria-live="polite"></div>
 
         <dialog id="dlg">
             <form id="frm" method="dialog">
@@ -324,6 +392,7 @@
                 <label>اسم المادة / المشروع<input class="fld" name="subject" maxlength="60" required placeholder="مثال: قواعد البيانات"></label>
                 <label>الدور <span class="mut" id="roleHint">(اللي إنت بتعرف تعمله)</span><input class="fld" name="role" maxlength="40" required placeholder="مثال: Frontend، تصميم، تقارير..."></label>
                 <label>السنة الدراسية<select class="fld" name="year" required><option>الأولى</option><option>الثانية</option><option>الثالثة</option><option>الرابعة</option></select></label>
+                <label id="majorField" hidden>التخصص<select class="fld" id="majorSelect" name="major" disabled><option value="">اختر التخصص</option><option value="cs">علوم الحاسب</option><option value="ai">الذكاء الاصطناعي</option><option value="is">نظم المعلومات</option></select></label>
                 <label><span id="cntLbl">عدد أفراد التيم المطلوب</span><input class="fld" name="count" type="number" min="1" max="20" value="3" required></label>
                 <label>تفاصيل (اختياري)<textarea class="fld" name="desc" rows="3" maxlength="300"></textarea></label>
                 <label>وسيلة التواصل (واتساب / تيليجرام / رابط)<input class="fld" name="contact" maxlength="80" required placeholder="01xxxxxxxxx أو https://t.me/..."></label>
@@ -356,9 +425,16 @@
         const f = {
                 t: "",
                 y: "",
-                q: ""
+                q: "",
+                status: "",
+                order: "newest"
             },
             $ = s => document.querySelector(s);
+        const MAJOR_LABELS = {
+            cs: "علوم الحاسب",
+            ai: "الذكاء الاصطناعي",
+            is: "نظم المعلومات"
+        };
         const esc = s => String(s).replace(/[&<>"']/g, c => ({
             "&": "&amp;",
             "<": "&lt;",
@@ -396,37 +472,42 @@
 
         function render() {
             const q = f.q.trim().toLowerCase();
-            const rows = posts.filter(p => (!f.t || p.type === f.t) && (!f.y || p.year === f.y) && (!q || (p.subject + " " + p.role).toLowerCase().includes(q))).sort((a, b) => (a.closed - b.closed) || b.at - a.at);
-            $("#cnt").textContent = rows.length ? `${rows.length} طلب` : "";
+            const rows = posts.filter(p => {
+                const text = [p.subject, p.role, p.desc, p.name].join(" ").toLowerCase();
+                const statusMatches = !f.status || (f.status === "open" ? !p.closed : p.closed);
+                return (!f.t || p.type === f.t) && (!f.y || p.year === f.y) && statusMatches && (!q || text.includes(q));
+            }).sort((a, b) => (a.closed - b.closed) || (f.order === "oldest" ? a.at - b.at : b.at - a.at));
+            $("#cnt").textContent = `${rows.length} من ${posts.length} طلب`;
             $("#list").innerHTML = rows.length ? rows.map(p => {
                         const mine = p.uid === ME.id,
                             need = p.type === "need";
                         return `<article class="card ${p.closed?"closed":""}">
       <span class="tag ${p.closed?"cl":need?"need":"have"}">${p.closed?"اكتمل":need?"محتاج تيم":"معاه تيم ومحتاج أعضاء"}</span>
       <h3>${esc(p.subject)}</h3>
-      <div class="chips"><span>🎯 ${esc(p.role)}</span><span>🎓 السنة ${esc(p.year)}</span><span>👥 ${need?`تيم من ${p.count} أفراد`:`محتاجين ${p.count} أعضاء`}</span></div>
+    <div class="chips"><span>🎯 ${esc(p.role)}</span><span>🎓 السنة ${esc(p.year)}</span>${p.major?`<span>📚 ${esc(MAJOR_LABELS[p.major]||p.major)}</span>`:""}<span>👥 ${need?`تيم من ${p.count} أفراد`:`محتاجين ${p.count} أعضاء`}</span></div>
       ${p.desc?`<p>${esc(p.desc)}</p>`:""}
-      <div class="foot"><span class="mut">${esc(p.name)} • ${new Date(p.at).toLocaleDateString("ar-EG")}</span>
-      <span style="display:flex;gap:6px">${p.closed?"":contactBtn(p)}${mine?`${p.closed?"":`<button class="b" data-done="${p.id}">اكتمل</button>`}<button class="b" data-del="${p.id}">حذف</button>`:""}</span></div></article>`}).join("")
+    <div class="foot"><span class="mut">${esc(p.name)} • ${new Date(p.at).toLocaleDateString("ar-EG")}</span>
+    <div class="card__actions">${p.closed?"":contactBtn(p)}${mine?`${p.closed?"":`<button class="b" data-done="${p.id}">اكتمل</button>`}<button class="b" data-del="${p.id}">حذف</button>`:""}</div></div></article>`}).join("")
    :`<div class="empty" style="grid-column:1/-1">مفيش طلبات مطابقة حاليًا. كن أول واحد يضيف طلب! 🚀</div>`;
 }
 document.addEventListener("click",e=>{
-  const t=e.target.closest(".tab"); if(t){document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("on",x===t));f.t=t.dataset.t;return render()}
   const c=e.target.closest("[data-copy]"); if(c){navigator.clipboard&&navigator.clipboard.writeText(c.dataset.copy);return toast("تم نسخ وسيلة التواصل")}
   const d=e.target.closest("[data-del]"); if(d){if(confirm("حذف الطلب؟")){api("DELETE","/api/teams/"+d.dataset.del).then(()=>{posts=posts.filter(p=>p.id!==d.dataset.del);render()}).catch(x=>toast(x.message))}return}
   const k=e.target.closest("[data-done]"); if(k){const p=posts.find(p=>p.id===k.dataset.done);if(p){api("PATCH","/api/teams/"+p.id).then(()=>{p.closed=true;render()}).catch(x=>toast(x.message))}}
 });
-$("#fy").onchange=e=>{f.y=e.target.value;render()}; $("#fq").oninput=e=>{f.q=e.target.value;render()};
+$("#ft").onchange=e=>{f.t=e.target.value;render()}; $("#fy").onchange=e=>{f.y=e.target.value;render()}; $("#fs").onchange=e=>{f.status=e.target.value;render()}; $("#fo").onchange=e=>{f.order=e.target.value;render()}; $("#fq").oninput=e=>{f.q=e.target.value;render()};
+$("#clearFilters").onclick=()=>{Object.assign(f,{t:"",y:"",q:"",status:"",order:"newest"});["#ft","#fy","#fs","#fq"].forEach(s=>$(s).value="");$("#fo").value="newest";render()};
 const dlg=$("#dlg"), frm=$("#frm");
 $("#add").onclick=()=>{frm.reset();$("#err").textContent="";sync();dlg.showModal()};
 $("#cancel").onclick=()=>dlg.close();
-function sync(){const need=frm.type.value==="need";$("#cntLbl").textContent=need?"عدد أفراد التيم المطلوب":"عدد الأعضاء اللي محتاجهم";$("#roleHint").textContent=need?"(اللي إنت بتعرف تعمله)":"(الدور المطلوب في التيم)"}
+function sync(){const need=frm.type.value==="need",needsMajor=["الثالثة","الرابعة"].includes(frm.elements.year.value),majorField=$("#majorField"),majorSelect=$("#majorSelect");$("#cntLbl").textContent=need?"عدد أفراد التيم المطلوب":"عدد الأعضاء اللي محتاجهم";$("#roleHint").textContent=need?"(اللي إنت بتعرف تعمله)":"(الدور المطلوب في التيم)";majorField.hidden=!needsMajor;majorSelect.disabled=!needsMajor;majorSelect.required=needsMajor;if(!needsMajor)majorSelect.value=""}
 frm.addEventListener("change",sync);
 frm.addEventListener("submit",e=>{
   e.preventDefault();
   const v=Object.fromEntries(new FormData(frm));
   if(!v.subject.trim()||!v.role.trim()||!v.contact.trim()){$("#err").textContent="املأ الحقول المطلوبة.";return}
-  api("POST","/api/teams",{type:v.type,subject:v.subject.trim(),role:v.role.trim(),year:v.year,count:v.count,desc:(v.desc||"").trim(),contact:v.contact.trim()})
+    if(["الثالثة","الرابعة"].includes(v.year)&&!v.major){$("#err").textContent="اختر التخصص للسنة الثالثة أو الرابعة.";return}
+    api("POST","/api/teams",{type:v.type,subject:v.subject.trim(),role:v.role.trim(),year:v.year,major:v.major||"",count:v.count,desc:(v.desc||"").trim(),contact:v.contact.trim()})
     .then(p=>{posts.unshift(p);dlg.close();render();toast("تم نشر طلبك ✅")})
     .catch(x=>{$("#err").textContent=x.message});
 });

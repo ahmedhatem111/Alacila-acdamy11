@@ -49,6 +49,7 @@
                 <a href="courses.html" class="active">الكورسات</a>
                 <a href="staff.html">هيئة التدريس</a>
                 <a href="movies.html">الأفلام</a>
+                <a href="videos.html">فيديوهات</a>
                 <a href="schedule.html">جدولي</a>
                 <a href="teams.html">زملاء المشروع</a>
             </nav>
@@ -185,7 +186,7 @@
         })();
     </script>
     <script>
-        /* "ابدأ الكورس" يفتح صفحة الكورس بدل نافذة الملفات/السلايدات */
+        /* "ابدأ الكورس" يفتح صفحة الكورس بدل نافذة الملفات وشرح المادة */
         document.addEventListener("click", function(e) {
             var b = e.target.closest("#catalogGrid a, #catalogGrid button");
             if (!b || !/ابدأ|بدء|ادخل|دخول|start/i.test(b.textContent)) return;

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>دليل اللابتوب لطالب الحاسبات | أهلية أكاديمي</title>
+    <script>
+        try {
+            if (!JSON.parse(localStorage.getItem("ahlia_user"))) throw 0;
+        } catch (e) {
+            location.replace("login.html?next=" + encodeURIComponent(location.pathname.split("/").pop()));
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=20261008">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#050a2a">
+    <link rel="icon" href="icons/icon-192.png">
+    <script src="theme.js"></script>
+    <script src="config.js"></script>
+    <script src="backend.js"></script>
+    <script src="store.js"></script>
+</head>
+
+<body data-page="laptops">
+    <canvas id="stars" aria-hidden="true"></canvas>
+    <header class="header">
+        <div class="container header__inner">
+            <a href="index.html" class="logo">
+                <svg class="logo__icon" viewbox="0 0 48 48" aria-hidden="true"><defs><lineargradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f7bff"/><stop offset="1" stop-color="#7c3aed"/></lineargradient></defs><path d="M24 3 L44 44 L34 44 L24 22 L14 44 L4 44 Z" fill="url(#lg)"/><path d="M24 30 L30 44 L18 44 Z" fill="#a78bfa"/></svg>
+                <span>أهلية أكاديمي</span>
+            </a>
+            <nav class="nav" id="nav" aria-label="القائمة الرئيسية">
+                <a href="index.html#home">الرئيسية</a>
+                <a href="index.html#years">السنوات الدراسية</a>
+                <a href="index.html#majors">التخصصات</a>
+                <a href="courses.html">الكورسات</a>
+                <a href="laptops.html" class="active" aria-current="page">دليل اللابتوب</a>
+                <a href="paths.html">المسارات المهنية</a>
+                <a href="library.html">المكتبة</a>
+                <a href="news.html">أخبار التقنية</a>
+                <a href="schedule.html">جدولي</a>
+            </nav>
+            <div class="header__actions">
+                <button type="button" class="theme-toggle" id="themeToggle" aria-pressed="false" aria-label="تفعيل الألوان المريحة للعين" title="تفعيل الألوان المريحة للعين"><svg class="sun" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg><svg class="moon" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+                <span class="hello">أهلاً، <b data-user-name></b></span>
+                <button type="button" class="btn btn--outline btn--sm" id="logout">خروج</button>
+                <button class="burger" id="burger" aria-label="فتح القائمة" aria-expanded="false"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container laptop-guide-page">
+        <p class="crumbs"><a href="index.html">الرئيسية</a> / <span>دليل اللابتوب لطالب الحاسبات</span></p>
+        <section class="laptop-guide-hero">
+            <div class="laptop-guide-copy">
+                <span class="laptop-guide-eyebrow">دليل طالب الحاسبات</span>
+                <h1>افهم جهازك واختار مواصفاته حسب استخدامك</h1>
+                <p>دليل مبسّط يشرح وظيفة كل قطعة، والفرق بين اللابتوب والكمبيوتر المكتبي، وأهم البرامج والمواصفات التي تحتاجها للدراسة.</p>
+                <div class="laptop-guide-actions">
+                    <a class="btn btn--primary" href="#components">اعرف مكوّنات الجهاز</a>
+                    <a class="btn btn--outline" href="#software">شوف البرامج والمواصفات</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="laptop-guide-section" id="components" aria-labelledby="componentsTitle">
+            <div class="laptop-guide-section__head">
+                <span>اعرف القطع الأساسية</span>
+                <h2 id="componentsTitle">كل قطعة: فائدتها وأنواعها</h2>
+            </div>
+            <div class="laptop-use-grid">
+                <article class="laptop-use">
+                    <span class="laptop-use__index">01</span>
+                    <img class="laptop-guide-card-image" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/2023_Intel_Core_i7_12700KF_%283%29.jpg/960px-2023_Intel_Core_i7_12700KF_%283%29.jpg" alt="معالج كمبيوتر Intel Core i7" loading="lazy">
+                    <h3>المعالج CPU</h3>
+                    <p class="laptop-use__spec">ينفّذ أوامر البرامج ويؤثر في سرعة الجهاز.</p>
+                    <p><strong>أنواعه:</strong> Intel Core أو Core Ultra، وAMD Ryzen. توجد فئات موفرة للطاقة وأخرى أقوى للأعمال الثقيلة.</p>
+                    <span class="laptop-use__verdict">للدراسة: Core 5 أو Ryzen 5 حديث يكفي غالبًا</span>
+                </article>
+                <article class="laptop-use">
+                    <span class="laptop-use__index">02</span>
+                    <img class="laptop-guide-card-image" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2c/Samsung-1GB-DDR2-Laptop-RAM.jpg/960px-Samsung-1GB-DDR2-Laptop-RAM.jpg" alt="شريحة ذاكرة RAM خاصة بلابتوب" loading="lazy">
+                    <h3>الذاكرة RAM</h3>
+                    <p class="laptop-use__spec">مساحة عمل مؤقتة للبرامج المفتوحة؛ زيادتها تساعد على تعدد المهام.</p>
+                    <p><strong>أنواعها:</strong> DDR4 أو DDR5. في اللابتوب تكون غالبًا SO-DIMM أو ملحومة، وفي المكتبي DIMM ويمكن ترقيتها عادةً.</p>
+                    <span class="laptop-use__verdict">16GB مناسبة، و32GB للمونتاج والمشاريع الثقيلة</span>
+                </article>
+                <article class="laptop-use">
+                    <span class="laptop-use__index">03</span>
+                    <img class="laptop-guide-card-image" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/ATI_Radeon_HD_5970_Graphics_Card-oblique_view.jpg/960px-ATI_Radeon_HD_5970_Graphics_Card-oblique_view.jpg" alt="كرت شاشة منفصل للكمبيوتر" loading="lazy">
+                    <h3>كرت الشاشة GPU</h3>
+                    <p class="laptop-use__spec">يعالج الصور والفيديو والرسوم ثلاثية الأبعاد.</p>
+                    <p><strong>أنواعه:</strong> مدمج داخل المعالج للدراسة والبرمجة، أو منفصل مثل NVIDIA GeForce وAMD Radeon للألعاب والتصميم والمونتاج.</p>
+                    <span class="laptop-use__verdict">لا تحتاج كرتًا منفصلًا إلا إذا كانت برامجك تستفيد منه</span>
+                </article>
+                <article class="laptop-use">
+                    <span class="laptop-use__index">04</span>
+                    <img class="laptop-guide-card-image" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7a/2017_Dysk_SSD_Plextor_M8Pe%28Y%29_256GB.jpg/960px-2017_Dysk_SSD_Plextor_M8Pe%28Y%29_256GB.jpg" alt="وحدة تخزين SSD من نوع M.2" loading="lazy">
+                    <h3>التخزين SSD</h3>
+                    <p class="laptop-use__spec">يحفظ النظام والبرامج والملفات، ويؤثر في سرعة فتحها.</p>
+                    <p><strong>أنواعه:</strong> NVMe M.2 الأسرع والأكثر شيوعًا، وSATA SSD الأقدم. القرص HDD أبطأ ويصلح للأرشفة أكثر من تشغيل البرامج.</p>
+                    <span class="laptop-use__verdict">ابدأ بـ512GB SSD، واختر 1TB للمشاريع والملفات الكبيرة</span>
+                </article>
+                <article class="laptop-use">
+                    <span class="laptop-use__index">05</span>
+                    <img class="laptop-guide-card-image" src="https://images.unsplash.com/photo-1614963326505-843868e1d83a?q=80&w=720&auto=format&fit=crop" alt="شاشة تعرض واجهة عمل على الكمبيوتر" loading="lazy">
+                    <h3>الشاشة</h3>
+                    <p class="laptop-use__spec">مساحة عملك اليومية؛ الدقة والألوان والسطوع تفرق في الراحة والتصميم.</p>
+                    <p><strong>أنواع شائعة:</strong> IPS لألوان وزوايا مشاهدة جيدة، وOLED لتباين أعلى. دقة Full HD مناسبة، والتصميم يستفيد من ألوان دقيقة.</p>
+                    <span class="laptop-use__verdict">اختر 14 أو 15.6 بوصة حسب سهولة الحمل وراحة العمل</span>
+                </article>
+                <article class="laptop-use">
+                    <span class="laptop-use__index">06</span>
+                    <img class="laptop-guide-card-image" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b0/ThinkPad_X220_CPU_cooling_system_%28fan_and_heatsink_assembly%29.jpg/960px-ThinkPad_X220_CPU_cooling_system_%28fan_and_heatsink_assembly%29.jpg" alt="مروحة ومشتت حرارة داخل لابتوب"
+                        loading="lazy">
+                    <h3>التبريد</h3>
+                    <p class="laptop-use__spec">يطرد الحرارة ويحافظ على سرعة الجهاز واستقراره.</p>
+                    <p><strong>أنواعه:</strong> مراوح ومشتتات حرارية في اللابتوب والمكتبي، وقد يستخدم المكتبي تبريدًا مائيًا للمعالجات القوية.</p>
+                    <span class="laptop-use__verdict">التبريد الجيد مهم عند تشغيل برامج ثقيلة لفترات طويلة</span>
+                </article>
+                <article class="laptop-use">
+                    <span class="laptop-use__index">07</span>
+                    <img class="laptop-guide-card-image" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1a/Li_ion_laptop_battery.jpg/960px-Li_ion_laptop_battery.jpg" alt="بطارية ليثيوم للابتوب" loading="lazy">
+                    <h3>البطارية ومزوّد الطاقة</h3>
+                    <p class="laptop-use__spec">البطارية تشغّل اللابتوب دون توصيله بالكهرباء.</p>
+                    <p><strong>في اللابتوب:</strong> بطارية داخلية وشاحن خارجي. <strong>في الكمبيوتر المكتبي:</strong> مزوّد طاقة PSU يحوّل الكهرباء ويوزعها على القطع.</p>
+                    <span class="laptop-use__verdict">قدرة PSU في المكتبي تُختار حسب استهلاك المعالج وكرت الشاشة</span>
+                </article>
+                <article class="laptop-use">
+                    <span class="laptop-use__index">08</span>
+                    <img class="laptop-guide-card-image" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b9/Computer-motherboard-pc-wires_%2823698613303%29.jpg/960px-Computer-motherboard-pc-wires_%2823698613303%29.jpg" alt="لوحة أم ومكوّناتها الإلكترونية" loading="lazy">
+                    <h3>اللوحة الأم Motherboard</h3>
+                    <p class="laptop-use__spec">تربط المعالج والذاكرة والتخزين وباقي أجزاء الجهاز.</p>
+                    <p><strong>في المكتبي:</strong> لوحة مستقلة بمقاسات مثل ATX وMicro-ATX. <strong>في اللابتوب:</strong> لوحة مدمجة ومخصصة للطراز.</p>
+                    <span class="laptop-use__verdict">تحدد التوافق وإمكانية الترقية</span>
+                </article>
+                <article class="laptop-use">
+                    <span class="laptop-use__index">09</span>
+                    <img class="laptop-guide-card-image" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c3/Lenovo_ThinkPad_X220_7-row_keyboard_US_International_layout.jpg/960px-Lenovo_ThinkPad_X220_7-row_keyboard_US_International_layout.jpg" alt="لوحة مفاتيح لابتوب ولوحة لمس"
+                        loading="lazy">
+                    <h3>لوحة المفاتيح واللمس</h3>
+                    <p class="laptop-use__spec">أدوات الإدخال لكتابة الأوامر والتحكم بالمؤشر.</p>
+                    <p><strong>في اللابتوب:</strong> مدمجة مع Touchpad. <strong>في المكتبي:</strong> لوحة مفاتيح وفأرة منفصلتان يمكن تغييرهما.</p>
+                    <span class="laptop-use__verdict">اختر لوحة مريحة للاستخدام الطويل والكتابة</span>
+                </article>
+            </div>
+            <div class="laptop-spec-notes">
+                <p><strong>ميزة اللابتوب:</strong> شاشة ولوحة مفاتيح وبطارية في جهاز واحد، لكن ترقية المعالج وكرت الشاشة غالبًا غير ممكنة.</p>
+                <p><strong>ميزة الكمبيوتر المكتبي:</strong> أسهل في الترقية والتبريد عادةً، لكنه يحتاج شاشة وملحقات ومساحة على المكتب.</p>
+                <p><strong>قبل الاختيار:</strong> افحص إمكانية ترقية RAM وSSD؛ بعض اللابتوبات تأتي بذاكرة ملحومة لا يمكن تغييرها.</p>
+            </div>
+        </section>
+
+        <section class="laptop-guide-section" id="software" aria-labelledby="softwareTitle">
+            <div class="laptop-guide-section__head">
+                <span>برامج ستستخدمها في الدراسة بالكلية</span>
+                <h2 id="softwareTitle">كل برنامج ومتطلبات تشغيله</h2>
+                <p>الحد الأدنى للتشغيل الأساسي، والمواصفات المريحة للاستخدام اليومي. قد تختلف حسب إصدار البرنامج وحجم ملفاتك.</p>
+            </div>
+            <div class="laptop-software-grid">
+                <article>
+                    <img class="laptop-guide-card-image laptop-software-image laptop-software-image--logo" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/3/39/Microsoft_Office_Word_%282013%E2%80%932019%29.svg/960px-Microsoft_Office_Word_%282013%E2%80%932019%29.svg.png"
+                        alt="شعار Microsoft Word" loading="lazy">
+                    <h3>Microsoft Word</h3>
+                    <p>لكتابة التقارير والواجبات وتنسيق المستندات.</p>
+                    <p class="laptop-app-spec"><strong>حد أدنى:</strong> معالج ثنائي النواة، RAM 4GB، ومساحة فارغة 4GB.</p>
+                    <p class="laptop-app-spec"><strong>مريح:</strong> معالج Core 3 أو Ryzen 3 حديث، RAM 8GB، وSSD.</p>
+                </article>
+                <article>
+                    <img class="laptop-guide-card-image laptop-software-image laptop-software-image--logo" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/7/73/Microsoft_Excel_2013-2019_logo.svg/960px-Microsoft_Excel_2013-2019_logo.svg.png" alt="شعار Microsoft Excel"
+                        loading="lazy">
+                    <h3>Microsoft Excel</h3>
+                    <p>للجداول والحسابات والمعادلات والرسوم البيانية.</p>
+                    <p class="laptop-app-spec"><strong>حد أدنى:</strong> معالج ثنائي النواة، RAM 4GB، ومساحة فارغة 4GB.</p>
+                    <p class="laptop-app-spec"><strong>مريح:</strong> معالج Core 5 أو Ryzen 5، RAM 8GB، وSSD؛ والملفات الكبيرة تستفيد من RAM 16GB.</p>
+                </article>
+                <article>
+                    <img class="laptop-guide-card-image laptop-software-image laptop-software-image--logo" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/16/Microsoft_PowerPoint_2013-2019_logo.svg/960px-Microsoft_PowerPoint_2013-2019_logo.svg.png" alt="شعار Microsoft PowerPoint"
+                        loading="lazy">
+                    <h3>Microsoft PowerPoint</h3>
+                    <p>لإنشاء العروض التقديمية وإضافة الصور والرسوم.</p>
+                    <p class="laptop-app-spec"><strong>حد أدنى:</strong> معالج ثنائي النواة، RAM 4GB، ومساحة فارغة 4GB.</p>
+                    <p class="laptop-app-spec"><strong>مريح:</strong> معالج Core 3 أو Ryzen 3 حديث، RAM 8GB، وSSD.</p>
+                </article>
+                <article>
+                    <img class="laptop-guide-card-image laptop-software-image laptop-software-image--logo" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/960px-Visual_Studio_Code_1.35_icon.svg.png" alt="أيقونة Visual Studio Code"
+                        loading="lazy">
+                    <h3>Visual Studio Code</h3>
+                    <p>محرر لكتابة وتشغيل الكود بلغات ومجالات متعددة.</p>
+                    <p class="laptop-app-spec"><strong>حد أدنى:</strong> معالج ثنائي النواة، RAM 4GB، ومساحة فارغة 1GB.</p>
+                    <p class="laptop-app-spec"><strong>مريح:</strong> معالج Core 5 أو Ryzen 5، RAM 8GB، وSSD؛ واختَر 16GB مع أدوات كثيرة أو مشاريع كبيرة.</p>
+                </article>
+                <article>
+                    <img class="laptop-guide-card-image laptop-software-image laptop-software-image--logo" src="https://cdn.simpleicons.org/cisco/1BA0D7" alt="شعار Cisco" loading="lazy">
+                    <h3>Cisco Packet Tracer</h3>
+                    <p>لمحاكاة الشبكات والتدرب على توصيل الأجهزة وإعدادها.</p>
+                    <p class="laptop-app-spec"><strong>حد أدنى:</strong> معالج ثنائي النواة، RAM 4GB، ومساحة فارغة 1.4GB.</p>
+                    <p class="laptop-app-spec"><strong>مريح:</strong> معالج Core 3 أو Ryzen 3، RAM 8GB، وSSD.</p>
+                </article>
+                <article>
+                    <img class="laptop-guide-card-image laptop-software-image laptop-software-image--logo" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0c/Blender_logo_no_text.svg/960px-Blender_logo_no_text.svg.png" alt="شعار Blender" loading="lazy">
+                    <h3>Blender</h3>
+                    <p>للنمذجة والتحريك والتصميم ثلاثي الأبعاد.</p>
+                    <p class="laptop-app-spec"><strong>حد أدنى:</strong> معالج رباعي النواة، RAM 8GB، وكرت شاشة بذاكرة 2GB.</p>
+                    <p class="laptop-app-spec"><strong>مريح:</strong> معالج Core 7 أو Ryzen 7، RAM 32GB، وكرت شاشة بذاكرة 8GB أو أكثر.</p>
+                </article>
+                <article>
+                    <img class="laptop-guide-card-image laptop-software-image" src="https://www.anylogic.com/upload/iblock/e1c/qpa6kp8wuxvdua3mjvtvkj2es26ocvcx.webp" alt="واجهة AnyLogic ونموذج محاكاة" loading="lazy">
+                    <h3>AnyLogic</h3>
+                    <p>لبناء نماذج المحاكاة وتجربة سيناريوهات الأنظمة والعمليات.</p>
+                    <p class="laptop-app-spec"><strong>حد أدنى:</strong> معالج رباعي النواة، RAM 8GB، ومساحة فارغة 5GB.</p>
+                    <p class="laptop-app-spec"><strong>مريح:</strong> معالج Core 5 أو Ryzen 5، RAM 16GB، وSSD؛ والنماذج الكبيرة تستفيد من 32GB.</p>
+                </article>
+                <article>
+                    <img class="laptop-guide-card-image laptop-software-image" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dd/Mysql-screenshot.PNG/960px-Mysql-screenshot.PNG" alt="واجهة برنامج MySQL لإدارة قواعد البيانات" loading="lazy">
+                    <h3>MySQL Workbench</h3>
+                    <p>لإنشاء قواعد البيانات والجداول وكتابة استعلامات SQL.</p>
+                    <p class="laptop-app-spec"><strong>حد أدنى:</strong> معالج ثنائي النواة، RAM 4GB، ومساحة فارغة 1GB.</p>
+                    <p class="laptop-app-spec"><strong>مريح:</strong> معالج Core 5 أو Ryzen 5، RAM 8GB، وSSD؛ وشغّل قاعدة البيانات المحلية مع 16GB عند العمل على بيانات أكبر.</p>
+                </article>
+                <article>
+                    <img class="laptop-guide-card-image laptop-software-image laptop-software-image--logo" src="https://www.virtualbox.org/graphics/vbox_logo2_gradient.png" alt="شعار Oracle VirtualBox" loading="lazy">
+                    <h3>Oracle VirtualBox</h3>
+                    <p>لتشغيل نظام تشغيل افتراضي داخل جهازك، مثل Linux للتدرب على أنظمة التشغيل والشبكات.</p>
+                    <p class="laptop-app-spec"><strong>حد أدنى:</strong> نظام 64-bit يدعم الافتراضية، RAM 8GB، ومعالج ثنائي النواة. فعّل Intel VT-x أو AMD-V من BIOS/UEFI.</p>
+                    <p class="laptop-app-spec"><strong>مريح:</strong> معالج Core 5 أو Ryzen 5، RAM 16GB أو أكثر، وSSD مع 60GB مساحة فارغة على الأقل للآلة الافتراضية.</p>
+                </article>
+            </div>
+            <p class="laptop-software-note">المواصفات إرشادية للتشغيل المعتاد؛ البرامج الثقيلة أو الملفات الكبيرة والمحاكاة قد تحتاج ذاكرة ومعالجًا أقوى.</p>
+        </section>
+
+        <section class="laptop-guide-section" aria-labelledby="recommendationsTitle">
+            <div class="laptop-guide-section__head">
+                <span>اختيار سريع</span>
+                <h2 id="recommendationsTitle">أهم المواصفات حسب الاستخدام</h2>
+            </div>
+            <div class="laptop-use-grid">
+                <article class="laptop-use">
+                    <h3>دراسة وبرمجة</h3>
+                    <p class="laptop-use__spec">Core 5 أو Ryzen 5 حديث · RAM 16GB · SSD 512GB</p>
+                    <p>مناسبة لمعظم مواد الجامعة، البرمجة، قواعد البيانات وتطوير الويب.</p>
+                </article>
+                <article class="laptop-use">
+                    <h3>تصميم ومونتاج</h3>
+                    <p class="laptop-use__spec">Core 7 أو Ryzen 7 · RAM 32GB · SSD 1TB</p>
+                    <p>اختر كرت شاشة منفصلًا للمونتاج الثقيل أو المؤثرات أو التصميم ثلاثي الأبعاد.</p>
+                </article>
+                <article class="laptop-use">
+                    <h3>استخدام يومي خفيف</h3>
+                    <p class="laptop-use__spec">معالج حديث موفر للطاقة · RAM 8GB على الأقل · SSD</p>
+                    <p>للتصفح والمحاضرات وكتابة التقارير؛ 16GB أفضل إذا كنت ستستخدمه للبرمجة أيضًا.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="laptop-guide-section" aria-labelledby="accessoriesTitle">
+            <div class="laptop-guide-section__head">
+                <span>ملحقات مفيدة حسب احتياجك</span>
+                <h2 id="accessoriesTitle">أشياء تكمل استخدام اللابتوب</h2>
+                <p>ليست كلها ضرورية؛ اختار ما يحل مشكلة تواجهك فعلًا.</p>
+            </div>
+            <div class="laptop-software-grid laptop-accessory-grid">
+                <article>
+                    <img class="laptop-guide-card-image laptop-software-image" src="https://images.unsplash.com/photo-1528921581519-52b9d779df2b?q=80&w=720&auto=format&fit=crop" alt="حقيبة ظهر مع لابتوب وملحقات" loading="lazy">
+                    <h3>حقيبة مبطنة أو جراب</h3>
+                    <p>تحمي الجهاز من الخدوش والصدمات أثناء التنقل. اختار مقاسًا مناسبًا للابتوب ومساحة للشاحن، ولا تضع أشياء صلبة فوق الشاشة.</p>
+                </article>
+                <article>
+                    <img class="laptop-guide-card-image laptop-software-image" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fd/X_Shaped_Laptop_Stand_With_Telescopic_Holders.png/960px-X_Shaped_Laptop_Stand_With_Telescopic_Holders.png" alt="حامل قابل للطي لرفع اللابتوب"
+                        loading="lazy">
+                    <h3>حامل لابتوب</h3>
+                    <p>يرفع الشاشة لمستوى النظر ويساعد على جلسة أريح وتهوية أفضل. مع الاستخدام الطويل، أضف لوحة مفاتيح وماوسًا خارجيين.</p>
+                </article>
+                <article>
+                    <img class="laptop-guide-card-image laptop-software-image" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/A_computer_mouse%2C_black_and_white%2C_retouched%2C_keyboard_visible_in_background.jpg/960px-A_computer_mouse%2C_black_and_white%2C_retouched%2C_keyboard_visible_in_background.jpg"
+                        alt="ماوس كمبيوتر لاسلكي" loading="lazy">
+                    <h3>ماوس</h3>
+                    <p>يسهّل تحديد العناصر والسحب والعمل الدقيق في التصميم والجداول. مفيد أيضًا إذا كان استخدام لوحة اللمس متعبًا.</p>
+                </article>
+                <article>
+                    <img class="laptop-guide-card-image laptop-software-image" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/0/04/2023_Hub_USB_2.0.jpg/960px-2023_Hub_USB_2.0.jpg" alt="موزّع USB لزيادة منافذ اللابتوب" loading="lazy">
+                    <h3>موزّع منافذ USB-C Hub</h3>
+                    <p>يوصل شاشة أو فلاشات أو شبكة سلكية إذا كانت منافذ الجهاز محدودة. تأكد من دعم منفذ USB-C للشاشة أو الشحن قبل اختيار الموزّع.</p>
+                </article>
+                <article>
+                    <img class="laptop-guide-card-image laptop-software-image" src="https://images.unsplash.com/photo-1610041321327-b794c052db27?q=80&w=720&auto=format&fit=crop" alt="سماعة رأس سلكية" loading="lazy">
+                    <h3>سماعة رأس بميكروفون</h3>
+                    <p>تحسّن وضوح المحاضرات والاجتماعات وتقلل الضوضاء حولك. الميكروفون مفيد للمشاركة في الدروس والمكالمات.</p>
+                </article>
+                <article>
+                    <img class="laptop-guide-card-image laptop-software-image" src="https://upload.wikimedia.org/wikipedia/commons/9/91/S.S.D.jpg" alt="وحدة تخزين SSD خارجية" loading="lazy">
+                    <h3>وحدة تخزين خارجية</h3>
+                    <p>تنقل المشاريع وتحفظ نسخة احتياطية من ملفاتك المهمة. احتفظ بنسخة أخرى في مكان منفصل؛ لا تجعلها النسخة الوحيدة.</p>
+                </article>
+                <article>
+                    <img class="laptop-guide-card-image laptop-software-image" src="https://upload.wikimedia.org/wikipedia/commons/4/47/Apple_USB_Keyboard_A.jpg" alt="لوحة مفاتيح USB خارجية" loading="lazy">
+                    <h3>لوحة مفاتيح خارجية</h3>
+                    <p>تساعد على الكتابة براحة عند استخدام حامل اللابتوب، وتفيد إذا كانت لوحة الجهاز صغيرة أو غير مريحة. ليست ضرورية إذا كانت لوحة اللابتوب مناسبة لك.</p>
+                </article>
+                <article>
+                    <img class="laptop-guide-card-image laptop-software-image" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/14/Laptop_cooler.JPG/960px-Laptop_cooler.JPG" alt="قاعدة تبريد بمراوح للابتوب" loading="lazy">
+                    <h3>قاعدة تبريد</h3>
+                    <p>قد تساعد على تحسين تدفق الهواء عند تشغيل برامج ثقيلة لفترة طويلة أو إذا كانت فتحات التهوية أسفل الجهاز. ابدأ بتنظيف فتحات التهوية ووضع الجهاز على سطح صلب؛ القاعدة اختيارية وليست بديلًا عن الصيانة.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="laptop-source-note" aria-label="المصادر والمنهجية">
+            <span>المواصفات المذكورة إرشادية؛ راجع متطلبات إصدار البرنامج ومشروعاتك قبل الاختيار.</span>
+            <details class="laptop-image-credits">
+                <summary>مصادر الصور والتراخيص</summary>
+                <p>صور <a href="https://commons.wikimedia.org/wiki/File:2023_Intel_Core_i7_12700KF_(3).jpg" target="_blank" rel="noopener noreferrer">المعالج</a> و<a href="https://commons.wikimedia.org/wiki/File:2017_Dysk_SSD_Plextor_M8Pe(Y)_256GB.jpg" target="_blank"
+                        rel="noopener noreferrer">SSD</a> و<a href="https://commons.wikimedia.org/wiki/File:ThinkPad_X220_CPU_cooling_system_(fan_and_heatsink_assembly).jpg" target="_blank" rel="noopener noreferrer">التبريد</a> و<a href="https://commons.wikimedia.org/wiki/File:Lenovo_ThinkPad_X220_7-row_keyboard_US_International_layout.jpg"
+                        target="_blank" rel="noopener noreferrer">لوحة المفاتيح</a> من Wikimedia Commons بترخيص CC BY-SA. صورة <a href="https://commons.wikimedia.org/wiki/File:Samsung-1GB-DDR2-Laptop-RAM.jpg" target="_blank" rel="noopener noreferrer">الذاكرة</a>                    في الملكية العامة، وصورة <a href="https://commons.wikimedia.org/wiki/File:Li_ion_laptop_battery.jpg" target="_blank" rel="noopener noreferrer">البطارية</a> بترخيص CC BY-SA. صورة <a href="https://commons.wikimedia.org/wiki/File:Computer-motherboard-pc-wires_(23698613303).jpg"
+                        target="_blank" rel="noopener noreferrer">اللوحة الأم</a> و<a href="https://commons.wikimedia.org/wiki/File:Code_on_computer_monitor_(Unsplash).jpg" target="_blank" rel="noopener noreferrer">الشيفرة</a> بترخيص CC0.</p>
+                <p>صورة كرت الشاشة مقدمة من <a href="https://commons.wikimedia.org/wiki/File:ATI_Radeon_HD_5970_Graphics_Card-oblique_view.jpg" target="_blank" rel="noopener noreferrer">AMD</a> مع الإسناد. صور الشاشة والمونتاج من <a href="https://unsplash.com/photos/u4bvBOOpZB4"
+                        target="_blank" rel="noopener noreferrer">Unsplash</a>. شعارات Figma وBlender علامات مملوكة لأصحابها.</p>
+                <p>صور <a href="https://unsplash.com/photos/eNIAipH_Bcs" target="_blank" rel="noopener noreferrer">الحقيبة</a> و<a href="https://unsplash.com/photos/w5m3PIGvkqI" target="_blank" rel="noopener noreferrer">السماعة</a> من Unsplash. صور <a href="https://commons.wikimedia.org/wiki/File:X_Shaped_Laptop_Stand_With_Telescopic_Holders.png"
+                        target="_blank" rel="noopener noreferrer">الحامل</a> بترخيص CC0، و<a href="https://commons.wikimedia.org/wiki/File:A_computer_mouse,_black_and_white,_retouched,_keyboard_visible_in_background.jpg" target="_blank" rel="noopener noreferrer">الماوس</a>                    في الملكية العامة، و<a href="https://commons.wikimedia.org/wiki/File:2023_Hub_USB_2.0.jpg" target="_blank" rel="noopener noreferrer">USB hub</a> و<a href="https://commons.wikimedia.org/wiki/File:S.S.D.jpg" target="_blank" rel="noopener noreferrer">SSD الخارجي</a>                    بترخيص CC BY-SA 4.0.</p>
+                <p>صورة <a href="https://commons.wikimedia.org/wiki/File:Apple_USB_Keyboard_A.jpg" target="_blank" rel="noopener noreferrer">لوحة المفاتيح</a> و<a href="https://commons.wikimedia.org/wiki/File:Laptop_cooler.JPG" target="_blank" rel="noopener noreferrer">قاعدة التبريد</a>                    من Wikimedia Commons بترخيص CC BY-SA.</p>
+                <p>صورة برامج Office من <a href="https://unsplash.com/photos/RbQ4j2ggOmY" target="_blank" rel="noopener noreferrer">Unsplash</a> بواسطة Gorilla ROI Data Connector.</p>
+            </details>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer__inner">
+            <p class="footer__text">معاً نحو مستقبل أفضل &nbsp;|&nbsp; طلاب أهلية &nbsp;|&nbsp; <a href="team.html" class="footer__link">فريق العمل</a></p>
+        </div>
+    </footer>
+    <script src="script.js?v=20261008"></script>
+    <script src="page.js"></script>
+    <script src="mobile.js"></script>
+</body>
+
+</html>

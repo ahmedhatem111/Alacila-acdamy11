@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>المكتبة التقنية | أهلية أكاديمي</title>
+    <script>
+        try {
+            if (!JSON.parse(localStorage.getItem("ahlia_user"))) throw 0;
+        } catch (e) {
+            location.replace("login.html?next=" + encodeURIComponent(location.pathname.split("/").pop()));
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=20261008">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#050a2a">
+    <link rel="icon" href="icons/icon-192.png">
+    <script src="theme.js"></script>
+    <script src="config.js"></script>
+    <script src="backend.js"></script>
+    <script src="store.js"></script>
+</head>
+
+<body data-page="library">
+    <canvas id="stars" aria-hidden="true"></canvas>
+    <header class="header">
+        <div class="container header__inner">
+            <a href="index.html" class="logo">
+                <svg class="logo__icon" viewbox="0 0 48 48" aria-hidden="true"><defs><lineargradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f7bff"/><stop offset="1" stop-color="#7c3aed"/></lineargradient></defs><path d="M24 3 L44 44 L34 44 L24 22 L14 44 L4 44 Z" fill="url(#lg)"/><path d="M24 30 L30 44 L18 44 Z" fill="#a78bfa"/></svg>
+                <span>أهلية أكاديمي</span>
+            </a>
+            <nav class="nav" id="nav" aria-label="القائمة الرئيسية">
+                <a href="index.html#home">الرئيسية</a>
+                <a href="index.html#years">السنوات الدراسية</a>
+                <a href="index.html#majors">التخصصات</a>
+                <a href="courses.html">الكورسات</a>
+                <a href="library.html" class="active" aria-current="page">المكتبة</a>
+                <a href="staff.html">هيئة التدريس</a>
+                <a href="movies.html">الأفلام</a>
+                <a href="videos.html">فيديوهات تقنية</a>
+                <a href="schedule.html">جدولي</a>
+                <a href="teams.html">زملاء المشروع</a>
+            </nav>
+            <div class="header__actions">
+                <button type="button" class="theme-toggle" id="themeToggle" aria-pressed="false" aria-label="تفعيل الألوان المريحة للعين" title="تفعيل الألوان المريحة للعين"><svg class="sun" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg><svg class="moon" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+                <span class="hello">أهلاً، <b data-user-name></b></span>
+                <button type="button" class="btn btn--outline btn--sm" id="logout">خروج</button>
+                <button class="burger" id="burger" aria-label="فتح القائمة" aria-expanded="false"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container library-page">
+        <p class="crumbs"><a href="index.html">الرئيسية</a> / <span>المكتبة التقنية</span></p>
+        <section class="library-hero">
+            <div>
+                <span class="library-eyebrow">مراجع للقراءة والتعلّم</span>
+                <h1>المكتبة التقنية</h1>
+                <p>كتب ومراجع في البرمجة وتطوير الويب والأنظمة والخوارزميات.</p>
+            </div>
+            <span class="library-total" id="bookTotal" aria-live="polite"></span>
+        </section>
+
+        <section class="library-catalog" aria-label="كتب ومراجع التقنية">
+            <div class="library-toolbar">
+                <label class="library-search">
+                    <svg viewbox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg>
+                    <input id="bookSearch" type="search" placeholder="ابحث باسم الكتاب أو المؤلف" aria-label="ابحث في المكتبة" autocomplete="off">
+                </label>
+                <span class="library-count" id="bookCount" aria-live="polite"></span>
+            </div>
+            <div class="library-chips" id="bookCategories" role="group" aria-label="تصفية حسب المجال"></div>
+            <div class="library-grid" id="bookGrid"></div>
+            <p class="library-empty" id="bookEmpty" hidden>لا توجد كتب مطابقة لهذا البحث أو المجال.</p>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer__inner">
+            <p class="footer__text">معاً نحو مستقبل أفضل &nbsp;|&nbsp; طلاب أهلية &nbsp;|&nbsp; <a href="team.html" class="footer__link">فريق العمل</a></p>
+        </div>
+    </footer>
+    <script src="script.js?v=20261008"></script>
+    <script src="page.js"></script>
+    <script src="data.js"></script>
+    <script src="library.js"></script>
+    <script src="mobile.js"></script>
+</body>
+
+</html>

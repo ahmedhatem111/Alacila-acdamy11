@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>فرص العمل والتدريب | أهلية أكاديمي</title>
+    <script>
+        try {
+            if (!JSON.parse(localStorage.getItem("ahlia_user"))) throw 0;
+        } catch (e) {
+            location.replace("login.html?next=" + encodeURIComponent(location.pathname.split("/").pop()));
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=20261008">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#050a2a">
+    <link rel="icon" href="icons/icon-192.png">
+    <script src="theme.js"></script>
+    <script src="config.js"></script>
+    <script src="backend.js"></script>
+    <script src="store.js"></script>
+</head>
+
+<body data-page="opportunities">
+    <canvas id="stars" aria-hidden="true"></canvas>
+    <header class="header">
+        <div class="container header__inner">
+            <a href="index.html" class="logo">
+                <svg class="logo__icon" viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f7bff"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs><path d="M24 3 L44 44 L34 44 L24 22 L14 44 L4 44 Z" fill="url(#lg)"/><path d="M24 30 L30 44 L18 44 Z" fill="#a78bfa"/></svg>
+                <span>أهلية أكاديمي</span>
+            </a>
+            <nav class="nav" id="nav" aria-label="القائمة الرئيسية"></nav>
+            <div class="header__actions">
+                <button type="button" class="theme-toggle" id="themeToggle" aria-pressed="false" aria-label="تفعيل الألوان المريحة للعين" title="تفعيل الألوان المريحة للعين"><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+                <span class="hello">أهلاً، <b data-user-name></b></span>
+                <button type="button" class="btn btn--outline btn--sm" id="logout">خروج</button>
+                <button class="burger" id="burger" aria-label="فتح القائمة" aria-expanded="false"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container opportunities-page">
+        <p class="crumbs"><a href="index.html">الرئيسية</a> / <span>فرص العمل والتدريب</span></p>
+        <section class="opportunities-hero">
+            <span class="opportunities-eyebrow">خطوتك التالية</span>
+            <h1>فرص عمل وتدريب ومسابقات وتطوع</h1>
+            <p>فرص من قنا وسوهاج وأسيوط والقاهرة، إلى جانب برامج أونلاين. راجع الشروط والمواعيد من المصدر الرسمي قبل التقديم.</p>
+        </section>
+
+        <section class="opportunities-directory" aria-labelledby="directoryTitle">
+            <div class="opportunities-controls">
+                <label>
+                    <span>نوع الفرصة</span>
+                    <select id="opportunityKind">
+                        <option value="all">الكل</option>
+                        <option value="jobs">وظائف</option>
+                        <option value="training">برامج تدريبية</option>
+                        <option value="competition">مسابقات وتحديات</option>
+                        <option value="volunteering">تطوع</option>
+                    </select>
+                </label>
+                <label>
+                    <span>الموقع</span>
+                    <select id="opportunityRegion">
+                        <option value="all">كل الأماكن</option>
+                        <option value="qena">قنا</option>
+                        <option value="sohag">سوهاج</option>
+                        <option value="assiut">أسيوط</option>
+                        <option value="cairo">القاهرة</option>
+                        <option value="alexandria">الإسكندرية</option>
+                        <option value="online">أونلاين / عن بُعد</option>
+                    </select>
+                </label>
+                <label class="opportunities-keyword">
+                    <span>المجال أو الجهة أو كلمة بحث</span>
+                    <input id="opportunityKeyword" type="search" placeholder="برمجة، دعم فني، بيانات..." autocomplete="off">
+                </label>
+            </div>
+
+            <div class="opportunities-results-head">
+                <h2 id="directoryTitle">الفرص المتاحة</h2>
+                <div class="opportunities-results-actions">
+                    <span id="opportunityCount" aria-live="polite"></span>
+                    <button type="button" class="btn btn--outline btn--sm" id="opportunityRefresh" aria-label="تحديث الفرص">
+                        تحديث الفرص
+                    </button>
+                </div>
+            </div>
+            <p class="opportunities-status" id="opportunityStatus" role="status" aria-live="polite">جارٍ التحقق من آخر التحديثات...</p>
+            <div class="opportunities-grid">
+                <article class="card opportunity-card" data-opportunity-card data-kind="jobs" data-region="qena" data-keywords="مفتش جودة quality inspector قنا realme">
+                    <img class="opportunity-card__image opportunity-card__image--brand-logo" src="https://forasna-images.wuzzuf-data.net/uploads/logos/thumb_clogo_2019-02-18-14-40-27_kZubS12Ty1gMoLenlWekhgXX.jpeg" alt="شعار شركة ريل مي من صفحة فرصنا" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark opportunity-mark--forasna">قنا</span><span class="opportunity-type">وظيفة • دوام كامل</span></div>
+                    <h3>مفتش جودة</h3>
+                    <p class="opportunity-meta"><strong>الجهة:</strong> ريل مي <span>•</span> <strong>المكان:</strong> قنا</p>
+                    <p>خبرة مطلوبة من سنة إلى 5 سنوات، مؤهل عالٍ، إنجليزية جيدة وإجادة الحاسب وMicrosoft Office. الراتب غير معلن.</p>
+                    <a class="btn btn--primary btn--sm" href="https://forasna.com/job/p/%D9%85%D9%81%D8%AA%D8%B4-%D8%AC%D9%88%D8%AF%D8%A9-%D8%B1%D9%8A%D9%84-%D9%85%D9%8A-%D9%85%D8%B5%D8%B1-%D9%82%D9%86%D8%A7-441969" target="_blank" rel="noopener noreferrer">تفاصيل الإعلان والتقديم</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="jobs" data-region="qena" data-keywords="مندوب مبيعات مواد غذائية قنا مبيعات">
+                    <img class="opportunity-card__image opportunity-card__image--brand-logo" src="https://forasna.com/assets/img/logo-v2.png" alt="شعار منصة فرصنا، جهة الإعلان غير معلنة" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark opportunity-mark--forasna">قنا</span><span class="opportunity-type">وظيفة • دوام كامل</span></div>
+                    <h3>مندوب مبيعات مواد غذائية</h3>
+                    <p class="opportunity-meta"><strong>الجهة:</strong> شركة غير معلنة <span>•</span> <strong>المكان:</strong> قنا</p>
+                    <p>خبرة مطلوبة من سنتين إلى 5 سنوات، مؤهل عالٍ، والراتب المعلن 9,000 جنيه. راجع شروط السن والنوع في الإعلان.</p>
+                    <a class="btn btn--primary btn--sm" href="https://forasna.com/job/p/%D9%85%D9%86%D8%AF%D9%88%D8%A8-%D9%85%D8%A8%D9%8A%D8%B9%D8%A7%D8%AA-%D9%85%D9%88%D8%A7%D8%AF-%D8%BA%D8%B0%D8%A7%D8%A6%D9%8A%D8%A9-%D9%83%D9%84%D8%A7%D8%B3-%D8%A3%D9%8A%D9%87-%D9%84%D9%84%D8%AA%D8%AC%D8%A7%D8%B1%D8%A9-%D9%85%D8%B5%D8%B1-%D9%82%D9%86%D8%A7-442177"
+                        target="_blank" rel="noopener noreferrer">تفاصيل الإعلان والتقديم</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="jobs" data-region="cairo" data-keywords="junior software engineer expleo cairo خريجين">
+                    <img class="opportunity-card__image opportunity-card__image--source-icon" src="https://eg.indeed.com/favicon.ico" alt="أيقونة Indeed، مصدر الإعلان الوظيفي" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark opportunity-mark--indeed">مصر</span><span class="opportunity-type">وظيفة مبتدئة</span></div>
+                    <h3>Junior Software Engineer</h3>
+                    <p class="opportunity-meta"><strong>الجهة:</strong> Expleo <span>•</span> <strong>المكان:</strong> القاهرة</p>
+                    <p>مناسبة للخريجين الجدد؛ خبرة من صفر إلى سنة. يطلب الإعلان أساسًا هندسيًا جيدًا وإجادة الإنجليزية.</p>
+                    <a class="btn btn--primary btn--sm" href="https://eg.indeed.com/viewjob?jk=64b6477a57b67f40" target="_blank" rel="noopener noreferrer">تفاصيل الإعلان والتقديم</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="jobs" data-region="cairo" data-keywords="tech internship unifonic cairo تدريب تقنية برمجيات بيانات ذكاء اصطناعي qa devops">
+                    <img class="opportunity-card__image opportunity-card__image--source-icon" src="https://eg.indeed.com/favicon.ico" alt="أيقونة Indeed، مصدر إعلان التدريب" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark opportunity-mark--indeed">مصر</span><span class="opportunity-type">تدريب عملي • 2026</span></div>
+                    <h3>Tech Internship Program</h3>
+                    <p class="opportunity-meta"><strong>الجهة:</strong> Unifonic <span>•</span> <strong>المكان:</strong> القاهرة</p>
+                    <p>برنامج تدريب تقني يشمل مجالات البرمجيات والبيانات والذكاء الاصطناعي واختبار الجودة وDevOps.</p>
+                    <a class="btn btn--primary btn--sm" href="https://eg.indeed.com/viewjob?jk=458f9ca0c4cb31d6" target="_blank" rel="noopener noreferrer">تفاصيل التدريب والتقديم</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="jobs" data-region="alexandria" data-keywords="internship espace alexandria تدريب تطوير برمجيات">
+                    <img class="opportunity-card__image opportunity-card__image--source-icon" src="https://eg.indeed.com/favicon.ico" alt="أيقونة Indeed، مصدر إعلان التدريب" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark opportunity-mark--indeed">مصر</span><span class="opportunity-type">تدريب عملي</span></div>
+                    <h3>Internship Program</h3>
+                    <p class="opportunity-meta"><strong>الجهة:</strong> eSpace for Software Development <span>•</span> <strong>المكان:</strong> الإسكندرية</p>
+                    <p>تدريب لدى شركة تطوير برمجيات؛ يتضمن تقييمًا تقنيًا ومقابلة عبر الإنترنت للمرشحين المختارين.</p>
+                    <a class="btn btn--primary btn--sm" href="https://eg.indeed.com/viewjob?jk=9c4cd039d6a350e9" target="_blank" rel="noopener noreferrer">تفاصيل التدريب والتقديم</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="jobs" data-region="cairo" data-keywords="junior software testing engineer rawaj cairo qa اختبار جودة برمجيات">
+                    <img class="opportunity-card__image opportunity-card__image--source-icon" src="https://eg.indeed.com/favicon.ico" alt="أيقونة Indeed، مصدر الإعلان الوظيفي" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark opportunity-mark--indeed">مصر</span><span class="opportunity-type">وظيفة مبتدئة</span></div>
+                    <h3>Junior Software Testing Engineer</h3>
+                    <p class="opportunity-meta"><strong>الجهة:</strong> Rawaj <span>•</span> <strong>المكان:</strong> القاهرة</p>
+                    <p>يركز الإعلان على أساسيات دورة اختبار البرمجيات ودورة تطويرها ومنهجيات الاختبار وإدارة العيوب.</p>
+                    <a class="btn btn--primary btn--sm" href="https://eg.indeed.com/viewjob?jk=792c55db17d52233" target="_blank" rel="noopener noreferrer">تفاصيل الإعلان والتقديم</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="training" data-region="qena" data-keywords="nti creativa قنا تدريب ccna دعم فني تحليل بيانات تعلم آلي ويب تطبيقات تصميم">
+                    <img class="opportunity-card__image" src="https://nti.sci.eg/images/about/creativa2.jpg" alt="مركز Creativa للتدريب، من موقع المعهد القومي للاتصالات" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark opportunity-mark--nti">NTI</span><span class="opportunity-type">تدريب حضوري • قنا</span></div>
+                    <h3>مسارات NTI Creativa في قنا</h3>
+                    <p>المسارات المنشورة تشمل CCNA، الدعم الفني، تحليل البيانات، تعلم الآلة، تطوير الويب وواجهات UI/UX، إلى جانب التصميم والمونتاج.</p>
+                    <p class="opportunity-meta">المكان: مركز Creativa بقنا. مواعيد التسجيل والدفعات تتغير حسب الإعلان.</p>
+                    <a class="btn btn--primary btn--sm" href="https://nti.sci.eg/dey/coursescrloc.php?centerID=12" target="_blank" rel="noopener noreferrer">التفاصيل والتسجيل</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="training" data-region="online" data-keywords="maharatech istqb اختبار software testing qa online اونلاين">
+                    <img class="opportunity-card__image opportunity-card__image--course" src="https://maharatech.gov.eg/theme/edumy/pix/newBanners/tracks/Software%20Testing/ISTQB-Foundation-Level-V4.0-course-banner.jpg" alt="بانر دورة ISTQB الأصلي من مهارة تك" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark opportunity-mark--maharatech">ITI</span><span class="opportunity-type">تدريب أونلاين</span></div>
+                    <h3>ISTQB Foundation Level V4.0</h3>
+                    <p>دورة تأسيسية في اختبار البرمجيات، تشمل دورة التطوير، أنواع الاختبارات، تصميم حالات الاختبار وإدارة المخاطر.</p>
+                    <p class="opportunity-meta">المكان: أونلاين من أي محافظة. المتطلبات: معرفة تمهيدية بمفاهيم اختبار البرمجيات.</p>
+                    <a class="btn btn--primary btn--sm" href="https://maharatech.gov.eg/course/view.php?id=2372" target="_blank" rel="noopener noreferrer">تفاصيل الدورة والتسجيل</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="training" data-region="online" data-keywords="maharatech java network programming شبكات برمجة اونلاين">
+                    <img class="opportunity-card__image opportunity-card__image--course" src="https://maharatech.gov.eg/theme/edumy/pix/newBanners/tracks/Java/Java-IO-course-banner.jpg" alt="بانر دورة Java I/O الأصلي من مهارة تك" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark opportunity-mark--maharatech">ITI</span><span class="opportunity-type">تدريب أونلاين</span></div>
+                    <h3>Java I/O and Network Programming</h3>
+                    <p>تدريب على إدخال وإخراج Java وتطبيقات TCP/UDP وRMI وJava NIO من خلال تطبيقات عملية.</p>
+                    <p class="opportunity-meta">المكان: أونلاين من أي محافظة. المتطلبات: أساسيات Java وهياكل البيانات وOOP والشبكات.</p>
+                    <a class="btn btn--primary btn--sm" href="https://maharatech.gov.eg/course/view.php?id=2233" target="_blank" rel="noopener noreferrer">تفاصيل الدورة والتسجيل</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="training" data-region="online" data-keywords="maharatech freelance freelancing عمل حر مهارات اونلاين">
+                    <img class="opportunity-card__image opportunity-card__image--course" src="https://maharatech.gov.eg/theme/edumy/pix/newBanners/FReelance-kit-coursebanner.jpg" alt="بانر دورة Find Your Freelance Fit الأصلي من مهارة تك" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark opportunity-mark--maharatech">ITI</span><span class="opportunity-type">تدريب أونلاين</span></div>
+                    <h3>Find Your Freelance Fit</h3>
+                    <p>يساعدك على اكتشاف المهارات المناسبة للعمل الحر ومقارنتها بالمهارات المطلوبة في السوق.</p>
+                    <p class="opportunity-meta">المكان: أونلاين. لا توجد متطلبات مسبقة مذكورة في صفحة الدورة.</p>
+                    <a class="btn btn--primary btn--sm" href="https://maharatech.gov.eg/course/view.php?id=2380" target="_blank" rel="noopener noreferrer">تفاصيل الدورة والتسجيل</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="jobs" data-region="sohag" data-keywords="مشتريات procurement specialist اخصائي مشتريات سوهاج ليدز">
+                    <img class="opportunity-card__image opportunity-card__image--brand-logo" src="https://forasna.com/assets/img/logo-v2.png" alt="شعار منصة فرصنا، مصدر الإعلان" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark opportunity-mark--forasna">سوهاج</span><span class="opportunity-type">وظيفة • دوام كامل</span></div>
+                    <h3>أخصائي مشتريات</h3>
+                    <p class="opportunity-meta"><strong>الجهة:</strong> ليدز <span>•</span> <strong>المكان:</strong> سوهاج</p>
+                    <p>خبرة من سنة إلى 3 سنوات، مؤهل عالٍ، وإنجليزية جيدة وإجادة Microsoft Office. الإعلان نُشر قبل 9 أيام وقت المراجعة.</p>
+                    <a class="btn btn--primary btn--sm" href="https://forasna.com/job/p/%D8%A7%D8%AE%D8%B5%D8%A7%D8%A6%D9%8A-%D9%85%D8%B4%D8%AA%D8%B1%D9%8A%D8%A7%D8%AA-procurement-specialist-%D9%84%D9%8A%D8%AF%D8%B2-%D9%85%D8%B5%D8%B1-%D8%B3%D9%88%D9%87%D8%A7%D8%AC-442252"
+                        target="_blank" rel="noopener noreferrer">تفاصيل الإعلان والتقديم</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="jobs" data-region="assiut" data-keywords="مندوب مبيعات خارجية تجزئة brandmix اسيوط راتب حوافز">
+                    <img class="opportunity-card__image opportunity-card__image--brand-logo" src="https://forasna.com/assets/img/logo-v2.png" alt="شعار منصة فرصنا، مصدر الإعلان" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark opportunity-mark--forasna">أسيوط</span><span class="opportunity-type">وظيفة • دوام كامل</span></div>
+                    <h3>مندوب مبيعات خارجية (تجزئة)</h3>
+                    <p class="opportunity-meta"><strong>الجهة:</strong> شركة غير معلنة <span>•</span> <strong>المكان:</strong> أسيوط</p>
+                    <p>خبرة من سنة إلى 5 سنوات ورخصة قيادة خاصة. الراتب المعلن 12,000–16,000 جنيه مع حوافز 4,800–5,600 جنيه. نُشر قبل 5 أيام وقت المراجعة.</p>
+                    <a class="btn btn--primary btn--sm" href="https://forasna.com/job/p/%D9%85%D9%86%D8%AF%D9%88%D8%A8-%D9%85%D8%A8%D9%8A%D8%B9%D8%A7%D8%AA-%D8%AE%D8%A7%D8%B1%D8%AC%D9%8A%D8%A9-%D8%AA%D8%AC%D8%B2%D8%A6%D8%A9-%D8%A8%D8%B1%D8%A7%D9%86%D8%AF%D9%85%D9%8A%D9%83%D8%B3-%D9%85%D8%B5%D8%B1-%D8%A7%D8%B3%D9%8A%D9%88%D8%B7-442611"
+                        target="_blank" rel="noopener noreferrer">تفاصيل الإعلان والتقديم</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="jobs" data-region="qena" data-keywords="وظائف قنا فرصنا توظيف مجالات متنوعة">
+                    <img class="opportunity-card__image opportunity-card__image--brand-logo" src="https://forasna.com/assets/img/logo-v2.png" alt="شعار منصة فرصنا للوظائف" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark opportunity-mark--forasna">قنا</span><span class="opportunity-type">قائمة وظائف تتحدث يوميًا</span></div>
+                    <h3>وظائف قنا حسب المجال</h3>
+                    <p>تعرض صفحة فرصنا إعلانات متنوعة في قنا ومراكزها، منها المبيعات والإدارة والتشييد والخدمات.</p>
+                    <a class="btn btn--primary btn--sm" href="https://forasna.com/a/%D9%88%D8%B8%D8%A7%D8%A6%D9%81-%D9%82%D9%86%D8%A7" target="_blank" rel="noopener noreferrer">تصفح وظائف قنا</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="jobs" data-region="sohag" data-keywords="وظائف سوهاج فرصنا توظيف مجالات متنوعة">
+                    <img class="opportunity-card__image opportunity-card__image--brand-logo" src="https://forasna.com/assets/img/logo-v2.png" alt="شعار منصة فرصنا للوظائف" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark opportunity-mark--forasna">سوهاج</span><span class="opportunity-type">قائمة وظائف تتحدث يوميًا</span></div>
+                    <h3>وظائف سوهاج حسب المجال</h3>
+                    <p>تصفح إعلانات سوهاج ومراكزها في المبيعات والمشتريات والنشر والخدمات وغيرها.</p>
+                    <a class="btn btn--primary btn--sm" href="https://forasna.com/a/%D9%88%D8%B8%D8%A7%D8%A6%D9%81-%D8%B3%D9%88%D9%87%D8%A7%D8%AC" target="_blank" rel="noopener noreferrer">تصفح وظائف سوهاج</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="jobs" data-region="assiut" data-keywords="وظائف اسيوط فرصنا توظيف مجالات متنوعة">
+                    <img class="opportunity-card__image opportunity-card__image--brand-logo" src="https://forasna.com/assets/img/logo-v2.png" alt="شعار منصة فرصنا للوظائف" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark opportunity-mark--forasna">أسيوط</span><span class="opportunity-type">قائمة وظائف تتحدث يوميًا</span></div>
+                    <h3>وظائف أسيوط حسب المجال</h3>
+                    <p>تصفح الوظائف في أسيوط وأسيوط الجديدة، بما فيها المبيعات وخدمة العملاء والإدارة.</p>
+                    <a class="btn btn--primary btn--sm" href="https://forasna.com/a/%D9%88%D8%B8%D8%A7%D8%A6%D9%81-%D8%A7%D8%B3%D9%8A%D9%88%D8%B7" target="_blank" rel="noopener noreferrer">تصفح وظائف أسيوط</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="jobs" data-region="cairo" data-keywords="wuzzuf وظائف القاهرة مصر بحث وظائف تقنية برمجة">
+                    <img class="opportunity-card__image opportunity-card__image--source-icon" src="https://wuzzuf.net/favicon.ico" alt="أيقونة منصة وظف" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark opportunity-mark--wuzzuf">Wuzzuf</span><span class="opportunity-type">بوابة بحث وظائف</span></div>
+                    <h3>وظائف القاهرة ومصر على Wuzzuf</h3>
+                    <p>افتح نتائج البحث المحدثة وابحث حسب المجال والخبرة ومكان العمل.</p>
+                    <a class="btn btn--primary btn--sm" href="https://wuzzuf.net/search/jobs/?l=Cairo%2C%20Egypt" target="_blank" rel="noopener noreferrer">استكشف وظائف Wuzzuf</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="training" data-region="online" data-keywords="maharatech ذكاء اصطناعي موارد بشرية hr وظائف مقابلات توليدي">
+                    <img class="opportunity-card__image opportunity-card__image--course" src="https://maharatech.gov.eg/theme/edumy/pix/newBanners/ai-hr.jpg" alt="بانر دورة الذكاء الاصطناعي التوليدي لمهام الموارد البشرية من مهارة تك" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark opportunity-mark--maharatech">ITI</span><span class="opportunity-type">دورة جديدة • أونلاين</span></div>
+                    <h3>الذكاء الاصطناعي التوليدي لمهام الموارد البشرية</h3>
+                    <p>تطبيقات عملية لتحليل السير الذاتية، وتحسين الوصف الوظيفي، وإعداد أسئلة المقابلات والتعلم المخصص.</p>
+                    <a class="btn btn--primary btn--sm" href="https://maharatech.gov.eg/course/view.php?id=2383" target="_blank" rel="noopener noreferrer">تفاصيل الدورة والتسجيل</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="training" data-region="online" data-keywords="maharatech ai security امن سيبراني ذكاء اصطناعي هجمات دفاع">
+                    <img class="opportunity-card__image opportunity-card__image--course" src="https://maharatech.gov.eg/theme/edumy/pix/newBanners/aisec-coursebanner.png" alt="بانر دورة تأمين أنظمة الذكاء الاصطناعي من مهارة تك" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark opportunity-mark--maharatech">ITI</span><span class="opportunity-type">دورة جديدة • أونلاين</span></div>
+                    <h3>تأمين الذكاء الاصطناعي: من الهجمات إلى الدفاع</h3>
+                    <p>مختبرات عملية عن تسميم البيانات والهجمات الخصومية والخصوصية وأطر إدارة مخاطر الذكاء الاصطناعي.</p>
+                    <a class="btn btn--primary btn--sm" href="https://maharatech.gov.eg/course/view.php?id=2373" target="_blank" rel="noopener noreferrer">تفاصيل الدورة والتسجيل</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="training" data-region="online" data-keywords="maharatech applied ai healthcare ذكاء اصطناعي صحة طب بيانات صور طبية nlp">
+                    <img class="opportunity-card__image opportunity-card__image--course" src="https://maharatech.gov.eg/theme/edumy/pix/newBanners/AI-in-Healthcare-Banner-img.jpg" alt="بانر دورة الذكاء الاصطناعي التطبيقي في بيانات الرعاية الصحية من مهارة تك" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark opportunity-mark--maharatech">ITI</span><span class="opportunity-type">دورة جديدة • أونلاين</span></div>
+                    <h3>الذكاء الاصطناعي التطبيقي في بيانات الرعاية الصحية</h3>
+                    <p>تعلم تطبيقات تعلم الآلة والرؤية الحاسوبية والصور الطبية ومعالجة اللغة والنماذج اللغوية الكبيرة.</p>
+                    <a class="btn btn--primary btn--sm" href="https://maharatech.gov.eg/course/view.php?id=2381" target="_blank" rel="noopener noreferrer">تفاصيل الدورة والتسجيل</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="training" data-region="online" data-keywords="maharatech verilog digital system design تصميم رقمي دوائر الكترونيات hardware">
+                    <img class="opportunity-card__image opportunity-card__image--course" src="https://maharatech.gov.eg/theme/edumy/pix/newBanners/tracks/IC-Design/Verilog-HDL-course-banner.jpg" alt="بانر دورة تصميم الأنظمة الرقمية باستخدام Verilog من مهارة تك" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark opportunity-mark--maharatech">ITI</span><span class="opportunity-type">دورة جديدة • أونلاين</span></div>
+                    <h3>تصميم الأنظمة الرقمية باستخدام Verilog HDL</h3>
+                    <p>تطبيق عملي على تصميم الدوائر الرقمية ومحاكاتها باستخدام Verilog وModelSim. المتطلبات: أساسيات الحاسب أو الهندسة.</p>
+                    <a class="btn btn--primary btn--sm" href="https://maharatech.gov.eg/course/view.php?id=2382" target="_blank" rel="noopener noreferrer">تفاصيل الدورة والتسجيل</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="competition" data-region="online" data-keywords="nasa space apps 2026 ناسا مسابقة هاكاثون فرق فضاء بيانات علوم برمجة">
+                    <img class="opportunity-card__image" src="https://assets.spaceappschallenge.org/media/images/IMG_8593.2e16d0ba.fill-580x435.jpg" alt="فريق مشارك في فعالية NASA Space Apps" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark">NASA</span><span class="opportunity-type">هاكاثون عالمي • 14–15 نوفمبر 2026</span></div>
+                    <h3>NASA Space Apps Challenge 2026</h3>
+                    <p>كوّن فريقًا من ستة مشاركين كحد أقصى واعمل على تحديات حقيقية باستخدام بيانات ناسا. التسجيل مفتوح حتى 15 نوفمبر، مع اختيار فعالية محلية أو افتراضية.</p>
+                    <a class="btn btn--primary btn--sm" href="https://www.spaceappschallenge.org/2026/" target="_blank" rel="noopener noreferrer">التسجيل والتحديات</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="competition" data-region="online" data-keywords="nasa space apps junior astronaut mission trainer رائد فضاء لعبة تعليمية قمر مريخ">
+                    <img class="opportunity-card__image" src="https://assets.spaceappschallenge.org/media/images/IMG_4887.2e16d0ba.fill-348x261.jpg" alt="فريق يعمل على مشروع خلال NASA Space Apps" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark">NASA</span><span class="opportunity-type">تحدٍ ضمن Space Apps • 14–15 نوفمبر</span></div>
+                    <h3>صمّم محاكي مهمة لرائد فضاء ناشئ</h3>
+                    <p>أنشئ لعبة أو تطبيقًا تعليميًا يساعد الطلاب على إدارة قاعدة قمرية أو مريخية وموازنة الطاقة والغذاء والحماية.</p>
+                    <a class="btn btn--primary btn--sm" href="https://www.spaceappschallenge.org/2026/challenges/build-a-junior-astronaut-mission-trainer/" target="_blank" rel="noopener noreferrer">تفاصيل التحدي</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="volunteering" data-region="egypt" data-keywords="تطوع رسالة اطعام قنا سوهاج اسيوط القاهرة جمعية خيرية">
+                    <img class="opportunity-card__image opportunity-card__image--brand-logo" src="https://resala.org/assets/img/Resala-logo.png" alt="شعار جمعية رسالة" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark">رسالة</span><span class="opportunity-type">تطوع • فروع متعددة في مصر</span></div>
+                    <h3>التطوع في أنشطة الإطعام</h3>
+                    <p>قدّم طلب التطوع واختر الفرع والنشاط المناسب من نموذج الجمعية الرسمي.</p>
+                    <a class="btn btn--primary btn--sm" href="https://resala.org/volunteering" target="_blank" rel="noopener noreferrer">طلب التطوع</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="volunteering" data-region="egypt" data-keywords="تطوع رسالة قوافل داخلية طبية خدمة مجتمعية مصر">
+                    <img class="opportunity-card__image opportunity-card__image--brand-logo" src="https://resala.org/assets/img/Resala-logo.png" alt="شعار جمعية رسالة" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark">رسالة</span><span class="opportunity-type">تطوع ميداني • فروع متعددة</span></div>
+                    <h3>التطوع في القوافل الداخلية</h3>
+                    <p>تتيح استمارة رسالة اختيار نشاط القوافل الداخلية أو أنشطة أخرى، مع تحديد الفرع عند التسجيل.</p>
+                    <a class="btn btn--primary btn--sm" href="https://resala.org/volunteering" target="_blank" rel="noopener noreferrer">اختيار النشاط والتقديم</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="volunteering" data-region="egypt" data-keywords="تطوع رسالة أصدقاء البيئة تشجير توعية بيئية مصر">
+                    <img class="opportunity-card__image opportunity-card__image--brand-logo" src="https://resala.org/assets/img/Resala-logo.png" alt="شعار جمعية رسالة" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark">رسالة</span><span class="opportunity-type">تطوع • نشاط بيئي</span></div>
+                    <h3>أصدقاء البيئة</h3>
+                    <p>سجّل عبر نموذج الجمعية واختر نشاط أصدقاء البيئة والفرع المناسب لك.</p>
+                    <a class="btn btn--primary btn--sm" href="https://resala.org/volunteering" target="_blank" rel="noopener noreferrer">طلب التطوع</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="training" data-region="online" data-keywords="maharatech digital twin توأم رقمي الصناعة انترنت الاشياء">
+                    <img class="opportunity-card__image opportunity-card__image--course" src="https://maharatech.gov.eg/theme/edumy/pix/newBanners/tracks/DigitalTwin/Concepts-and-Applications-course-banner.jpg" alt="بانر دورة تقنية التوأم الرقمي من مهارة تك" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark opportunity-mark--maharatech">ITI</span><span class="opportunity-type">دورة أونلاين • بلا متطلبات</span></div>
+                    <h3>تقنية التوأم الرقمي: المفاهيم والتطبيقات</h3>
+                    <p>تعرف على استخدامات التوأم الرقمي في الصناعة ودورة حياة المنتجات والأنظمة السيبرانية الفيزيائية.</p>
+                    <a class="btn btn--primary btn--sm" href="https://maharatech.gov.eg/course/view.php?id=2287" target="_blank" rel="noopener noreferrer">تفاصيل الدورة والتسجيل</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="training" data-region="online" data-keywords="maharatech uipath rpa automation process automation روبوتية explorer">
+                    <img class="opportunity-card__image opportunity-card__image--course" src="https://maharatech.gov.eg/theme/edumy/pix/newBanners/tracks/ai/rpa/RPA-using-UiPath-ex-course-banner.jpg" alt="بانر تدريب UiPath Explorer من مهارة تك" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark opportunity-mark--maharatech">ITI</span><span class="opportunity-type">دورة أونلاين • للمبتدئين</span></div>
+                    <h3>أتمتة المهام باستخدام UiPath</h3>
+                    <p>تدريب عملي على إنشاء روبوتات لأتمتة المهام المتكررة باستخدام واجهة مرئية. لا توجد متطلبات مسبقة.</p>
+                    <a class="btn btn--primary btn--sm" href="https://maharatech.gov.eg/course/view.php?id=2250" target="_blank" rel="noopener noreferrer">تفاصيل الدورة والتسجيل</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="training" data-region="online" data-keywords="maharatech uipath automation developer advanced rpa excel word email selectors">
+                    <img class="opportunity-card__image opportunity-card__image--course" src="https://maharatech.gov.eg/theme/edumy/pix/newBanners/tracks/ai/rpa/RPA-using-UiPath-course%20banner.jpg" alt="بانر تدريب UiPath المتقدم من مهارة تك" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark opportunity-mark--maharatech">ITI</span><span class="opportunity-type">دورة أونلاين • مستوى متوسط</span></div>
+                    <h3>مطوّر الأتمتة باستخدام UiPath</h3>
+                    <p>تدريب على التعامل مع Excel وWord والبريد الإلكتروني والاستثناءات وتصحيح أخطاء تدفقات العمل. يتطلب إكمال تدريب UiPath Explorer.</p>
+                    <a class="btn btn--primary btn--sm" href="https://maharatech.gov.eg/course/view.php?id=2289" target="_blank" rel="noopener noreferrer">تفاصيل الدورة والتسجيل</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="training" data-region="online" data-keywords="hp life strategic planning ai تخطيط استراتيجي swot smart goals">
+                    <img class="opportunity-card__image opportunity-card__image--course" src="https://hplife.blob.core.windows.net/cms/HPLIFE_Web_Images/news/strategic-planning-in-the-ai-age/Strategic-Planning.jpg" alt="صورة دورة التخطيط الاستراتيجي في عصر الذكاء الاصطناعي من HP LIFE"
+                        loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark">HP</span><span class="opportunity-type">مجاني • إنجليزي • شهادة إتمام</span></div>
+                    <h3>التخطيط الاستراتيجي في عصر الذكاء الاصطناعي</h3>
+                    <p>دورة ذاتية لا تتجاوز ساعة عن الرؤية والأهداف وأطر SWOT وSMART واستخدام أدوات الذكاء الاصطناعي في التخطيط.</p>
+                    <a class="btn btn--primary btn--sm" href="https://www.life-global.org/course/447-strategic-planning-in-the-ai-age" target="_blank" rel="noopener noreferrer">الالتحاق بالدورة</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="training" data-region="online" data-keywords="hp life critical thinking ai عصر الذكاء الاصطناعي تحقق معلومات تضليل">
+                    <img class="opportunity-card__image opportunity-card__image--course" src="https://hplife.blob.core.windows.net/cms/HPLIFE_Web_Images/news/ctai/ctai.jpg" alt="صورة دورة التفكير النقدي في عصر الذكاء الاصطناعي من HP LIFE" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark">HP</span><span class="opportunity-type">مجاني • إنجليزي • شهادة إتمام</span></div>
+                    <h3>التفكير النقدي في عصر الذكاء الاصطناعي</h3>
+                    <p>دورة ذاتية قصيرة عن كشف المعلومات المضللة وتقييم المصادر والتحيز والتحقق من الصور والمحتوى.</p>
+                    <a class="btn btn--primary btn--sm" href="https://www.life-global.org/course/439-critical-thinking-in-the-ai-era" target="_blank" rel="noopener noreferrer">الالتحاق بالدورة</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="training" data-region="egypt" data-keywords="nti huawei eta التدريب المحافظات شبكات امن سيبراني 5g ذكاء اصطناعي سحابة">
+                    <img class="opportunity-card__image opportunity-card__image--brand-logo" src="https://nti.sci.eg/images/logo.png" alt="شعار المعهد القومي للاتصالات، مصدر كتالوج التدريب" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark opportunity-mark--nti">NTI</span><span class="opportunity-type">مسارات حسب المحافظة</span></div>
+                    <h3>تدريبات NTI-Huawei في المحافظات</h3>
+                    <p>كتالوج لمسارات Datacom والأمن والجيل الخامس والذكاء الاصطناعي والسحابة. حالة التسجيل تختلف حسب المحافظة والدفعة.</p>
+                    <a class="btn btn--primary btn--sm" href="https://nti.sci.eg/eta/cathuloc.php" target="_blank" rel="noopener noreferrer">اختيار المحافظة والمسار</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="training" data-region="online" data-keywords="ibm skillsbuild generative ai الذكاء الاصطناعي التوليدي شارة رقمية course">
+                    <img class="opportunity-card__image opportunity-card__image--course" src="https://skillsbuild.wpengine.com/wp-content/uploads/2026/06/class_people_research_on_pc_4x3.webp" alt="طلاب يتعلمون التقنية معًا، من IBM SkillsBuild" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark">IBM</span><span class="opportunity-type">تدريب ذاتي • اعتماد رقمي</span></div>
+                    <h3>مقدمة في الذكاء الاصطناعي التوليدي</h3>
+                    <p>مسار تعلّم من IBM SkillsBuild مع اعتماد رقمي، ضمن كتالوج مجاني في الذكاء الاصطناعي والتقنية.</p>
+                    <a class="btn btn--primary btn--sm" href="https://skills.yourlearning.ibm.com/activity/PLAN-BAEFCCAAD520" target="_blank" rel="noopener noreferrer">بدء التعلم</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="training" data-region="online" data-keywords="ibm skillsbuild webinar ai project resume university adults 18 event أكتوبر">
+                    <img class="opportunity-card__image opportunity-card__image--course" src="https://skillsbuild.wpengine.com/wp-content/uploads/2026/06/class_people_research_on_pc_4x3.webp" alt="طلاب يعملون على مشروع تقني، من IBM SkillsBuild" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark">IBM</span><span class="opportunity-type">ندوة أونلاين • 20 أكتوبر 2026</span></div>
+                    <h3>ابنِ مشروع ذكاء اصطناعي يدعم سيرتك الذاتية</h3>
+                    <p>جلسة تطبيقية للمشاركين من عمر 18 عامًا فأكثر وطلاب الجامعات، للمبتدئين أيضًا. باللغة الإنجليزية، الساعة 12 ظهرًا بتوقيت ET.</p>
+                    <a class="btn btn--primary btn--sm" href="https://skillsbuild.org/events/ai-project-resume" target="_blank" rel="noopener noreferrer">التفاصيل والتسجيل</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="volunteering" data-region="egypt" data-keywords="صناع الحياة متطوع تعليم صحة تمكين الشباب فعاليات مجتمعية مصر">
+                    <img class="opportunity-card__image opportunity-card__image--brand-logo" src="https://lifemakers.org/assets/volunteer-2D6T7dvO.png" alt="صورة متطوع من مؤسسة صناع الحياة" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark">صناع الحياة</span><span class="opportunity-type">تطوع • مجالات متعددة في مصر</span></div>
+                    <h3>فرص التطوع مع صُنّاع الحياة</h3>
+                    <p>فرص في التعليم والصحة وإدارة الحالة وتمكين الشباب والفعاليات المجتمعية. سجّل عبر النموذج الرسمي.</p>
+                    <a class="btn btn--primary btn--sm" href="https://lifemakers.org/vol-become/volunteer-form" target="_blank" rel="noopener noreferrer">استمارة التطوع</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="volunteering" data-region="egypt" data-keywords="aiesec global volunteer تطوع دولي تنمية مستدامة سفر فرص العالم">
+                    <img class="opportunity-card__image opportunity-card__image--course" src="https://aiesec.org/_next/image?url=%2Fassets%2Fimages%2Fgv-youth-hero.jpeg&amp;w=828&amp;q=75" alt="مشروع تطوع دولي من AIESEC" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark">AIESEC</span><span class="opportunity-type">تطوع دولي • فرص تتحدث باستمرار</span></div>
+                    <h3>مشروعات Global Volunteer من AIESEC</h3>
+                    <p>ابحث عن مشروعات تطوعية في دول متعددة وأهداف التنمية المستدامة. تحقّق من تكاليف السفر والتأمين وشروط كل مشروع قبل التقديم.</p>
+                    <a class="btn btn--primary btn--sm" href="https://aiesec.org/search?programmes=7" target="_blank" rel="noopener noreferrer">استكشف فرص التطوع</a>
+                </article>
+                <article class="card opportunity-card" data-opportunity-card data-kind="volunteering" data-region="egypt" data-keywords="verynile تطوع تنظيف النيل البيئة القاهرة فعاليات تنظيف اعادة تدوير">
+                    <img class="opportunity-card__image opportunity-card__image--brand-logo" src="https://verynile.org/media/logo_0e4097813c5e2e077321a88e4988c0ef_2x-9e80ba16.png" alt="شعار مبادرة VeryNile لتنظيف النيل" loading="lazy">
+                    <div class="opportunity-card__top"><span class="opportunity-mark">VeryNile</span><span class="opportunity-type">تطوع بيئي • حسب الفعاليات</span></div>
+                    <h3>المشاركة في فعاليات تنظيف النيل</h3>
+                    <p>تواصل مع VeryNile للاستفسار عن موعد الفعالية القادمة وطريقة المشاركة في أنشطة حماية النيل والبيئة.</p>
+                    <a class="btn btn--primary btn--sm" href="mailto:hana@verynile.org?subject=VeryNile%20cleanup%20event" rel="noopener noreferrer">تواصل بشأن الفعاليات</a>
+                </article>
+            </div>
+            <p class="opportunities-empty" id="opportunityEmpty" hidden>لا توجد فرص مطابقة لخيارات البحث الحالية.</p>
+            <p class="opportunities-note">تمت مراجعة الفرص المحددة في 10 أكتوبر 2026. إعلانات الوظائف قد تُغلق؛ صفحات قوائم المدن والدورات تعرض أحدث ما لدى الجهة. راجع الشروط والمواعيد في المصدر قبل التقديم.</p>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer__inner">
+            <p class="footer__text">معاً نحو مستقبل أفضل &nbsp;|&nbsp; طلاب أهلية &nbsp;|&nbsp; <a href="team.html" class="footer__link">فريق العمل</a></p>
+        </div>
+    </footer>
+    <script src="script.js?v=20261008"></script>
+    <script src="page.js"></script>
+    <script src="mobile.js"></script>
+    <script src="opportunities.js"></script>
+</body>
+
+</html>

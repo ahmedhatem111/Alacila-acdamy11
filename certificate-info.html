@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>عن شهادة إتمام الكورس | أهلية أكاديمي</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=20261008">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#050a2a">
+    <link rel="icon" href="icons/icon-192.png">
+    <script src="theme.js"></script>
+</head>
+
+<body data-page="certificate-info">
+    <canvas id="stars" aria-hidden="true"></canvas>
+    <header class="header">
+        <div class="container header__inner">
+            <a href="index.html#home" class="logo">
+                <svg class="logo__icon" viewbox="0 0 48 48" aria-hidden="true"><defs><lineargradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f7bff"/><stop offset="1" stop-color="#7c3aed"/></lineargradient></defs><path d="M24 3 L44 44 L34 44 L24 22 L14 44 L4 44 Z" fill="url(#lg)"/><path d="M24 30 L30 44 L18 44 Z" fill="#a78bfa"/></svg>
+                <span>أهلية أكاديمي</span>
+            </a>
+            <nav class="nav" id="nav" aria-label="القائمة الرئيسية">
+                <a href="index.html#home">الرئيسية</a>
+                <a href="index.html#years">السنوات الدراسية</a>
+                <a href="index.html#majors">التخصصات</a>
+                <a href="courses.html">الكورسات</a>
+                <a href="library.html">المكتبة</a>
+                <a href="staff.html">هيئة التدريس</a>
+                <a href="movies.html">الأفلام</a>
+                <a href="videos.html">فيديوهات تقنية</a>
+                <a href="schedule.html">جدولي</a>
+                <a href="teams.html">زملاء المشروع</a>
+            </nav>
+            <div class="header__actions">
+                <button type="button" class="theme-toggle" id="themeToggle" aria-pressed="false" aria-label="تفعيل الألوان المريحة للعين" title="تفعيل الألوان المريحة للعين"><svg class="sun" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg><svg class="moon" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+                <a href="login.html" class="btn btn--outline btn--sm">تسجيل الدخول</a>
+                <button class="burger" id="burger" aria-label="فتح القائمة" aria-expanded="false"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container certificate-info-page">
+        <p class="crumbs"><a href="index.html">الرئيسية</a> / <span>عن شهادة إتمام الكورس</span></p>
+        <section class="certificate-info-hero">
+            <div class="certificate-info-copy">
+                <span class="certificate-info-eyebrow">إنجازك يستحق التوثيق</span>
+                <h1>شهادة إتمام الكورس</h1>
+                <p>ملف يحمل اسمك واسم الكورس وتاريخ إتمامه، تحتفظ به بعد استيفاء متطلبات الكورس في أهلية أكاديمي.</p>
+                <div class="certificate-info-actions">
+                    <a href="courses.html" class="btn btn--primary">تصفح الكورسات</a>
+                    <a href="index.html#certificate" class="btn btn--outline">معاينة الشهادة</a>
+                </div>
+            </div>
+            <div class="certificate-info-paper" aria-label="معاينة تصميم شهادة إتمام الكورس">
+                <span class="certificate-info-paper__brand">أهلية أكاديمي</span>
+                <span class="certificate-info-paper__seal" aria-hidden="true">✓</span>
+                <strong>شهادة إتمام كورس</strong>
+                <span class="certificate-info-paper__line">تُمنح بعد استيفاء متطلبات الكورس</span>
+                <i></i>
+                <small>اسم الطالب &nbsp; · &nbsp; اسم الكورس</small>
+            </div>
+        </section>
+
+        <section class="certificate-info-steps" aria-labelledby="certificateStepsTitle">
+            <div class="certificate-info-section-head">
+                <span>من التعلّم إلى الإنجاز</span>
+                <h2 id="certificateStepsTitle">كيف تحصل عليها؟</h2>
+            </div>
+            <ol class="certificate-steps-list">
+                <li><span class="certificate-step-number">01</span>
+                    <h3>اختر كورسًا</h3>
+                    <p>سجّل الدخول وافتح الكورس الذي تريد دراسته.</p>
+                </li>
+                <li><span class="certificate-step-number">02</span>
+                    <h3>أكمل المتطلبات</h3>
+                    <p>تابع محتوى الكورس واجتز متطلباته النهائية.</p>
+                </li>
+                <li><span class="certificate-step-number">03</span>
+                    <h3>احفظ شهادتك</h3>
+                    <p>افتح خيار الشهادة من صفحة الكورس، ثم احفظها أو اطبعها.</p>
+                </li>
+            </ol>
+        </section>
+
+        <aside class="certificate-info-note" aria-label="معلومات عن الشهادة">
+            <span class="certificate-info-note__icon" aria-hidden="true">i</span>
+            <p><strong>معلومة مهمة</strong> هذه شهادة إتمام يصدرها الموقع محليًا ويمكن حفظها أو طباعتها. لا تُعد اعتمادًا أكاديميًا رسميًا أو وثيقة تحقق مستقلة.</p>
+        </aside>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer__inner">
+            <p class="footer__text">معاً نحو مستقبل أفضل &nbsp;|&nbsp; طلاب أهلية &nbsp;|&nbsp; <a href="team.html" class="footer__link">فريق العمل</a></p>
+        </div>
+    </footer>
+    <script src="script.js?v=20261008"></script>
+    <script src="page.js"></script>
+    <script src="mobile.js"></script>
+</body>
+
+</html>
