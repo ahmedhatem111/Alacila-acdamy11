@@ -4310,6 +4310,7 @@ main,
     grid-template-columns: repeat(3, minmax(0, 1fr));
     align-items: start;
     gap: 28px 18px;
+    margin-bottom: 40px;
 }
 
 .programmer-meme {
