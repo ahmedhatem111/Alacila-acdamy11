@@ -948,7 +948,16 @@ The_Simulation_Blueprint.pdf
         courses.forEach(function(course) {
             var driveFiles = DRIVE_COURSE_FILES[course.id];
             if (driveFiles) {
-                course.files = driveFiles.map(function(file) {
+                var localFiles = (course.files || []).filter(function(file) {
+                    return !file.external && !file.video;
+                });
+                var localFileNames = new Set(localFiles.map(function(file) {
+                    var name = String(file.url || "").split(/[?#]/)[0].split("/").pop();
+                    try { return decodeURIComponent(name).toLocaleLowerCase(); } catch (e) { return name.toLocaleLowerCase(); }
+                }));
+                var missingLocalFiles = driveFiles.filter(function(file) {
+                    return !localFileNames.has(file[0].split("/").pop().toLocaleLowerCase());
+                }).map(function(file) {
                     var extension = file[0].match(/\.([^.]+)$/);
                     var fileUrl = "https://drive.google.com/file/d/" + file[1];
                     return {
@@ -960,6 +969,7 @@ The_Simulation_Blueprint.pdf
                         drive: true,
                     };
                 });
+                course.files = localFiles.concat(missingLocalFiles);
                 return;
             }
             var folderId = DRIVE_COURSE_FOLDERS[course.id] || DRIVE_PAGE_FOLDERS[pageKey];
