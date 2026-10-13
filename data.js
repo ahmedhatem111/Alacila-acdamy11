@@ -43,6 +43,70 @@
         "y2-project-mgmt": "1_DyzGhre0YEUxq8BPoC7VBA7pAtjs7dn",
     };
     var DRIVE_COURSE_FILES = {
+        "cs-algorithms": [
+            ["حل شابتر 4.docx", "1USP6_3cXVZskBJPDmMMMkjFrPvbGyNiR"],
+            ["Algorithm_questions.pdf", "1PuTPMO3ntZVNQHb9ZbZQ-b9gQPe9l7eR"],
+            ["algorithms Book.pdf", "1Hmtbf6NUSOiYzH8Hu1DTHhEICP1u3cDC"],
+            ["Algorithms.pdf", "1CCcrjH4QwFJX4w-WE0eZa7XYZS8KpKyo"],
+            ["ch(4)_Algorithm.pdf", "1x6xpkt-gj_433m86p_TK1L0yX-uoceZW"],
+            ["Data Structures and Algorithms (2).pdf", "1uwAWq8or9O-FlTtpxvYjIgICry13QHZG"],
+            ["Exams.rar", "1LzP8jtY0bkyUG-Roq1OpXQ3jfx5NvMYZ"],
+            ["Lab 1-1.pdf", "1yZPC1ii-t242fnsNvu1bOX6p4qK8C2Eg"],
+            ["Lab 2.pdf", "1B6rZY4vkySctawAHO7qLGxEurxLG5ONE"],
+            ["Lab 3.pdf", "1HIb97ZY2sKHM030tr-3sz20x72Nl3Mxz"],
+            ["Lab 4.pdf", "18HgglBdQpl1lp14jKxOYqRMPyovY2YEA"],
+            ["Sheet algorithm.pdf", "1dakYzYE4CkXV0fWTrDUPpqOj4qY7UQeN"],
+            ["امتحانات al/ميد algorithm cs.pdf", "1EyY9jpq4ZhvioFi7ORx_xGC0nsS8aRl2"],
+            ["امتحانات al/Algo.pdf", "1QjkC3J9XzEBxrGFSEbf70DEtdSTVphN8"],
+            ["امتحانات al/Algorithm كلية علوم.pdf", "1HHJARIlF2zKtnvLP7uHmuEXgaSXN0DZt"],
+            ["امتحانات al/algorithm it.pdf", "1J_zlqUi8KjB82wbt8AalN8HB-yGKtDNt"],
+            ["امتحانات al/Algorithm_questions (1).pdf", "1ZhcBbpHoFqhShhWTQ7WG3NEMT3Cyu2bN"],
+            ["امتحانات al/All exams of algorithm.pdf", "14Y5xznBjJcvVv_YGTplgBk0wLI3QUBd6"],
+            ["امتحانات al/CamScanner ١١-١٦-٢٠٢٣ ٢٢.٢٦_2.pdf", "1qEszFVsAx-73HgwIzhteQkdvLYuYEwe6"],
+            ["امتحانات al/Final.docx", "1lHl9Z6Oh6XRPxEOv2cLjfdJdF8jtmfJh"],
+            ["امتحانات al/Final.pdf", "1hqYulyTKNRflcVYhIVq0xVO6iCq1ktb_"],
+            ["امتحانات al/prac-quiz1-sol.pdf", "1sy5zQUbvpd2PkXSwPMYd-F9Web1sfp8R"],
+            ["algorithms/algorithms/كتاب.pdf", "1OdpdPLrD0a6w5t9TenYpbRldVMsWf-ny"],
+            ["algorithms/algorithms/Heapsort.pdf", "1vycUFBiHJQnzZp7XK1P8qYdsbdt6YutC"],
+            ["algorithms/algorithms/lecture 1-algorithms.pdf", "1BDb671YUoU1Cwh8ZzR1-BVnEgefRmjxw"],
+            ["algorithms/algorithms/Lecture 2_Algorithms.pdf", "1pcbWJeQZurfKO3grhld2Lik49VBEdj__"],
+            ["algorithms/algorithms/lecture 3 algorithms.pdf", "1lFLmHZvwoIPrUGBnW5tLmL5LrwSRtuqk"],
+            ["algorithms/algorithms/Lecture 4 algorithms.pdf", "1_ByjxzcgYATmepLZBPBKxmnS0cku3-U-"],
+            ["algorithms/algorithms/Lecture 5 algorithms.pdf", "1ylIHeoIeoaoKgf2fSX1ie3q6geke5X76"],
+            ["algorithms/algorithms/Lecture 6-algorityms.pdf", "1s_BrvYJqmc4oL5TlKZs1liir4GJdmtkG"],
+            ["algorithms/algorithms/Lecture 6-algorityms.ppt", "1hg-0ERVTkzru970ANaO2lNZyBo1UXdLA"],
+            ["algorithms/algorithms/lecture 7-algorithms.pdf", "1NFjxzd8dXp0b5VILK_4f4lFQaSE9I1vu"],
+            ["algorithms/algorithms/Priority Queues.pdf", "1KZD7z4EQIQHiv0fPixYjU1PeW5U8newb"],
+            ["algorithms/algorithms/Quicksort.pdf", "1iJR64z5Vin8a5MxpwMgLxuodHewQgms3"],
+            ["Exams/ميد algorithm cs-1.pdf", "1sfXdLwmv68JgKbWFkhavg9twnqEfotou"],
+            ["Exams/Algorithm كلية علوم-1.pdf", "1XBNzbCrowMD4jdkm4Ld2sCeOpH49wHx"],
+            ["Exams/algorithm it-1.pdf", "17tp24fe1DHgOb_G-EpmS1kg9aLpQwvEc"],
+            ["Exams/photo_2023-12-25_13-48-41.jpg", "1vJl162twigwPYdc9_P6oFfQe-CK-ctNe"],
+            ["Exams/photo_2023-12-25_13-49-03.jpg", "1aXn9xSofEveQJmXSqGwh6aYoMfqpzIkf"],
+            ["Exams/photo_2023-12-25_13-49-27.jpg", "1_d--dgh_xVxyZH_H9bJQPRKj08C-4J3C"],
+            ["Exams/photo_2023-12-25_13-49-34.jpg", "1wo38z8e9sBkJHUp0d9EbkUjSUjJcKpG2"],
+            ["Exams/photo_2023-12-25_13-49-52.jpg", "1E-duE9U6uPbo-rx2yBLK-JYUyW_yMb8n"],
+            ["lectures/algorithms 3 .pdf", "1mIpTMyAxwp8egt-EnjNUjBOdCqB99RQu"],
+            ["lectures/CHAPTER 2 Algorithms .pdf", "1yyyzTM8v1MMI09_41z3IFS6_qIep3R3J"],
+            ["lectures/Chapter 3  Algorithms.pdf", "1RWva8eNRr_a_NT8l_sjwt_skrnR2Fvix"],
+            ["lectures/chapter 3 part 2.pdf", "1VLCEtI2Un9dz6UyYQNnLbJ3wvL_gm1Zi"],
+            ["lectures/CHAPTER 4 Algorithms .pdf", "1G7HpsjlM0bjAUo2-9tmZW7l6OGj6dIJj"],
+            ["lectures/Divide and Conquer part 2lect 7.pdf", "1P7tqJvld3aN2R_nnIq8n1uQ1BXX0zvlL"],
+            ["lectures/Introduction To Algorithms lecture 1.pdf", "1VceZthouV5penvW1el1FHDdP8SX5n_lf"],
+            ["lectures/Introduction To Algorithms lecture 1.pptx", "1KwaBV8SgqzqWpFtb6HZIGZQY2kAD7iut"],
+            ["sections/algorithm section 7.pdf", "1YzFIf94hH8pvA5T4RTnZx3gWQZrJdY7U"],
+            ["sections/algorithm section 8.pdf", "1fXLMMGzSXVTsVRSj7yAJZROT2eCM6Wkr"],
+            ["sections/IMG-20251203-WA0013.jpg", "1SDTv22K2AFKCZGvxhkdkslAECyrUAXcD"],
+            ["sections/IMG-20251203-WA0014.jpg", "1Hu9qofsthgAQRb9C1BV9B5ZWyoyz4Ls4"],
+            ["sections/IMG-20251203-WA0015.jpg", "19yvYdEzB1LfBltppTtAPlcv5hkBhLXZd"],
+            ["sections/IMG-20251203-WA0016.jpg", "16pSYBeumv1JWsNPxEz-xxTupbmub_B8u"],
+            ["sections/IMG-20251203-WA0017.jpg", "1MjbZKNUrBz2OzTwnMGksyVr9ewbHOFq0"],
+            ["sections/mamdoh Salah _ سكاشن algorithm.pdf", "1yLTSe2Wz5TZU-itopraOot7yorrfXY0I"],
+            ["Exams/exam2022/photo_2023-12-29_00-02-04.jpg", "17Wen2RwpqkJHa68--kMA0pB4CIkBjZnI"],
+            ["Exams/exam2022/photo_2023-12-29_00-03-31.jpg", "1raml7wrviRIX6AXdXRCuFMlqJ9Yw1txm"],
+            ["Exams/exam2022/photo_2023-12-29_00-03-36.jpg", "182UtxOScisczKBW1JIQJArGbpn-Mb2aX"],
+            ["Exams/exam2022/photo_2023-12-29_00-03-45.jpg", "1vH2DJHwx1CDhn6nKfpO_AJRdMkwlw1ia"],
+        ],
         "y1-org-behavior": [
             ["IMG-20250403-WA0006.jpg", "160qL78gHd_Pmc8trAbyfPvbY4dW2SEy3"],
             ["IMG-20250403-WA0007.jpg", "1Q8Nru38XsNtvk4qQ8q80_z2498L1w3y-"],
@@ -948,16 +1012,19 @@ The_Simulation_Blueprint.pdf
         courses.forEach(function(course) {
             var driveFiles = DRIVE_COURSE_FILES[course.id];
             if (driveFiles) {
-                var localFiles = (course.files || []).filter(function(file) {
-                    return !file.external && !file.video;
-                });
-                var localFileNames = new Set(localFiles.map(function(file) {
-                    var name = String(file.url || "").split(/[?#]/)[0].split("/").pop();
-                    try { return decodeURIComponent(name).toLocaleLowerCase(); } catch (e) { return name.toLocaleLowerCase(); }
+                var driveFilePaths = new Set(driveFiles.map(function(file) {
+                    return file[0].toLocaleLowerCase();
                 }));
-                var missingLocalFiles = driveFiles.filter(function(file) {
-                    return !localFileNames.has(file[0].split("/").pop().toLocaleLowerCase());
-                }).map(function(file) {
+                var localPrefix = csCourseFolders[course.id] ? "files/cs/" + csCourseFolders[course.id] + "/" : null;
+                var localFiles = (course.files || []).filter(function(file) {
+                    if (file.external || file.video) return false;
+                    var path = String(file.url || "").split(/[?#]/)[0];
+                    try { path = decodeURIComponent(path); } catch (e) {}
+                    if (localPrefix && path.indexOf(localPrefix) === 0) path = path.slice(localPrefix.length);
+                    else path = path.split("/").pop();
+                    return !driveFilePaths.has(path.toLocaleLowerCase());
+                });
+                var linkedDriveFiles = driveFiles.map(function(file) {
                     var extension = file[0].match(/\.([^.]+)$/);
                     var fileUrl = "https://drive.google.com/file/d/" + file[1];
                     return {
@@ -969,7 +1036,7 @@ The_Simulation_Blueprint.pdf
                         drive: true,
                     };
                 });
-                course.files = localFiles.concat(missingLocalFiles);
+                course.files = localFiles.concat(linkedDriveFiles);
                 return;
             }
             var folderId = DRIVE_COURSE_FOLDERS[course.id] || DRIVE_PAGE_FOLDERS[pageKey];
@@ -984,7 +1051,7 @@ The_Simulation_Blueprint.pdf
                 });
             });
             course.files = existingLinks;
-            if (!folderId || pageKey === "year1" || pageKey === "year2" || existingLinks.length) return;
+            if (!folderId || pageKey === "year1" || pageKey === "year2" || (existingLinks.length && !DRIVE_COURSE_FOLDERS[course.id])) return;
             course.files.push({
                 title: "ملفات المادة على Google Drive",
                 type: "مجلد Google Drive",
