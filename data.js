@@ -212,11 +212,7 @@
             icon: icon || ICON[page],
             level: level || LEVELS[page],
             topics: topics,
-            files: [
-                { title: "ملخص المحاضرات", type: "PDF", url: "files/" + page + "/" + slug + "-summary.pdf" },
-                { title: "كتاب المادة", type: "PDF", url: "files/" + page + "/" + slug + "-book.pdf" },
-                { title: "تمارين ونماذج امتحانات", type: "PDF", url: "files/" + page + "/" + slug + "-exercises.pdf" },
-            ],
+            files: [],
         };
     }
 
@@ -303,7 +299,7 @@
             icon: "tree",
             label: "السنة الثانية",
             terms: [
-                T("الترم الأول", [
+                T("الفصل الدراسي الثالث", [
                     C("year2", "logic-design", "التصميم المنطقي"),
                     C("year2", "operations-research", "بحوث العمليات"),
                     C("year2", "prob2", "احتمالات وإحصاء 2"),
@@ -311,7 +307,7 @@
                     C("year2", "project-mgmt", "إدارة المشروعات"),
                     C("year2", "networks1", "شبكات الحاسب 1"),
                 ]),
-                T("الترم الثاني", [
+                T("الفصل الدراسي الرابع", [
                     C("year2", "databases", "قواعد البيانات"),
                     C("year2", "physics", "الفيزياء"),
                     C("year2", "parallel", "البرمجة المتوازية"),
@@ -988,6 +984,361 @@ The_Simulation_Blueprint.pdf
                 drive: true,
             });
         });
+    });
+
+    function appendSourceVideos(course, videos) {
+        var existingUrls = new Set(course.files.filter(function(file) { return file.video; }).map(function(file) { return file.url; }));
+        (videos || []).forEach(function(video) {
+            var url;
+            var embedUrl;
+            var provider;
+            if (video.driveId) {
+                url = "https://drive.google.com/file/d/" + video.driveId + "/view";
+                embedUrl = "https://drive.google.com/file/d/" + video.driveId + "/preview";
+                provider = "drive";
+            } else if (video.playlist) {
+                url = "https://youtube.com/playlist?list=" + video.playlist;
+                embedUrl = "https://www.youtube.com/embed/videoseries?list=" + video.playlist;
+                provider = "youtube";
+            } else if (video.id) {
+                url = "https://youtu.be/" + video.id;
+                embedUrl = "https://www.youtube.com/embed/" + video.id;
+                provider = "youtube";
+            } else return;
+            if (existingUrls.has(url)) return;
+            existingUrls.add(url);
+            course.files.push({ title: video.title, type: "فيديو شرح", url: url, embedUrl: embedUrl, provider: provider, video: true });
+        });
+    }
+
+    function appendSourceFiles(course, files) {
+        var existingUrls = new Set((course.files || []).map(function(file) { return file.url; }));
+        (files || []).forEach(function(file) {
+            var url;
+            var previewUrl;
+            if (file.driveId) {
+                url = "https://drive.google.com/file/d/" + file.driveId + "/view";
+                previewUrl = "https://drive.google.com/file/d/" + file.driveId + "/preview";
+            } else if (file.presentationId) {
+                url = "https://docs.google.com/presentation/d/" + file.presentationId + "/edit";
+                previewUrl = "https://docs.google.com/presentation/d/" + file.presentationId + "/embed?start=false&loop=false&delayms=3000";
+            } else if (file.documentId) {
+                url = "https://docs.google.com/document/d/" + file.documentId + "/edit";
+                previewUrl = "https://docs.google.com/document/d/" + file.documentId + "/preview";
+            } else return;
+            if (existingUrls.has(url)) return;
+            existingUrls.add(url);
+            course.files.push({
+                title: file.title,
+                type: file.type || "PDF",
+                url: url,
+                previewUrl: previewUrl,
+                external: true,
+                drive: true,
+            });
+        });
+    }
+
+    var year2SourceMaterials = {
+        "y2-networks1": { subject: "network", videos: [{ title: "شرح شبكات الحاسب 1", id: "_ZxbvwNN_8o" }] },
+        "y2-oop": {
+            subject: "oop",
+            videos: [
+                { title: "Object Oriented Programming with CPP", id: "6U6WtWG3NrA" },
+                { title: "البرمجة الكائنية بلغة C++", playlist: "PL8DDsWuvM_EXVdXvLzDJGEOwiMsKU2srp" },
+                { title: "Object-Oriented Programming C++ in Arabic", playlist: "PLCInYL3l2Aaiq1oLvi9TlWtArJyAuCVow" },
+                { title: "C++ Object Oriented Programming Video Tutorials", playlist: "PLfVsf4Bjg79DLA5K3GLbIwf3baNVFO2Lq" },
+            ],
+        },
+        "y2-logic-design": {
+            subject: "logic",
+            videos: [
+                { title: "شرح Logic Design 1", driveId: "1ManRbSf-z7HBHOJ9nA-0KkP7a3fyRVvg" },
+                { title: "شرح Logic Design 2", driveId: "1tqNjUSIIw7tp-lp0g0mvTi6EMh7eOiDj" },
+                { title: "شرح Logic Design 3", driveId: "19SlSI8Uy8NIi767ENvJbxRIUaGYBEEw3" },
+                { title: "شرح Logic Design 4", driveId: "1js0dHLlLWrTf1XsbSYu48RkCpa3E17G0" },
+                { title: "شرح Logic Design 5", driveId: "1NjNi4EgwcBYSKtSj-ApZ7VpjjGcbE7rL" },
+                { title: "شرح Logic Design 6", driveId: "1g7Ew6NvQm4z4hMVRq5U16f9u8fd6W47w" },
+                { title: "شرح Logic Design 7", driveId: "1vuUBsrQ7QNQI6UD2jaUG85qD4uB5bUnm" },
+                { title: "شرح Logic Design 8", driveId: "1p2E9SqLaT2xIeH4S92MlfPyBTgD3bWTQ" },
+                { title: "شرح Logic Design 9", driveId: "1XqDLEKlwVyNCk0LUcDVLLWpIW8WzReyF" },
+                { title: "شرح Logic Design 10", driveId: "1xXbF7c3uAb2bxm4I-Qrd0UVg2P_Wa5n6" },
+                { title: "شرح Logic Design 11", driveId: "1QYSei24qBLR6_9sGNaQGTqS5C-0lgLtj" },
+                { title: "شرح Logic Design 12", driveId: "17SvJPDwCgAy3-C32Ised5aYzYyk6S9PZ" },
+                { title: "شرح Logic Design 13", driveId: "1QOodzIMUCnHqXnnoeakmZ1OhvrEsfGNY" },
+                { title: "شرح Logic Design 14", driveId: "1W6kO8h38psVXBlXHFE1fuUYRnh6H1U1T" },
+                { title: "شرح Logic Design 15", driveId: "1GxX6YAY9W180pJmHz0e2lPPfXfZ9aq5E" },
+                { title: "شرح Logic Design 16", driveId: "1KM2B6XBwej2uvTxzdr41oEuD03tsgLE0" },
+                { title: "شرح Logic Design 17", driveId: "1i7sI6u7wlI1I9vSNf8vrHzzO7PPkBmOT" },
+                { title: "شرح Logic Design 18", driveId: "1c_y9TOGHA56UAdzKP9-blQYbn1RAZB5w" },
+                { title: "شرح Logic Design 19", driveId: "1ZOvgNCROt1R-HNh5s03CAtnaaxMLSzMi" },
+                { title: "شرح Logic Design 20", driveId: "1JHJpwT9VjEFDweRsW5javcW7d0Lkbxfb" },
+                { title: "شرح Logic Design 21", driveId: "1_1yKiC3TIlJliTlG5pmCgGdKy1wPGdH7" },
+                { title: "شرح Logic Design 22", driveId: "1zOhbJnf6B7OAp3ih53erljKCswM_nTzO" },
+                { title: "شرح Logic Design 23", driveId: "1SK5a5CE1nWFa85W9hcPWFE9gS0dpfQF5" },
+            ],
+        },
+        "y2-project-mgmt": { subject: "spm" },
+        "y2-operations-research": { subject: "or", videos: [{ title: "شرح بحوث العمليات", playlist: "PLgj7VaRVWj1fpPufIJh1zyrWQBx2yWOQ1" }] },
+        "y2-prob2": { subject: "possibilities2" },
+        "y2-ds1": {
+            subject: "datastructure",
+            videos: [
+                { title: "شرح Data Structure - قائمة التشغيل 1", playlist: "PL1DUmTEdeA6JlommmGP5wicYLxX5PVCQt" },
+                { title: "شرح Data Structure - قائمة التشغيل 2", playlist: "PL37D52B7714788190" },
+            ],
+        },
+        "y2-databases": { subject: "database", videos: [{ title: "شرح قواعد البيانات", playlist: "PLVohjPQ5va9yyBD9Ld64bqAA3-Q4TyUsu" }] },
+        "y2-web-tech": {
+            subject: "web",
+            videos: [
+                { title: "HTML ELZERO", id: "qfPUMV9J5yw" },
+                { title: "CSS ELZERO", id: "qyVkLebgfzY" },
+                { title: "JavaScript ELZERO - الجزء الأول", id: "gIGGhFlGgLI" },
+                { title: "JavaScript ELZERO - الجزء الثاني", id: "FKrfis1W1tk" },
+                { title: "Bootstrap ELZERO", id: "EzHbZjXDdKc" },
+            ],
+        },
+        "y2-modeling": { subject: "simulation", videos: [{ title: "شرح Modeling & Simulation", id: "krdDck_2Mtw" }] },
+        "y2-parallel": { subject: "parallel" },
+        "y2-physics": { subject: "physics", videos: [{ title: "شرح عملي الفيزياء", playlist: "PLOqbasp99wh4YUvLWH0MDgzlzxRuvsLwV" }] },
+    };
+    Object.keys(year2SourceMaterials).forEach(function(courseId) {
+        var source = year2SourceMaterials[courseId];
+        var course = pages.year2.courses.find(function(item) { return item.id === courseId; });
+        if (!course) return;
+        appendSourceVideos(course, source.videos);
+    });
+
+    var year1SourceMaterials = {
+        "y1-math1": { subject: "math1", videos: [{ title: "شرح رياضيات 1", playlist: "PLZEjCjHzGS_a5qUPC6upncagEJm8bPS1I" }] },
+        "y1-history": { subject: "history" },
+        "y1-scientific-thinking": { subject: "thinking" },
+        "y1-ethics": { subject: "ethics" },
+        "y1-english": { subject: "english1" },
+        "y1-cs-basics": {
+            subject: "csf",
+            videos: [
+                { title: "شرح أساسيات البرمجة", playlist: "PL2CH7ub8lpTUG5Fy56Aan3cubcNPKhHuU" },
+                { title: "شرح السكاشن PowerPoint", id: "wrNC2GyUtIU" },
+                { title: "شرح السكاشن Excel", id: "tih6OulII8Q" },
+            ],
+        },
+        "y1-electronics": { subject: "electronics", videos: [{ title: "بلاي ليست دكتور حازم فلاح", id: "jNpVpab2xls" }] },
+        "y1-math2": { subject: "math2" },
+        "y1-prob1": {
+            subject: "stats",
+            videos: [
+                { title: "شرح احتمالات وإحصاء 1 - قائمة التشغيل", id: "wyEZXjW1dvw" },
+                { title: "شرح احتمالات وإحصاء 1", id: "8YpnQoXZdb8" },
+            ],
+        },
+        "y1-programming-basics": { subject: "prog1" },
+        "y1-discrete": { subject: "discrete" },
+        "y1-org-behavior": { subject: "behavior" },
+        "y1-tech-writing": { subject: "writing" },
+        "y1-computer-laws": { subject: "law" },
+    };
+    Object.keys(year1SourceMaterials).forEach(function(courseId) {
+        var source = year1SourceMaterials[courseId];
+        var course = pages.year1.courses.find(function(item) { return item.id === courseId; });
+        if (!course) return;
+        appendSourceVideos(course, source.videos);
+    });
+
+    function appendSourceFiles(course, files) {
+        var existingUrls = new Set((course.files || []).map(function(file) { return file.url; }));
+        (files || []).forEach(function(file) {
+            var url;
+            var previewUrl;
+            var type = file.type || "PDF";
+            if (file.driveId) {
+                url = "https://drive.google.com/file/d/" + file.driveId + "/view";
+                previewUrl = "https://drive.google.com/file/d/" + file.driveId + "/preview";
+            } else if (file.presentationId) {
+                url = "https://docs.google.com/presentation/d/" + file.presentationId + "/edit";
+                previewUrl = "https://docs.google.com/presentation/d/" + file.presentationId + "/embed?start=false&loop=false&delayms=3000";
+                type = "عرض تقديمي";
+            } else if (file.documentId) {
+                url = "https://docs.google.com/document/d/" + file.documentId + "/edit";
+                previewUrl = "https://docs.google.com/document/d/" + file.documentId + "/preview";
+                type = "مستند";
+            } else return;
+            if (existingUrls.has(url)) return;
+            existingUrls.add(url);
+            course.files.push({ title: file.title, type: type, url: url, previewUrl: previewUrl, external: true, drive: true });
+        });
+    }
+
+    var year1SourceFiles = {
+        "y1-math1": [
+            { title: "ملخص كبسولة التفاضل", driveId: "1rg02a56o2PfVnCcMkoYrgdyhoKGZ741R" },
+            { title: "ملخص كبسولة التكامل", driveId: "1dptZ0ZbitpfS0K51aDvYvRPdrui6GCSU" },
+            { title: "امتحان Sheet Math 1", driveId: "1iT1rfME8T_a9UcIL4njtWqbAgoGeA78l" },
+            { title: "امتحان Math 1 النهائي", driveId: "1O_szCxQeZH_DfZk2n9p6V24TKuEHkdPG" },
+            { title: "كتاب Math 1", driveId: "1fY3nrFG2lPwm6mhuZ0XeZi8QRZiO3Ao5" },
+        ],
+        "y1-history": [
+            { title: "امتحان تاريخ الحوسبة النهائي 1", driveId: "1tTIrp67uAzuoh1klCRRFCItnXg6QLmAJ" },
+            { title: "امتحان تاريخ الحوسبة النهائي 2", driveId: "1oxFmeXvX5dX_wHaPPCJLhLIK84zEr6_i" },
+            { title: "أسئلة شفوي تاريخ الحوسبة", driveId: "12xLWvlfdkOMsQYjtdq9DGhAwXh7zxGcA" },
+            { title: "كتاب الطالب لتاريخ الحوسبة", driveId: "1WabZLkzif2o6d0YL10GMa7DJ87U6_uwk" },
+        ],
+        "y1-scientific-thinking": [
+            { title: "تلخيص التفكير العلمي", driveId: "1kZyyj-o2CH2OwH9Vb8cxmE8nCICw9kU5" },
+            { title: "نماذج امتحانات التفكير العلمي 1", driveId: "1qjRH5BE035pJ9Q8Ep4yyDZtPD0ri_oVz" },
+            { title: "نماذج امتحانات التفكير العلمي 2", driveId: "1I1knzDRv-vjPqKb8eOmc8MlSDlU3fz9V" },
+            { title: "الكتاب الدراسي للتفكير العلمي", driveId: "1DMfR0lp9vv3_RHN1dyerWt6ATyLLbjh1" },
+        ],
+        "y1-ethics": [
+            { title: "ملخص أخلاقيات - الفصل الأول", driveId: "1kMkz24lukskLqrwt9O_NnrksRl-Fs3cy" },
+            { title: "ملخص أخلاقيات - الفصل الثالث", driveId: "1bJj7XAicoTQHfS6ezxjSPHFB3axyYdCJ" },
+            { title: "أسئلة أخلاقيات", driveId: "1chQTs4GfbpMSyyJpx9fBHJMKASN0S0FZ" },
+        ],
+        "y1-english": [
+            { title: "ملخص القطع المترجمة", driveId: "1G7fj5V0yAsGRJyZ0nZKqXoZNC0O4UetK" },
+            { title: "ملخص القطع", driveId: "1XovzwzW56iMNFK_Lsk2T2q-plsyv8LEz" },
+            { title: "نماذج امتحانات اللغة الإنجليزية", driveId: "1ydVHFURg0cRn0yAhko8fbAN8jzea9KMm" },
+            { title: "الكتاب الدراسي الرسمي للغة الإنجليزية", driveId: "1214_JyagQPi2UiM-YeZhy77v49RdwyoC" },
+        ],
+        "y1-cs-basics": [
+            { title: "امتحانات أساسيات علوم الحاسب 1", driveId: "19sTuTrfsk-ZGsaBOrHHnlTFC6y-5pEa7" },
+            { title: "امتحانات أساسيات علوم الحاسب 2", driveId: "18VUb5JwtcEOR32wiWtGTCO4Yaw9x-xFI" },
+            { title: "الكتاب الدراسي الرسمي لأساسيات علوم الحاسب", driveId: "12sGd1Nmc1vW4WffkE-gYFcfFsQi9SwfX" },
+        ],
+        "y1-electronics": [
+            { title: "ملخص أوراق مسائل الإلكترونيات", driveId: "1uhRyoRaZf36q8nO7r7zjGJX5u330jjUH" },
+            { title: "امتحان إلكترونيات نهائي", driveId: "12y8-8V3QkFTbaHi6nT1tMaQJ3me6XaJx" },
+            { title: "امتحان إلكترونيات ميد 2024", driveId: "1ycxSWRuJfqhmtceXeF6WxLAiRQEjqJ5P" },
+            { title: "امتحان إلكترونيات ميد 2023", driveId: "1R3we95eEaKBWZLUNEoxQnHieloido6u_" },
+        ],
+        "y1-math2": [
+            { title: "ملخص رياضيات 2 - شرح موضوعات", driveId: "17mxDiG7et5qewW6YomNZPq70jW0uuKhp" },
+            { title: "ملخص المعادلات التفاضلية الجزئية", driveId: "1e1TWSI7iyTgVsABEwWMEJQEMQjN-SMMo" },
+            { title: "صور محاضرات رياضيات 2", driveId: "1ioGueDLqcuNCs9wWZl0_3fvKWNRq-sV8" },
+            { title: "امتحان Math 2 أهلي نهائي", driveId: "1_MmqBuZJYYZGg9RrEGHWE9p9ZV_fA9Wj" },
+            { title: "امتحان Math 2 حكومي نهائي", driveId: "10yAMgss2SutzRSuuDOaXSINPqUjSz18U" },
+            { title: "امتحان Math 2 ميدتيرم", driveId: "1S5E-YJV14ad8ii3GCJYN9e7GzLnwAZiq" },
+        ],
+        "y1-prob1": [
+            { title: "تلخيص احتمالات وإحصاء 1", driveId: "1amRh8nX-ungFUKoRa7QcdQna3mIxZK34" },
+            { title: "امتحان احتمالات وإحصاء 1 ميد أهلي", driveId: "1E9m1wa3cjIkQCEySx6XWBo_VFpPdnsVl" },
+        ],
+        "y1-programming-basics": [
+            { title: "ملخص أساسيات البرمجة - Arrays", presentationId: "1f4q8GH0zg115o-gJyJh7PIPVE0eT0vgH" },
+            { title: "ملخص أساسيات البرمجة - Loops", presentationId: "1UObNXG_f5AO2B9J40ZaLI7b9fZNOJrhT" },
+            { title: "ملخص أساسيات البرمجة - Data Type", driveId: "1M15xwZ8f_GwiKQ0qsmNNsdxpaWfTLzHL" },
+            { title: "امتحان أساسيات البرمجة 1", driveId: "17YwrTHHFZjZO_nrvsxQQiPAXvGmGaLXT" },
+            { title: "امتحان أساسيات البرمجة 2", driveId: "12FHeQWKkQMIpN06578HFhgns-NEYi9Za" },
+            { title: "الكتاب الدراسي لأساسيات البرمجة", driveId: "1CDAcxTcW_uxXAK5mbpA4V4InZ6_lQzEd" },
+        ],
+        "y1-discrete": [
+            { title: "أسئلة الهياكل المتقطعة", driveId: "1KqHOuD9Omdytp7pYXskErnI6xf4WLaG9" },
+            { title: "امتحان الهياكل المتقطعة 2", driveId: "1zpZAaPQf36JGdp1WfUcT3K8bODBPBmNy" },
+            { title: "أسئلة صح وخطأ للهياكل المتقطعة", documentId: "1CW9EQaUrsqZzbetrPoLiGDnXd422p8cH" },
+            { title: "أسئلة الهياكل المتقطعة", driveId: "1KkZE1meoSRol5xZcyVRScusq_Vn1H_wL" },
+        ],
+        "y1-org-behavior": [
+            { title: "أسئلة السلوكيات", driveId: "1nAxJtc3sJpq-TTTuzMQlO4Hvap5__2sn" },
+            { title: "حل أسئلة كتاب سلوك الهيئات", driveId: "1Wl2_7gyaOqF6gKzaYCFcjlgd9EDtcOXN" },
+            { title: "أسئلة شفوي السلوكيات", driveId: "1XaKgYK52hrcULMI1kk6-HtVhpwNn-fNR" },
+            { title: "امتحان سلوكيات ميد أهلي", driveId: "196KR_MOPcBdIG1UCnYtuL24npjK9MTrO" },
+            { title: "امتحان سلوكيات ميد 2", driveId: "1erzrRO1Yyuihl8TB9LQuBYu0_gvMgQsK" },
+            { title: "كتاب السلوكيات الدراسي", driveId: "1o3S19mqYocQaRFfoOIEUGkHeHHm4R-1a" },
+        ],
+        "y1-computer-laws": [
+            { title: "ملخص قوانين الحاسب - Lecture 1", driveId: "1NgcCKyO13i8t38L5ZbvRzR8TIN0fzWMT" },
+            { title: "ملخص قوانين الحاسب - Lecture 2", driveId: "1hLROS3sryq8wf4UdA6GHaATS3OcaI-rF" },
+            { title: "ملخص قوانين الحاسب - Lecture 3", driveId: "1GCWdwrXbfjWkLlWB4lKwcgjmne4soWqw" },
+            { title: "ملخص قوانين الحاسب - Lecture 4", driveId: "11DSDhdlKWb9oHwFrueAdm32V8c5VmU0-" },
+            { title: "ملخص قوانين الحاسب - Lecture 6", driveId: "1GYED3S6jMBcpirFNDUU2TJzb6_zGb6ut" },
+            { title: "ملخص قوانين الحاسب - Lecture 7", driveId: "1zMqikPN5sJ-6Z5zBTbh3iEw3_IqJwLQW" },
+            { title: "أسئلة قانون الحاسب", driveId: "1H_2YE8gVnibcW-ZOChkt_oXnVxTlRRxm" },
+        ],
+    };
+
+    var year2SourceFiles = {
+        "y2-networks1": [
+            { title: "ملخص شبكات - سكشن 1", driveId: "1gPI_1z85CuWHktGI0N66nj09FeaUWghJ" },
+            { title: "ملخص شبكات - سكشن 2", driveId: "1djb2kkDMt4q8ZyL_eVNapFxEz9L95sHd" },
+            { title: "مقدمة في الشبكات", driveId: "191Nfvlx6uXCv__9lM2H4AJJ5ysFowfRF" },
+            { title: "أوامر Cisco Switch وRouter", driveId: "1wT501eJhh9Ua5QEkTA1NXL2QH1-oB_DX" },
+            { title: "كيفية تكوين الشبكة", driveId: "1wLJddKDTbt5kPX2v7cuOnpUuR33IoMOa" },
+            { title: "عنوان شبكات IP وMAC", driveId: "1SdKM3AocffRZQIab3hH2SUwqMnzGUFaA" },
+            { title: "شفوي شبكات", driveId: "1DJmfQQiGr-1MvtH67wl1Pw89w8ioM_3w" },
+            { title: "امتحانات Network", driveId: "1DOWdTuXU9uFIhzx1Vvcf1HyDsr2PgJmh" },
+            { title: "أسئلة Network", driveId: "1t2RmglZ4rEA7JMrIcbVvPE32K-ohAsp6" },
+            { title: "كتاب Network", driveId: "15C6zm8zgh0TvJ7eIt8belXt8B8XVkfOS" },
+        ],
+        "y2-oop": [
+            { title: "ملخص OOP 1", driveId: "1nHX68gcHrfPIUcbAPmXfJrQp8UgLVclN" },
+            { title: "ملخص OOP 2", driveId: "1qzLDVseaUV81RzOm6uqAD98mNsBVQ_ol" },
+            { title: "ملخص OOP 3", driveId: "1pHK5GM-OyrKRJDnL9h1qetAlDhTokgma" },
+            { title: "ملخص OOP 3 - نسخة أخرى", driveId: "1VyXKTplhJLvvmyEErPYlb6x_gQbF47fc" },
+            { title: "ملخص OOP C++", driveId: "1tiWCluZtYk9dj_jPrfmWLT10blQXZ4Fl" },
+            { title: "ملخص OOP Functions Part 1", driveId: "150E_A3CjSsphrACZGMqR5fDyyhliwUCJ" },
+            { title: "امتحانات OOP", driveId: "1EoTBydCyBXbhgxv0oKh6xVgWXcDXLdkV" },
+            { title: "كتاب OOP", driveId: "1lWlQ9uBWTrzPkotJA2VzgGkDksog4mOK" },
+        ],
+        "y2-logic-design": [
+            { title: "ملخص Logic Design 1", driveId: "1ssSN2CuMHPXh4aqt8eYNmt_pe9EnbdSy" },
+            { title: "ملخص Logic Design 2", driveId: "18pDcysHT-fMen7LT-TB6kAiqt84QP2mt" },
+            { title: "ملخص Logic Design 3", driveId: "1O81hP9U8qQTFwBGQ1TWwIyTZjmWvdCz4" },
+            { title: "ملخص Logic Design 4", driveId: "1TaQ5ZA_i4ga2naM1aaAxfYfE3TaxqUSF" },
+            { title: "ملخص Logic Design 5", driveId: "1kmg17Dpd22awMf0YHT0tdg3up-m9bYC7" },
+            { title: "ملخص Logic Design 6", driveId: "1jVPGlo6O3qYy4fMKa9IZ_YLBvUOBoO4" },
+            { title: "امتحانات Logic Design 1", driveId: "11vDR24b27zowIZ5onzXLA75PKpLaHMN6" },
+            { title: "امتحانات Logic Design 2", driveId: "1snX4FhmSXdoZOk7XiirwXgTGBOKKzo43" },
+            { title: "كتاب Logic Design", driveId: "1VLHQcs7Ilg7egjWzzZI1xI9f-rRFthjj" },
+        ],
+        "y2-project-mgmt": [
+            { title: "كتاب SPM", driveId: "14MVJaoaq5-wJrrJjvdDSIyJ2qYaArVtI" },
+        ],
+        "y2-operations-research": [
+            { title: "ملخص Operations Research", driveId: "1XR7y2sA4CO8dNkfO12LSy_5fOCwSfGND" },
+            { title: "امتحان Operations Research - Sheet", driveId: "1Oht4pVZraRtt695qJWWpuDm0DVWc05oM" },
+            { title: "امتحان Operations Research - Final and Mid", driveId: "1z62ptJwojYj4aeksNYhMrgVcbv_rQDyd" },
+            { title: "كتاب Operations Research", driveId: "14AF_QSIDapuk8bb_MC2mEEA08TiWRhTq" },
+        ],
+        "y2-prob2": [
+            { title: "ملخص احتمالات وإحصاء 2", driveId: "1voMNRP928TOzCvGQlg30IYsFS3BHczz6" },
+            { title: "امتحان احتمالات وإحصاء 2", driveId: "1Tjyvf8ePFIDjjFiTPInLOBXWsG8HsSkf" },
+            { title: "كتاب احتمالات وإحصاء 2", driveId: "1Xwx51yQEqRSHVMTzqDbH5ao998CdT4Fr" },
+        ],
+        "y2-ds1": [
+            { title: "ملخص Data Structure", driveId: "1uaxlskWzWFNJLX0BFEVbRlP5-6da840j" },
+            { title: "امتحان Data Structure", driveId: "1wqghj5dabDsAD5u_pVtTZkhbViNWDUFk" },
+            { title: "كتاب Data Structure", driveId: "12XvTgnOtNxA5HPrPnbQVbSstYMhd6RHo" },
+        ],
+        "y2-databases": [
+            { title: "امتحانات Database - أسئلة وإجابات 1", driveId: "1Gan_CFAFKB1TlNteyR4zxueEFsiKDijw" },
+            { title: "امتحانات Database - أسئلة وإجابات 2", driveId: "1h5Lw3qNZRTQfa0KdV4fVbNW_cNTUb_kD" },
+            { title: "امتحان Database Sheet", driveId: "1HmLQ2lW4n5ACkAFHPCV67hhjuWv8PJ0Z" },
+            { title: "كتاب Database", driveId: "1Dycb0SpS1NtfaaN9V6PndpyKEtTWhmFl" },
+        ],
+        "y2-modeling": [
+            { title: "ملخص Modeling - Chapter 2", driveId: "1loi_RXViijpx9FFV1jqMKZ5rfNg1KIMf" },
+            { title: "ملخص Modeling - Chapter 5", driveId: "1drc0Q9K0xognF0th_A_dxid0vctnF05Q" },
+            { title: "ملخص Modeling - Chapter 6", driveId: "1VZBbUf99LEU7-mkMifRrqS_QXXEKuYW2" },
+            { title: "امتحان Modeling MCQ", driveId: "1y5h325_qQvrCMrdxTCWOxHNDOado5Sbs" },
+        ],
+        "y2-web-tech": [
+            { title: "كتاب Web Development", driveId: "1PqnAOMI9_Wyaod3qVMKLlwNsCBh2T3vS" },
+        ],
+        "y2-physics": [
+            { title: "ملخص قوانين الفيزياء", driveId: "1A9wxqdeEURlDzsDHQFx3sYch3TysW-g-" },
+            { title: "تجارب الفيزياء", driveId: "1cD1YSRDWOGMaLbQHx724oEia1KDS7nof" },
+            { title: "كتاب الفيزياء", driveId: "1HGyGNrgQt50bS684MnKyLoJnr6XDN52b" },
+        ],
+    };
+
+    Object.keys(year1SourceFiles).forEach(function(courseId) {
+        var course = pages.year1.courses.find(function(item) { return item.id === courseId; });
+        if (course) appendSourceFiles(course, year1SourceFiles[courseId]);
+    });
+    Object.keys(year2SourceFiles).forEach(function(courseId) {
+        var course = pages.year2.courses.find(function(item) { return item.id === courseId; });
+        if (course) appendSourceFiles(course, year2SourceFiles[courseId]);
     });
 
     window.AHLIA_DATA = {

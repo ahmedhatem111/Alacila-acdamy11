@@ -163,8 +163,10 @@
                 const list = h("div", { class: "rows" });
                 const tabs = h("div", { class: "tabs", role: "tablist" });
                 const topics = c.topics || [];
+                const videos = (c.files || []).filter((file) => file.video);
                 const defs = [
                     ["files", `الملفات (${c.files.length})`],
+                    ["videos", `فيديوهات الشرح (${videos.length})`],
                     ["explanation", `شرح المادة (${topics.length})`],
                 ];
 
@@ -208,21 +210,34 @@
                             }, label)
                         )
                     );
+                    if (tab === "videos") {
+                        if (videos.length) {
+                            list.replaceChildren(...videos.map((video) =>
+                                h("div", { class: "row" },
+                                    h("span", { class: "row__ico", html: UI.video }),
+                                    h("div", { class: "row__text" }, h("strong", {}, video.title), h("small", {}, video.type)),
+                                    h("div", { class: "row__actions" },
+                                        h("button", { class: "btn btn--primary btn--xs", type: "button", onclick: () => go(videoView(c, video)) }, "تشغيل داخل الموقع"),
+                                        h("a", { class: "btn btn--outline btn--xs", href: video.url, target: "_blank", rel: "noopener noreferrer" }, video.provider === "drive" ? "فتح على Drive" : "فتح على YouTube")
+                                    )
+                                )
+                            ));
+                        } else {
+                            list.replaceChildren(h("p", { class: "panel__desc" }, "لا توجد فيديوهات شرح متاحة لهذه المادة حاليًا."));
+                        }
+                        return;
+                    }
                     if (tab === "explanation") {
                         const done = new Set(Store ? Store.doneOf(c.id) : []);
                         list.replaceChildren(
                             h("p", { class: "panel__desc" }, c.desc || `موضوعات مادة ${c.title}`),
                             ...topics.map((topic, i) => {
-                                const query = encodeURIComponent(`${c.title} ${topic} شرح عربي`);
                                 const box = Store ? h("input", { type: "checkbox", id: `lec-${c.id}-${i}`, "aria-label": `اكتمل ${topic}` }) : null;
                                 if (box) box.checked = done.has(i);
                                 const row = h("div", { class: "row" + (box ? " lecture" + (box.checked ? " is-done" : "") : "") },
                                     box,
                                     box ? h("span", { class: "lecture__n" }, String(i + 1)) : h("span", { class: "row__ico", html: UI.video }),
-                                    h("div", { class: "row__text" }, h("strong", {}, topic), h("small", {}, "فيديوهات تشرح الموضوع على YouTube")),
-                                    h("div", { class: "row__actions" },
-                                        h("a", { class: "btn btn--primary btn--xs", href: `https://www.youtube.com/results?search_query=${query}`, target: "_blank", rel: "noopener noreferrer" }, "فتح الفيديوهات")
-                                    )
+                                    h("div", { class: "row__text" }, h("strong", {}, topic), h("small", {}, "موضوع من موضوعات المادة"))
                                 );
                                 if (box) box.addEventListener("change", () => {
                                     Store.toggleLecture(c.id, i, box.checked);
@@ -243,8 +258,10 @@
                                 h("span", { class: "row__ico", html: UI.file }),
                                 h("div", { class: "row__text" }, h("strong", {}, f.title), h("small", {}, f.type || "PDF")),
                                 h("div", { class: "row__actions" },
-                                    f.drive ?
-                                    h("button", { class: "btn btn--primary btn--xs", type: "button", onclick: () => go(pdfView(c, f)) }, "فتح في الصفحة") :
+                                    f.drive ? [
+                                        h("button", { class: "btn btn--primary btn--xs", type: "button", onclick: () => go(pdfView(c, f)) }, "فتح في الصفحة"),
+                                        h("a", { class: "btn btn--outline btn--xs", href: f.url, target: "_blank", rel: "noopener noreferrer" }, "فتح في Drive"),
+                                    ] :
                                     f.external ?
                                     h("a", { class: "btn btn--primary btn--xs", href: f.url, target: "_blank", rel: "noopener noreferrer" }, "فتح الرابط") :
                                     f.direct ? [
@@ -279,6 +296,26 @@
             body() {
                 return h("div", { class: "panel__body panel__body--flush" },
                     h("iframe", { class: "viewer", src: f.previewUrl || f.url, title: f.title }));
+            },
+        };
+    }
+
+    function videoView(c, video) {
+        return {
+            title: video.title,
+            size: "video",
+            actions: [h("a", { class: "btn btn--outline btn--xs", href: video.url, target: "_blank", rel: "noopener noreferrer" }, video.provider === "drive" ? "فتح على Drive" : "فتح على YouTube")],
+            body() {
+                return h("div", { class: "panel__body panel__body--flush" },
+                    h("iframe", {
+                        class: "viewer viewer--video",
+                        src: video.embedUrl,
+                        title: `${video.title} - ${c.title}`,
+                        allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share",
+                        allowfullscreen: true,
+                        referrerpolicy: "strict-origin-when-cross-origin",
+                    })
+                );
             },
         };
     }

@@ -5848,6 +5848,10 @@ button.card {
     width: min(900px, 100%);
 }
 
+.modal__box.panel--video {
+    width: min(900px, 100%);
+}
+
 .modal__box.panel--pdf {
     width: min(980px, 100%);
     height: calc(100dvh - 40px);
@@ -5903,6 +5907,13 @@ button.card {
     width: 100%;
     border: 0;
     background: #fff;
+}
+
+.viewer--video {
+    flex: none;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    background: #000;
 }
 
 .panel__desc {
@@ -9203,6 +9214,15 @@ body.search-open {
     }
     .team-header .team-home span {
         display: none;
+    }
+}
+
+@media (max-width: 380px) {
+    .header__actions .hello {
+        display: none;
+    }
+    .header__actions .btn {
+        padding-inline: 10px;
     }
 }
 
