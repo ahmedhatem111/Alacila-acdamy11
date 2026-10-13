@@ -1039,7 +1039,6 @@ The_Simulation_Blueprint.pdf
                 course.files = localFiles.concat(linkedDriveFiles);
                 return;
             }
-            var folderId = DRIVE_COURSE_FOLDERS[course.id] || DRIVE_PAGE_FOLDERS[pageKey];
             var existingLinks = (course.files || []).filter(function(file) {
                 return !file.external || !/drive\.google\.com\/drive\/folders\//.test(file.url || "");
             }).map(function(file) {
@@ -1051,15 +1050,6 @@ The_Simulation_Blueprint.pdf
                 });
             });
             course.files = existingLinks;
-            if (!folderId || pageKey === "year1" || pageKey === "year2" || (existingLinks.length && !DRIVE_COURSE_FOLDERS[course.id])) return;
-            course.files.push({
-                title: "ملفات المادة على Google Drive",
-                type: "مجلد Google Drive",
-                url: "https://drive.google.com/drive/folders/" + folderId,
-                previewUrl: "https://drive.google.com/embeddedfolderview?id=" + folderId + "#list",
-                external: true,
-                drive: true,
-            });
         });
     });
 
