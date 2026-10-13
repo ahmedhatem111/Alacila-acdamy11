@@ -1088,7 +1088,15 @@ The_Simulation_Blueprint.pdf
                 { title: "شرح Data Structure - قائمة التشغيل 2", playlist: "PL37D52B7714788190" },
             ],
         },
-        "y2-databases": { subject: "database", videos: [{ title: "شرح قواعد البيانات", playlist: "PLVohjPQ5va9yyBD9Ld64bqAA3-Q4TyUsu" }] },
+        "y2-databases": {
+            subject: "database",
+            videos: [
+                { title: "شرح قواعد البيانات - قائمة التشغيل", playlist: "PLVohjPQ5va9yyBD9Ld64bqAA3-Q4TyUsu" },
+                { title: "شرح قواعد البيانات 1", id: "xkbDH1N9Nb0" },
+                { title: "شرح قواعد البيانات 2", id: "mzsDuNir5F8" },
+                { title: "شرح قواعد البيانات 3", id: "8xyLzcp5B6A" },
+            ],
+        },
         "y2-web-tech": {
             subject: "web",
             videos: [
@@ -1133,7 +1141,14 @@ The_Simulation_Blueprint.pdf
                 { title: "شرح احتمالات وإحصاء 1", id: "8YpnQoXZdb8" },
             ],
         },
-        "y1-programming-basics": { subject: "prog1" },
+        "y1-programming-basics": {
+            subject: "prog1",
+            videos: [
+                { title: "شرح أساسيات البرمجة 1", id: "UVmCAoBMSvA" },
+                { title: "شرح أساسيات البرمجة 2", id: "XO1C5LRvrjM" },
+                { title: "شرح أساسيات البرمجة 3", id: "Pm7VW3W8-7g" },
+            ],
+        },
         "y1-discrete": { subject: "discrete" },
         "y1-org-behavior": { subject: "behavior" },
         "y1-tech-writing": { subject: "writing" },
