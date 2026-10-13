@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>الاقتراحات والشكاوى | أهلية أكاديمي</title>
+    <script>
+        try {
+            if (!JSON.parse(localStorage.getItem("ahlia_user"))) throw 0;
+        } catch (e) {
+            location.replace("login.html?next=" + encodeURIComponent(location.pathname.split("/").pop()));
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=20261008">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#050a2a">
+    <link rel="icon" href="icons/icon-192.png">
+    <script src="theme.js"></script>
+    <script src="config.js"></script>
+    <script src="backend.js"></script>
+    <script src="store.js"></script>
+</head>
+
+<body data-page="feedback">
+    <canvas id="stars" aria-hidden="true"></canvas>
+    <header class="header">
+        <div class="container header__inner">
+            <a href="index.html" class="logo">
+                <svg class="logo__icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 3 44 44H4Z" fill="#4f7bff"/><path d="m24 30 6 14H18Z" fill="#a78bfa"/></svg>
+                <span>أهلية أكاديمي</span>
+            </a>
+            <nav class="nav" id="nav" aria-label="القائمة الرئيسية"></nav>
+            <div class="header__actions">
+                <button type="button" class="theme-toggle" id="themeToggle" aria-pressed="false" aria-label="تفعيل الألوان المريحة للعين" title="تفعيل الألوان المريحة للعين"><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg></button>
+                <span class="hello">أهلاً، <b data-user-name></b></span>
+                <button type="button" class="btn btn--outline btn--sm" id="logout">خروج</button>
+                <button class="burger" id="burger" type="button" aria-label="فتح القائمة" aria-expanded="false"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container feedback-page">
+        <p class="crumbs"><a href="index.html">الرئيسية</a> / <span>الاقتراحات والشكاوى</span></p>
+        <section class="feedback-heading" aria-labelledby="feedbackTitle">
+            <div>
+                <span class="feedback-eyebrow">مساحة للتطوير</span>
+                <h1 id="feedbackTitle">اقتراحات وشكاوى</h1>
+                <p>شاركنا ما يساعد على تحسين تجربتك في أهلية أكاديمي.</p>
+            </div>
+            <p class="feedback-local-note" role="note">حاليًا، تُحفظ الرسائل على هذا الجهاز فقط ولا تصل إلى إدارة الموقع.</p>
+        </section>
+
+        <div class="feedback-layout">
+            <section class="feedback-compose" aria-labelledby="feedbackFormTitle">
+                <div class="feedback-section-head">
+                    <div>
+                        <span class="feedback-eyebrow">رسالتك</span>
+                        <h2 id="feedbackFormTitle">اكتب ملاحظتك</h2>
+                    </div>
+                    <button class="btn btn--outline btn--sm feedback-history-trigger" id="openFeedbackHistory" type="button" aria-haspopup="dialog" aria-controls="feedbackHistoryDialog" aria-expanded="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 2.64-6.36L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg>
+                        <span>رسائلك السابقة</span>
+                        <span id="feedbackCount" class="feedback-count">0</span>
+                    </button>
+                </div>
+                <form id="feedbackForm" class="marketplace-form feedback-form">
+                    <fieldset class="feedback-kind">
+                        <legend>نوع الرسالة</legend>
+                        <div class="feedback-kind-options">
+                            <label><input type="radio" name="kind" value="suggestion" checked><span>اقتراح</span></label>
+                            <label><input type="radio" name="kind" value="complaint"><span>شكوى</span></label>
+                        </div>
+                    </fieldset>
+                    <label for="feedbackArea">القسم المعني
+                        <select id="feedbackArea" name="area" required>
+                            <option value="platform">الموقع وتجربة الاستخدام</option>
+                            <option value="courses">الكورسات والمواد</option>
+                            <option value="files">الملفات والمكتبة</option>
+                            <option value="account">الحساب وتسجيل الدخول</option>
+                            <option value="other">موضوع آخر</option>
+                        </select>
+                    </label>
+                    <label for="feedbackSubject">عنوان الرسالة
+                        <input id="feedbackSubject" name="subject" type="text" maxlength="100" placeholder="اكتب عنوانًا مختصرًا" required>
+                    </label>
+                    <label for="feedbackDetails">التفاصيل
+                        <textarea id="feedbackDetails" name="details" rows="6" maxlength="1200" placeholder="اشرح اقتراحك أو المشكلة التي واجهتك" required></textarea>
+                    </label>
+                    <div class="feedback-field-meta"><span>لا تكتب بيانات حساسة.</span><span><output id="feedbackLength">0</output> / 1200</span></div>
+                    <label for="feedbackEmail">بريد للرد عليك (اختياري)
+                        <input id="feedbackEmail" name="replyEmail" type="email" maxlength="254" autocomplete="email" placeholder="name@example.com" dir="ltr">
+                    </label>
+                    <button class="btn btn--primary feedback-submit" type="submit">حفظ الرسالة</button>
+                    <p id="feedbackMessage" class="feedback-message" role="status" aria-live="polite"></p>
+                </form>
+            </section>
+
+        </div>
+        <dialog id="feedbackHistoryDialog" class="marketplace-dialog feedback-dialog" aria-labelledby="feedbackHistoryTitle">
+            <div class="feedback-dialog__head">
+                <div>
+                    <span class="feedback-eyebrow">على هذا الجهاز</span>
+                    <h2 id="feedbackHistoryTitle">رسائلك السابقة</h2>
+                </div>
+                <button class="marketplace-dialog__close" id="closeFeedbackHistory" type="button" aria-label="إغلاق السجل" title="إغلاق السجل"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+            </div>
+            <p class="feedback-history-note">تظهر هنا الرسائل المحفوظة لهذا الحساب في هذا المتصفح. يمكنك حذف أي رسالة من السجل.</p>
+            <div id="feedbackList" class="feedback-list" aria-live="polite"></div>
+        </dialog>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer__inner">
+            <p class="footer__text">معاً نحو مستقبل أفضل &nbsp;|&nbsp; طلاب أهلية &nbsp;|&nbsp; <a href="team.html" class="footer__link">فريق العمل</a></p>
+        </div>
+    </footer>
+    <script src="script.js?v=20261008"></script>
+    <script src="page.js"></script>
+    <script src="mobile.js"></script>
+    <script src="feedback.js"></script>
+</body>
+
+</html>

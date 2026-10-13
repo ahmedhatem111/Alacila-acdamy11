@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>المفقودات والمعثورات | أهلية أكاديمي</title>
+    <script>
+        try {
+            if (!JSON.parse(localStorage.getItem("ahlia_user"))) throw 0;
+        } catch (e) {
+            location.replace("login.html?next=" + encodeURIComponent(location.pathname.split("/").pop()));
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=20261008">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#050a2a">
+    <link rel="icon" href="icons/icon-192.png">
+    <script src="theme.js"></script>
+    <script src="config.js"></script>
+    <script src="backend.js"></script>
+    <script src="store.js"></script>
+</head>
+
+<body data-page="lost-found">
+    <canvas id="stars" aria-hidden="true"></canvas>
+    <header class="header">
+        <div class="container header__inner">
+            <a href="index.html" class="logo"><svg class="logo__icon" viewbox="0 0 48 48" aria-hidden="true"><path d="M24 3 44 44H4Z" fill="#4f7bff"/><path d="m24 30 6 14H18Z" fill="#a78bfa"/></svg><span>أهلية أكاديمي</span></a>
+            <nav class="nav" id="nav" aria-label="القائمة الرئيسية">
+                <a href="index.html#home">الرئيسية</a><a href="index.html#years">السنوات الدراسية</a><a href="index.html#majors">التخصصات</a>
+                <a href="courses.html">الكورسات</a><a href="laptops.html">دليل اللابتوب</a><a href="marketplace.html">سوق الأجهزة</a><a href="lost-found.html" class="active" aria-current="page">المفقودات</a>
+                <a href="paths.html">المسارات المهنية</a><a href="library.html">المكتبة</a><a href="news.html">أخبار التقنية</a><a href="schedule.html">جدولي</a>
+            </nav>
+            <div class="header__actions">
+                <button type="button" class="theme-toggle" id="themeToggle" aria-pressed="false" aria-label="تفعيل الألوان المريحة للعين" title="تفعيل الألوان المريحة للعين"><svg class="sun" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg><svg class="moon" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></svg></button>
+                <span class="hello">أهلاً، <b data-user-name></b></span><button type="button" class="btn btn--outline btn--sm" id="logout">خروج</button>
+                <button class="burger" id="burger" aria-label="فتح القائمة" aria-expanded="false"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </header>
+    <main class="container marketplace-page">
+        <p class="crumbs"><a href="index.html">الرئيسية</a> / <span>المفقودات والمعثورات</span></p>
+        <section class="marketplace-hero lost-found-hero">
+            <div><span class="marketplace-eyebrow">مجتمع أهلية يساعد بعضه</span>
+                <h1>ضاع منك شيء؟ أو لقيت حاجة؟</h1>
+                <p>انشر بلاغًا بالمكان والتاريخ، وتواصل مباشرة مع صاحب البلاغ للمساعدة في استرجاع المفقودات.</p>
+                <button class="btn btn--primary" id="openReportDialog" type="button">أضف بلاغًا</button>
+            </div>
+            <div class="marketplace-hero__mark lost-found-hero__mark" aria-hidden="true"><svg viewbox="0 0 120 100" fill="none"><path d="M60 84s34-25 34-50a34 34 0 1 0-68 0c0 25 34 50 34 50Z" stroke="currentColor" stroke-width="4"/><circle cx="60" cy="34" r="11" stroke="currentColor" stroke-width="4"/><path d="M47 68h26M60 55v26" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></div>
+        </section>
+        <aside class="marketplace-notice" role="note"><strong>حافظ على خصوصيتك:</strong> لا تكتب رقم هوية أو بيانات حساسة، واطلب من الشخص وصف علامة مميزة قبل تسليم الغرض.</aside>
+        <section class="marketplace-layout" aria-label="بلاغات المفقودات والمعثورات">
+            <div class="marketplace-results">
+                <div class="marketplace-section-heading">
+                    <div><span class="marketplace-eyebrow">بلاغات الطلاب</span>
+                        <h2>آخر البلاغات <span id="reportCount" class="marketplace-count">0</span></h2>
+                    </div>
+                    <label class="marketplace-sort">الترتيب<select id="sortReports" aria-label="ترتيب البلاغات"><option value="newest">الأحدث</option><option value="oldest">الأقدم</option></select></label>
+                </div>
+                <div class="marketplace-filters lost-found-filters">
+                    <div class="marketplace-search-field">
+                        <label class="marketplace-search-label" for="searchReports">ابحث في البلاغات</label>
+                        <div class="marketplace-search"><svg viewbox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg><input id="searchReports" type="search" placeholder="ابحث عن غرض أو مكان"></div>
+                    </div>
+                    <div class="marketplace-categories" role="group" aria-label="تصفية حسب حالة الغرض"><button type="button" class="is-active" data-report-filter="all" aria-pressed="true">الكل</button><button type="button" data-report-filter="lost" aria-pressed="false">مفقود</button><button type="button" data-report-filter="found" aria-pressed="false">تم العثور عليه</button></div>
+                </div>
+                <p id="reportStatus" class="marketplace-page-message" role="status"></p>
+                <div id="reportGrid" class="marketplace-listings" aria-live="polite"></div>
+            </div>
+            <dialog id="reportDialog" class="marketplace-dialog" aria-labelledby="reportDialogTitle">
+                <div class="marketplace-section-heading">
+                    <div><span class="marketplace-eyebrow">إبلاغ المجتمع</span>
+                        <h2 id="reportDialogTitle">أضف بلاغًا</h2>
+                    </div>
+                    <button class="marketplace-dialog__close" type="button" data-close-report-dialog aria-label="إغلاق النافذة" title="إغلاق النافذة"><svg viewbox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+                </div>
+                <form id="reportForm" class="marketplace-form">
+                    <div class="marketplace-form-row">
+                        <label>نوع البلاغ<select name="status" required><option value="lost">مفقود</option><option value="found">تم العثور عليه</option></select></label>
+                        <label>نوع الغرض<select name="category" required><option value="electronics">إلكترونيات</option><option value="documents">بطاقات أو مستندات</option><option value="keys">مفاتيح</option><option value="bag">حقيبة</option><option value="clothing">ملابس</option><option value="other">أخرى</option></select></label>
+                    </div>
+                    <label>اسم الغرض<input name="title" maxlength="90" placeholder="مثال: سماعة لاسلكية سوداء" required></label>
+                    <div class="marketplace-form-row">
+                        <label>المكان<input name="location" maxlength="100" placeholder="المبنى أو القاعة أو المكان التقريبي" required></label>
+                        <label>تاريخ الفقد أو العثور عليه<input name="eventDate" type="date" required></label>
+                    </div>
+                    <label>وصف يساعد على التعرف عليه<textarea name="description" maxlength="500" rows="3" placeholder="اذكر اللون أو علامة مميزة، واترك التفاصيل الحساسة للتحقق المباشر"></textarea></label>
+                    <label>اسم صاحب البلاغ<input name="reporterName" maxlength="80" autocomplete="name" placeholder="اكتب اسمك" required></label>
+                    <div class="marketplace-form-row">
+                        <label>طريقة التواصل<select name="contactMethod" required><option value="whatsapp">واتساب</option><option value="call">اتصال هاتفي</option></select></label>
+                        <label>رقم التواصل مع مفتاح الدولة<input name="contactNumber" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="05xxxxxxxx أو +9665xxxxxxxx" required></label>
+                    </div>
+                    <button class="btn btn--primary marketplace-submit" type="submit">نشر البلاغ</button>
+                    <p id="reportFormMessage" class="marketplace-form-message" role="status"></p>
+                </form>
+            </dialog>
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="container footer__inner">
+            <p class="footer__text">معاً نحو مستقبل أفضل &nbsp;|&nbsp; طلاب أهلية &nbsp;|&nbsp; <a href="team.html" class="footer__link">فريق العمل</a></p>
+        </div>
+    </footer>
+    <script src="script.js?v=20261008"></script>
+    <script src="page.js"></script>
+    <script src="mobile.js"></script>
+    <script src="lost-found.js"></script>
+</body>
+
+</html>

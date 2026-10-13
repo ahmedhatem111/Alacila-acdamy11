@@ -348,6 +348,19 @@
         const search = document.getElementById("q");
         const levelSel = document.getElementById("level");
         const count = document.getElementById("resultCount");
+        const sourceButtons = [...document.querySelectorAll("[data-course-source]")];
+        const localFilters = document.getElementById("courseLocalFilters");
+        const localLevel = document.getElementById("courseLocalLevel");
+        const providerFilter = document.getElementById("externalProvider");
+        const providerControl = document.getElementById("externalProviderControl");
+        const externalCount = document.getElementById("externalCourseCount");
+        const externalNote = document.getElementById("externalCourseNote");
+        const externalCourses = window.AHLIA_EXTERNAL_COURSES || [];
+        const externalCardRenderer = window.AHLIA_EXTERNAL_COURSE_CARD;
+        const externalCards = new Map(
+            externalCourses.filter(() => typeof externalCardRenderer === "function").map((course) => [course.url, externalCardRenderer(course)])
+        );
+        let sourceMode = "all";
         if (!grid) return;
 
         const groups = Object.values(allPages).filter((p) => p.courses && p.courses.length).map((p) => p.label);
@@ -389,12 +402,20 @@
         function paint() {
             const q = search.value.trim().toLowerCase();
             const lvl = levelSel.value;
-            const list = courses.filter((c) => {
+            const selectedProvider = providerFilter ? providerFilter.value : "all";
+            const localList = courses.filter((c) => {
+                if (sourceMode === "all" && selectedProvider !== "all" && selectedProvider !== "ahlia") return false;
                 if (cat !== "الكل" && c.category !== cat) return false;
                 if (lvl && c.level !== lvl) return false;
                 if (!q) return true;
                 return (c.title + " " + c.desc + " " + c.category).toLowerCase().includes(q);
             });
+            const externalList = sourceMode === "local" ? [] : externalCourses.filter((course) => {
+                if (selectedProvider !== "all" && course.provider !== selectedProvider) return false;
+                const text = [course.title, course.description, course.providerName, course.search].join(" ").toLowerCase();
+                return !q || text.includes(q);
+            });
+            const visibleLocal = sourceMode === "external" ? [] : localList;
             chips.replaceChildren(
                 ...["الكل"].concat(groups).map((g) =>
                     h("button", {
@@ -408,13 +429,31 @@
                     }, g)
                 )
             );
-            grid.replaceChildren(
-                ...(list.length ? list.map(card) : [h("p", { class: "empty" }, "لا توجد كورسات مطابقة لبحثك")])
-            );
-            count.textContent = `عرض ${list.length} من ${courses.length} كورس`;
+            const visibleCards = [
+                ...visibleLocal.map(card),
+                ...externalList.map((course) => externalCards.get(course.url)).filter(Boolean),
+            ];
+            grid.replaceChildren(...(visibleCards.length ? visibleCards : [h("p", { class: "empty" }, "لا توجد كورسات مطابقة لبحثك")]));
+            count.textContent = `عرض ${localList.length} من ${courses.length} كورس أهلية`;
+            if (externalCount) externalCount.textContent = `عرض ${externalList.length} من ${externalCourses.length} كورس خارجي`;
         }
+
+        function setSource(mode) {
+            sourceMode = mode;
+            const showLocal = mode !== "external";
+            const showExternal = mode !== "local";
+            if (localFilters) localFilters.hidden = !showLocal;
+            if (localLevel) localLevel.hidden = !showLocal;
+            if (providerControl) providerControl.hidden = !showExternal;
+            if (externalNote) externalNote.hidden = !showExternal;
+            sourceButtons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.courseSource === mode)));
+            paint();
+        }
+
         search.addEventListener("input", paint);
         levelSel.addEventListener("change", paint);
+        if (providerFilter) providerFilter.addEventListener("change", paint);
+        sourceButtons.forEach((button) => button.addEventListener("click", () => setSource(button.dataset.courseSource)));
         paint();
     }
 

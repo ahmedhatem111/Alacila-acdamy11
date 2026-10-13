@@ -968,7 +968,7 @@ The_Simulation_Blueprint.pdf
             }
             var folderId = DRIVE_COURSE_FOLDERS[course.id] || DRIVE_PAGE_FOLDERS[pageKey];
             var existingLinks = (course.files || []).filter(function(file) {
-                return file.external && !/drive\.google\.com\/drive\/folders\//.test(file.url || "");
+                return !file.external || !/drive\.google\.com\/drive\/folders\//.test(file.url || "");
             }).map(function(file) {
                 var match = String(file.url || "").match(/drive\.google\.com\/file\/d\/([^/?#]+)/);
                 if (!match) return file;
@@ -978,7 +978,7 @@ The_Simulation_Blueprint.pdf
                 });
             });
             course.files = existingLinks;
-            if (!folderId || pageKey === "year1" || pageKey === "year2") return;
+            if (!folderId || pageKey === "year1" || pageKey === "year2" || existingLinks.length) return;
             course.files.push({
                 title: "ملفات المادة على Google Drive",
                 type: "مجلد Google Drive",
@@ -1598,10 +1598,7 @@ The_Simulation_Blueprint.pdf
                 title: "فريق الإدارة",
                 desc: "تنظيم العمل والتنسيق بين الفرق",
                 icon: "mgmt",
-                members: [
-                    { name: "احمد حاتم", role: "إدارة المشروع", photo: "Ahmed Hatem.jfif", linkedin: "https://www.linkedin.com/in/ahmed-hatem11/", facebook: "https://www.facebook.com/profile.php?id=100030429453407" },
-                    { name: "احمد رمضان", role: "إدارة المشروع", photo: "Ahmed Ramadan.png", linkedin: "", facebook: "https://www.facebook.com/ahmed.ramadan.478181" },
-                ],
+                members: [],
             },
         ],
     };

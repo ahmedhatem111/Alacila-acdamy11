@@ -4,7 +4,7 @@
     const WELCOME = "welcome.html";
     const OFFLINE = window.AHLIA_OFFLINE_MODE === true;
     /* only these pages are valid targets after logging in (prevents open redirects) */
-    const PROTECTED = /^(welcome|courses|course|teams|staff|year1|year2|cs|ai|is|mylearning|schedule|paths|movies|videos|news|laptops|library|certificate)\.html(\?[\w%.\-=&]*)?$/;
+    const PROTECTED = /^(welcome|courses|course|teams|staff|year1|year2|cs|ai|is|mylearning|schedule|paths|movies|videos|news|laptops|library|certificate|feedback)\.html(\?[\w%.\-=&]*)?$/;
     const MAJOR_OF_PAGE = { "cs.html": "cs", "ai.html": "ai", "is.html": "is", "year1.html": "year1", "year2.html": "year2" };
 
     const S = window.AhliaStore;

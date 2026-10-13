@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>سوق الأجهزة والملحقات | أهلية أكاديمي</title>
+    <script>
+        try {
+            if (!JSON.parse(localStorage.getItem("ahlia_user"))) throw 0;
+        } catch (e) {
+            location.replace("login.html?next=" + encodeURIComponent(location.pathname.split("/").pop()));
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=20261008">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#050a2a">
+    <link rel="icon" href="icons/icon-192.png">
+    <script src="theme.js"></script>
+    <script src="config.js"></script>
+    <script src="backend.js"></script>
+    <script src="store.js"></script>
+</head>
+
+<body data-page="marketplace">
+    <canvas id="stars" aria-hidden="true"></canvas>
+    <header class="header">
+        <div class="container header__inner">
+            <a href="index.html" class="logo"><svg class="logo__icon" viewbox="0 0 48 48" aria-hidden="true"><path d="M24 3 44 44H4Z" fill="#4f7bff"/><path d="m24 30 6 14H18Z" fill="#a78bfa"/></svg><span>أهلية أكاديمي</span></a>
+            <nav class="nav" id="nav" aria-label="القائمة الرئيسية">
+                <a href="index.html#home">الرئيسية</a><a href="index.html#years">السنوات الدراسية</a><a href="index.html#majors">التخصصات</a>
+                <a href="courses.html">الكورسات</a><a href="laptops.html">دليل اللابتوب</a><a href="marketplace.html" class="active" aria-current="page">سوق الأجهزة</a>
+                <a href="lost-found.html">المفقودات</a>
+                <a href="paths.html">المسارات المهنية</a><a href="library.html">المكتبة</a><a href="news.html">أخبار التقنية</a><a href="schedule.html">جدولي</a>
+            </nav>
+            <div class="header__actions">
+                <button type="button" class="theme-toggle" id="themeToggle" aria-pressed="false" aria-label="تفعيل الألوان المريحة للعين" title="تفعيل الألوان المريحة للعين"><svg class="sun" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg><svg class="moon" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></svg></button>
+                <span class="hello">أهلاً، <b data-user-name></b></span><button type="button" class="btn btn--outline btn--sm" id="logout">خروج</button>
+                <button class="burger" id="burger" aria-label="فتح القائمة" aria-expanded="false"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </header>
+    <main class="container marketplace-page">
+        <p class="crumbs"><a href="index.html">الرئيسية</a> / <span>سوق الأجهزة والملحقات</span></p>
+        <section class="marketplace-hero">
+            <div><span class="marketplace-eyebrow">سوق طلاب أهلية</span>
+                <h1>جهازك القديم ممكن يكون بداية طالب ثاني</h1>
+                <p>اعرض لابتوبك أو ملحقاتك بمواصفاتها وسعرها، وخلي التواصل مباشرة بينكم على واتساب.</p><button class="btn btn--primary" id="openListingDialog" type="button">أضف إعلانك</button></div>
+            <div class="marketplace-hero__mark" aria-hidden="true"><svg viewbox="0 0 120 100" fill="none"><rect x="22" y="13" width="76" height="54" rx="5" stroke="currentColor" stroke-width="4"/><path d="M11 78h98l-8 9H19l-8-9Z" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/><path d="M45 40h30M45 49h20" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><circle cx="91" cy="73" r="17" fill="var(--bg)" stroke="currentColor" stroke-width="4"/><path d="m84 73 5 5 9-10" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </section>
+        <aside class="marketplace-notice" role="note"><strong>تنبيه:</strong> الإعلانات محفوظة حاليًا على هذا المتصفح فقط، ولن تظهر لطلاب على أجهزة أخرى. لا تشارك بياناتك البنكية، وافحص الجهاز قبل الشراء.</aside>
+        <section class="marketplace-layout" aria-label="إعلانات السوق وإضافة إعلان">
+            <div class="marketplace-results">
+                <div class="marketplace-section-heading">
+                    <div><span class="marketplace-eyebrow">المعروض حاليًا</span>
+                        <h2>إعلانات الطلاب <span id="listingCount" class="marketplace-count">0</span></h2>
+                    </div>
+                    <label class="marketplace-sort">ترتيب السعر<select id="sortListings" aria-label="ترتيب الإعلانات حسب السعر"><option value="newest">الأحدث</option><option value="low">الأقل سعرًا</option><option value="high">الأعلى سعرًا</option></select></label>
+                </div>
+                <div class="marketplace-filters">
+                    <div class="marketplace-search-field">
+                        <label class="marketplace-search-label" for="searchListings">ابحث في الإعلانات</label>
+                        <div class="marketplace-search"><svg viewbox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg><input id="searchListings" type="search" placeholder="ابحث عن جهاز، شركة، أو مواصفة"></div>
+                    </div>
+                    <div class="marketplace-categories" role="group" aria-label="تصفية حسب نوع المنتج"><button type="button" class="is-active" data-filter="all" aria-pressed="true">الكل</button><button type="button" data-filter="laptop" aria-pressed="false">لابتوبات</button><button type="button" data-filter="accessory" aria-pressed="false">ملحقات</button></div>
+                </div>
+                <p id="marketplaceStatus" class="marketplace-page-message" role="status"></p>
+                <div id="listingGrid" class="marketplace-listings" aria-live="polite"></div>
+            </div>
+            <dialog id="listingDialog" class="marketplace-dialog" aria-labelledby="listingDialogTitle">
+                <div class="marketplace-section-heading">
+                    <div><span class="marketplace-eyebrow">بيع لطلاب الجامعة</span>
+                        <h2 id="listingDialogTitle">أضف إعلانًا</h2>
+                    </div>
+                    <button class="marketplace-dialog__close" type="button" data-close-listing-dialog aria-label="إغلاق النافذة" title="إغلاق النافذة"><svg viewbox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+                </div>
+                <form id="listingForm" class="marketplace-form">
+                    <label>نوع المنتج<select name="category" required><option value="laptop">لابتوب</option><option value="accessory">إكسسوار أو قطعة كمبيوتر</option></select></label>
+                    <label>عنوان الإعلان<input name="title" maxlength="90" placeholder="مثال: Lenovo Legion 5 بحالة ممتازة" required></label>
+                    <div class="marketplace-form-row"><label>الشركة<input name="brand" maxlength="50" placeholder="Lenovo، HP، Apple..."></label><label>السعر (ريال)<input name="price" type="number" min="1" max="1000000" step="1" inputmode="numeric" required></label></div>
+                    <div class="marketplace-form-row"><label>الحالة<select name="condition" required><option value="مستعمل - ممتاز">مستعمل - ممتاز</option><option value="مستعمل - جيد جدًا">مستعمل - جيد جدًا</option><option value="مستعمل - جيد">مستعمل - جيد</option><option value="جديد">جديد</option></select></label><label>المدينة أو الحي<input name="location" maxlength="60" placeholder="الدمام، الخبر..."></label></div>
+                    <fieldset id="laptopSpecs" class="marketplace-specs">
+                        <legend>مواصفات اللابتوب <span>(اختيارية)</span></legend>
+                        <label>المعالج<input name="cpu" maxlength="70" placeholder="Intel Core i7-12700H"></label><label>كرت الشاشة<input name="gpu" maxlength="70" placeholder="NVIDIA RTX 4060 أو مدمج"></label>
+                        <div class="marketplace-form-row"><label>الرام<input name="ram" maxlength="30" placeholder="16 GB"></label><label>التخزين<input name="storage" maxlength="30" placeholder="512 GB SSD"></label></div>
+                        <label>نظام التشغيل<input name="os" maxlength="50" placeholder="Windows 11، macOS، Linux..."></label>
+                    </fieldset>
+                    <label>تفاصيل إضافية<textarea name="description" maxlength="500" rows="3" placeholder="مدة الاستخدام، حالة البطارية، الملحقات، أو أي ملاحظات"></textarea></label>
+                    <label>اسم صاحب الإعلان<input name="sellerName" maxlength="80" autocomplete="name" placeholder="اكتب اسمك" required></label>
+                    <div class="marketplace-form-row">
+                        <label>طريقة التواصل<select name="contactMethod" required><option value="whatsapp">واتساب</option><option value="call">اتصال هاتفي</option></select></label>
+                        <label>رقم التواصل مع مفتاح الدولة<input name="contactNumber" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="05xxxxxxxx أو +9665xxxxxxxx" required></label>
+                    </div>
+                    <button class="btn btn--primary marketplace-submit" type="submit">نشر الإعلان</button>
+                    <p id="formMessage" class="marketplace-form-message" role="status"></p>
+                </form>
+            </dialog>
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="container footer__inner">
+            <p class="footer__text">معاً نحو مستقبل أفضل &nbsp;|&nbsp; طلاب أهلية &nbsp;|&nbsp; <a href="team.html" class="footer__link">فريق العمل</a></p>
+        </div>
+    </footer>
+    <script src="script.js?v=20261008"></script>
+    <script src="page.js"></script>
+    <script src="mobile.js"></script>
+    <script src="marketplace.js"></script>
+</body>
+
+</html>

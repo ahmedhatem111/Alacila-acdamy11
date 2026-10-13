@@ -73,7 +73,7 @@
                 h("div", {}, h("h2", { id: "h-" + tm.id }, tm.title), tm.desc ? h("p", {}, tm.desc) : null),
                 h("span", { class: "team-group__count" }, n + (n === 1 ? " عضو" : " أعضاء"))
             ),
-            h("div", { class: "team-group__list" }, members.length ? members.map(personCard) : h("p", { class: "team-group__empty", role: "status" }, "سيتم إضافة أعضاء هذا الفريق لاحقًا"))
+            h("div", { class: "team-group__list" }, members.length ? members.map(personCard) : h("p", { class: "team-group__empty", role: "status" }, "سيتم إضافتهم قريبًا"))
         );
     }
 

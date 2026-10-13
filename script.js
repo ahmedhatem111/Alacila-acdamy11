@@ -43,6 +43,7 @@
         { key: "apps", label: "تطبيقات الدراسة", href: "apps.html", menuGroup: "خدمات الطالب" },
         { key: "locations", label: "مواقع المحاضرات", href: "locations.html", menuGroup: "خدمات الطالب" },
         { key: "library", label: "المكتبة", href: "library.html", menuGroup: "خدمات الطالب" },
+        { key: "feedback", label: "الاقتراحات والشكاوى", href: "feedback.html", menuGroup: "خدمات الطالب" },
         { key: "certificate", label: "الشهادات", href: "certificate-info.html", menuGroup: "خدمات الطالب" },
         { key: "ai-tools", label: "أدوات الذكاء الاصطناعي", href: "ai-tools.html", menuGroup: "مصادر التقنية" },
         { key: "movies", label: "الأفلام", href: "movies.html", menuGroup: "مصادر التقنية" },
@@ -56,7 +57,7 @@
         { key: "teams", label: "زملاء المشروع", href: "teams.html", menuGroup: "المشاريع والمجتمع" },
         { key: "team", label: "فريق العمل", href: "team.html", menuGroup: "المشاريع والمجتمع" },
     ];
-    const pageFor = { year1: "year1.html", year2: "year2.html", cs: "cs.html", ai: "ai.html", is: "is.html", courses: "courses.html", paths: "paths.html", staff: "staff.html", "ai-tools": "ai-tools.html", movies: "movies.html", videos: "videos.html", memes: "memes.html", news: "news.html", laptops: "laptops.html", library: "library.html", schedule: "schedule.html", apps: "apps.html", locations: "locations.html", opportunities: "opportunities.html", volunteering: "volunteering.html", projects: "projects.html", teams: "teams.html", team: "team.html" };
+    const pageFor = { year1: "year1.html", year2: "year2.html", cs: "cs.html", ai: "ai.html", is: "is.html", courses: "courses.html", paths: "paths.html", staff: "staff.html", "ai-tools": "ai-tools.html", movies: "movies.html", videos: "videos.html", memes: "memes.html", news: "news.html", laptops: "laptops.html", library: "library.html", feedback: "feedback.html", schedule: "schedule.html", apps: "apps.html", locations: "locations.html", opportunities: "opportunities.html", volunteering: "volunteering.html", projects: "projects.html", teams: "teams.html", team: "team.html" };
     const isActive = (key) => {
         if (key === "home") return file === "welcome.html" || (onHome && (!hash || hash === "#home"));
         if (key === "years") return ["year1.html", "year2.html"].includes(file) || (onHome && hash === "#years");
@@ -151,14 +152,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const burger = document.getElementById("burger");
     const nav = document.getElementById("nav");
     if (burger && nav) {
+        const more = nav.querySelector(".nav-more");
+        const moreButton = more && more.querySelector(".nav-more__btn");
         burger.addEventListener("click", () => {
             const open = nav.classList.toggle("open");
             burger.setAttribute("aria-expanded", open);
+            if (open && matchMedia("(max-width: 1200px)").matches && moreButton && !more.classList.contains("open")) {
+                requestAnimationFrame(() => {
+                    if (nav.classList.contains("open") && !more.classList.contains("open")) moreButton.click();
+                });
+            } else if (!open && moreButton && more.classList.contains("open")) moreButton.click();
         });
         nav.querySelectorAll("a").forEach((a) =>
             a.addEventListener("click", () => {
                 nav.classList.remove("open");
                 burger.setAttribute("aria-expanded", "false");
+                if (moreButton && more.classList.contains("open")) moreButton.click();
             })
         );
     }
@@ -211,7 +220,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const KEY_USER = "ahlia_user";
     const PAGES = { cs: "cs.html", ai: "ai.html", is: "is.html", year1: "year1.html", year2: "year2.html" };
     /* every page except index.html, login.html and team.html needs a signed-in user */
-    const PROTECTED = /^(welcome|courses|course|teams|staff|year1|year2|cs|ai|is|mylearning|schedule|locations|opportunities|paths|movies|certificate|ai-tools)\.html(\?[\w%.\-=&]*)?$/;
+    const PROTECTED = /^(welcome|courses|course|teams|staff|year1|year2|cs|ai|is|mylearning|schedule|locations|opportunities|paths|movies|certificate|ai-tools|feedback)\.html(\?[\w%.\-=&]*)?$/;
 
     const getUser = () => { try { return JSON.parse(localStorage.getItem(KEY_USER)); } catch (e) { return null; } };
     const loginUrl = (next) => "login.html" + (next ? "?next=" + encodeURIComponent(next) : "");

@@ -132,8 +132,14 @@
 
             <section id="all" class="catalog">
                 <div class="section__head">
-                    <h2>جميع الكورسات</h2>
-                    <p>اختر المجال الذي تريد التعمق فيه، وابدأ رحلتك الآن.</p>
+                    <h2 id="catalogTitle">جميع الكورسات</h2>
+                    <p id="catalogDescription">كورسات أهلية ودورات من جامعات وشركات تعليمية حول العالم.</p>
+                </div>
+
+                <div class="course-source-filter" role="group" aria-label="فلترة حسب مصدر الكورس">
+                    <button type="button" data-course-source="all" aria-pressed="true">الكل</button>
+                    <button type="button" data-course-source="local" aria-pressed="false">كورسات أهلية</button>
+                    <button type="button" data-course-source="external" aria-pressed="false">كورسات خارجية</button>
                 </div>
 
                 <div class="filters">
@@ -141,18 +147,36 @@
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.500-3.500"/></svg>
             <input id="q" type="search" placeholder="ابحث عن كورس..." aria-label="بحث في الكورسات" autocomplete="off">
           </label>
-                    <select id="level" aria-label="تصفية حسب المستوى">
+                    <div id="courseLocalLevel" class="course-local-level">
+                        <select id="level" aria-label="تصفية حسب المستوى">
             <option value="">كل المستويات</option>
             <option value="مبتدئ">مبتدئ</option>
             <option value="متوسط">متوسط</option>
             <option value="متقدم">متقدم</option>
           </select>
+                    </div>
+                    <label id="externalProviderControl" class="external-catalog__filter" for="externalProvider">
+                        <span>الجهة المقدمة</span>
+                        <select id="externalProvider">
+                            <option value="all">كل الجهات</option>
+                            <option value="harvard">Harvard University</option>
+                            <option value="ahlia">أهلية أكاديمي</option>
+                            <option value="microsoft">Microsoft</option>
+                            <option value="cisco">Cisco</option>
+                            <option value="google">Google</option>
+                            <option value="ibm">IBM</option>
+                        </select>
+                        <small id="externalCourseCount" class="external-catalog__count" aria-live="polite"></small>
+                    </label>
                 </div>
 
-                <div class="chips" id="chips" role="group" aria-label="تصفية حسب المجال"></div>
-                <p class="result-count" id="resultCount" aria-live="polite"></p>
-
+                <div id="courseLocalFilters" class="course-source-section">
+                    <h3 class="course-source-section__title">كورسات أهلية</h3>
+                    <div class="chips" id="chips" role="group" aria-label="تصفية حسب المجال"></div>
+                    <p class="result-count" id="resultCount" aria-live="polite"></p>
+                </div>
                 <div class="catalog__grid" id="catalogGrid"></div>
+                <p id="externalCourseNote" class="external-catalog__note">الدورات الخارجية تفتح على منصاتها الأصلية، وقد تختلف متطلبات التسجيل والشهادات.</p>
             </section>
         </div>
     </main>
@@ -202,6 +226,7 @@
     <script src="script.js?v=20261008"></script>
     <script src="page.js"></script>
     <script src="data.js"></script>
+    <script src="external-courses.js"></script>
     <script src="content.js"></script>
     <script src="mobile.js"></script>
 </body>
