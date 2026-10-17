@@ -1457,6 +1457,52 @@ The_Simulation_Blueprint.pdf
         });
     });
 
+    var requestedCourseFiles = {
+        "cs-os": [
+            { title: "OS Book Highlighted Parts", driveId: "1zHOE2kTKaeWRb1rGj-CskgXKpL5o0rx6" },
+            { title: "Lecture Summary - Operating Systems", driveId: "1KEdeWyUfpSankh3BQb0V2Epm9X50VbDW" },
+            { title: "OS Book PDF", driveId: "1bJT2hS5CmAFkUDxoXeHpZVNjC7QDbm6j" },
+            { title: "OS Section 3", driveId: "1d6gLyP_6_b5m6zwgs01n3VpyIZkP5axG" },
+            { title: "Section 1 OS", presentationId: "1pizTNLW3iSGwp41_tCS7nKpbp3klOyHB" },
+            { title: "Section 2 OS", driveId: "12EjvT7ZBeYPI2TrXViE_PyC-BDrpAHjJ" },
+            { title: "Linux Commands - Section 3", driveId: "1qY97MsDvtmEjfsFwxPYwVxsUfiuGNMaN" },
+            { title: "Linux Programming with C - Section 4", driveId: "1i4yL9azDHgyVhIAECIkQbgeyye1vTA9I" },
+            { title: "Linux Commands - Section 2", driveId: "1BnN_GBZ27hRJ1Vis0TSgwKiiwFQmiCtJ" },
+            { title: "Linux Commands Guide", driveId: "1pbe04mvfQO-Is3S4cEKdmRhCS9kiHG0N" },
+        ],
+        "cs-algorithms": [
+            { title: "Algorithms Book PDF", driveId: "1ZY0iCqQqxIZhLdrXEcPdWVvV624Q1O2v" },
+            { title: "Chapter 2 - Algorithm Analysis", presentationId: "1LKEO6xa4APsgvKWoMB0aFSexp0d8q7QP" },
+            { title: "Algorithms Chapter 1 - Introduction Lecture 2026", presentationId: "1vAkCRJkfGV4jgyGImmkxFDb3HIpGbnQE" },
+        ],
+        "ai-artificial-intelligence": [
+            { title: "Artificial Intelligence Book 1", driveId: "19BsOJhUDlO7XyvIfAQ-HfMCaV1y2629J" },
+        ],
+        "ai-data-science": [
+            { title: "Data Science Book", driveId: "1voX2qmSWpqxy3OaGinY6QtEEPIVa3nme" },
+        ],
+        "cs-image-proc": [
+            { title: "Digital Image Processing Book", driveId: "1ryzyP4Hmd6pOJTl-cHUCNxBH9YNw_DLL" },
+        ],
+        "cs-ds2": [
+            { title: "Data Structures 2 Book", driveId: "1G7zLdB1osY6gKgTbfEOPUdsuS8UsEaUF" },
+        ],
+        "ai-probabilistic-reasoning": [
+            { title: "Probabilistic Reasoning - Chapters 1 and 2", driveId: "1_lC7GRyzC2gnnMw4gl99OnE6zJAfM3SV" },
+        ],
+    };
+
+    Object.keys(requestedCourseFiles).forEach(function(courseId) {
+        var course;
+        Object.keys(pages).some(function(pageKey) {
+            course = (pages[pageKey].courses || []).find(function(item) {
+                return item.id === courseId;
+            });
+            return !!course;
+        });
+        if (course) appendSourceFiles(course, requestedCourseFiles[courseId]);
+    });
+
     window.AHLIA_DATA = {
         pages: pages,
 
