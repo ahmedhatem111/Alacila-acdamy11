@@ -1074,7 +1074,21 @@ The_Simulation_Blueprint.pdf
             } else return;
             if (existingUrls.has(url)) return;
             existingUrls.add(url);
-            course.files.push({ title: video.title, type: "فيديو شرح", url: url, embedUrl: embedUrl, provider: provider, video: true });
+            var thumbnailUrl = video.thumbnailUrl;
+            if (!thumbnailUrl && video.id && provider === "youtube") thumbnailUrl = "https://i.ytimg.com/vi/" + video.id + "/hqdefault.jpg";
+            if (!thumbnailUrl && video.driveId) thumbnailUrl = "https://drive.google.com/thumbnail?id=" + video.driveId + "&sz=w640";
+            course.files.push({
+                title: video.title,
+                type: "فيديو شرح",
+                url: url,
+                embedUrl: embedUrl,
+                provider: provider,
+                thumbnailUrl: thumbnailUrl,
+                channelName: video.channelName || "",
+                channelUrl: video.channelUrl || "",
+                channelAvatarUrl: video.channelAvatarUrl || "",
+                video: true,
+            });
         });
     }
 
@@ -1143,6 +1157,10 @@ The_Simulation_Blueprint.pdf
                 { title: "شرح Logic Design 21", driveId: "1_1yKiC3TIlJliTlG5pmCgGdKy1wPGdH7" },
                 { title: "شرح Logic Design 22", driveId: "1zOhbJnf6B7OAp3ih53erljKCswM_nTzO" },
                 { title: "شرح Logic Design 23", driveId: "1SK5a5CE1nWFa85W9hcPWFE9gS0dpfQF5" },
+                { title: "شرح Logic Design - فيديو 1", id: "H9KAlcx9frY", channelName: "MBI", channelUrl: "https://www.youtube.com/@mbi2049", channelAvatarUrl: "https://unavatar.io/youtube/mbi2049" },
+                { title: "شرح Logic Design - فيديو 2", id: "ShbCYuomKzc", channelName: "Hashim EduTech", channelUrl: "https://www.youtube.com/@HashimEduTech", channelAvatarUrl: "https://unavatar.io/youtube/HashimEduTech" },
+                { title: "شرح Logic Design - قائمة التشغيل", playlist: "PLSRx5jmWD9u1U8kqwkb43AP35Ssg7yPrS", thumbnailUrl: "https://i.ytimg.com/vi/a0KqOJejO5Y/hqdefault.jpg", channelName: "si-manual", channelUrl: "https://www.youtube.com/@si-manual", channelAvatarUrl: "https://unavatar.io/youtube/si-manual" },
+                { title: "شرح Logic Design - فيديو 3", id: "lyga8BUD4gs", channelName: "Dr. Aya Nasser - د. آية ناصر", channelUrl: "https://www.youtube.com/@ayanasser1576", channelAvatarUrl: "https://unavatar.io/youtube/ayanasser1576" },
             ],
         },
         "y2-project-mgmt": { subject: "spm" },
@@ -1421,6 +1439,22 @@ The_Simulation_Blueprint.pdf
     Object.keys(year2SourceFiles).forEach(function(courseId) {
         var course = pages.year2.courses.find(function(item) { return item.id === courseId; });
         if (course) appendSourceFiles(course, year2SourceFiles[courseId]);
+    });
+
+    var allowedMaterialExtensions = new Set(["pdf", "jpg", "jpeg", "png", "gif", "webp", "bmp", "avif", "jfif", "heic", "heif", "tif", "tiff"]);
+    Object.keys(pages).forEach(function(pageKey) {
+        (pages[pageKey].courses || []).forEach(function(course) {
+            course.files = (course.files || []).filter(function(file) {
+                if (file.video) return true;
+                if (/docs\.google\.com\/(presentation|document)\//.test(file.url || "")) return false;
+                var type = String(file.type || "").toLowerCase().replace(/^image\//, "");
+                var titleExtension = String(file.title || "").match(/\.([^.\\/]+)$/);
+                var urlPath = String(file.url || "").split(/[?#]/)[0];
+                var urlExtension = urlPath.match(/\.([^.\\/]+)$/);
+                var extension = titleExtension ? titleExtension[1].toLowerCase() : urlExtension ? urlExtension[1].toLowerCase() : type;
+                return allowedMaterialExtensions.has(extension) || type === "pdf";
+            });
+        });
     });
 
     window.AHLIA_DATA = {

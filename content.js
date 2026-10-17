@@ -71,6 +71,81 @@
     const courseById = (id) => allCourses.find((c) => c.id === id);
     const initial = (name) => (name.replace(/^(د|م|م\.م)\.\s*/, "").trim()[0] || "د");
     const avatar = (m, big) => h("span", { class: "avatar" + (big ? " lg" : ""), "aria-hidden": "true" }, initial(m.name));
+    const youtubeMetadataCache = new Map();
+
+    function videoThumbnail(video) {
+        if (!video.thumbnailUrl) return h("div", {
+            class: "video-row__thumb video-row__thumb--empty",
+            role: "img",
+            "aria-label": "صورة معاينة الفيديو غير متاحة",
+        }, h("span", { html: UI.video }), h("small", {}, "صورة المعاينة غير متاحة"));
+        return h("a", {
+                class: "video-row__thumb",
+                href: video.url,
+                target: "_blank",
+                rel: "noopener noreferrer",
+                "aria-label": `فتح ${video.title}`,
+            },
+            h("img", { src: video.thumbnailUrl, alt: `صورة مصغرة: ${video.title}`, loading: "lazy", onerror: (event) => event.currentTarget.remove() }),
+            h("span", { class: "video-row__play", html: UI.video })
+        );
+    }
+
+    function videoChannelDetails(video) {
+        const isYoutube = video.provider === "youtube";
+        const name = video.channelName || (isYoutube ? "YouTube" : "Google Drive");
+        const channelUrl = video.channelUrl || "";
+        const avatarUrl = video.channelAvatarUrl || "";
+        return h("div", { class: "video-row__channel" },
+            h("span", { class: "video-row__avatar", "aria-hidden": "true" },
+                name.trim().charAt(0),
+                avatarUrl ? h("img", {
+                    src: avatarUrl,
+                    alt: "",
+                    loading: "lazy",
+                    onerror: (event) => event.currentTarget.remove(),
+                }) : null
+            ),
+            channelUrl ? h("a", { href: channelUrl, target: "_blank", rel: "noopener noreferrer" }, name) : h("span", {}, name)
+        );
+    }
+
+    async function loadYoutubeMetadata(video, row) {
+        if (video.provider !== "youtube" || (video.channelName && video.channelAvatarUrl && video.thumbnailUrl)) return;
+        if (!youtubeMetadataCache.has(video.url)) {
+            const request = fetch("https://www.youtube.com/oembed?url=" + encodeURIComponent(video.url) + "&format=json")
+                .then((response) => response.ok ? response.json() : { unavailable: true })
+                .catch(() => null);
+            youtubeMetadataCache.set(video.url, request);
+        }
+        const metadata = await youtubeMetadataCache.get(video.url);
+        if (!row.isConnected) return;
+        if (metadata && metadata.unavailable) {
+            if (!video.channelName) video.channelName = "بيانات القناة غير متاحة";
+            const channel = row.querySelector(".video-row__channel");
+            if (channel) channel.replaceWith(videoChannelDetails(video));
+            return;
+        }
+        if (!metadata) return;
+        video.thumbnailUrl = metadata.thumbnail_url || video.thumbnailUrl;
+        video.channelName = metadata.author_name || video.channelName;
+        video.channelUrl = metadata.author_url ? new URL(metadata.author_url, "https://www.youtube.com").href : video.channelUrl;
+        if (!video.channelAvatarUrl && video.channelUrl) {
+            const segments = new URL(video.channelUrl).pathname.split("/").filter(Boolean);
+            const handle = segments.length ? segments[segments.length - 1].replace(/^@/, "") : "";
+            if (handle) video.channelAvatarUrl = "https://unavatar.io/youtube/" + encodeURIComponent(handle);
+        }
+        const thumbnail = row.querySelector(".video-row__thumb");
+        if (thumbnail && video.thumbnailUrl) {
+            if (thumbnail.tagName === "A") {
+                const image = thumbnail.querySelector("img");
+                if (image) image.src = video.thumbnailUrl;
+                else thumbnail.replaceWith(videoThumbnail(video));
+            } else thumbnail.replaceWith(videoThumbnail(video));
+        }
+        const channel = row.querySelector(".video-row__channel");
+        if (channel) channel.replaceWith(videoChannelDetails(video));
+    }
 
     /* ---------- modal manager (with back stack) ---------- */
     const box = h("div", { class: "modal__box panel" });
@@ -212,16 +287,23 @@
                     );
                     if (tab === "videos") {
                         if (videos.length) {
-                            list.replaceChildren(...videos.map((video) =>
-                                h("div", { class: "row" },
-                                    h("span", { class: "row__ico", html: UI.video }),
-                                    h("div", { class: "row__text" }, h("strong", {}, video.title), h("small", {}, video.type)),
+                            const rows = videos.map((video) => {
+                                const row = h("div", { class: "row video-row" },
+                                    videoThumbnail(video),
+                                    h("div", { class: "row__text" },
+                                        h("strong", {}, video.title),
+                                        h("small", {}, video.type),
+                                        videoChannelDetails(video)
+                                    ),
                                     h("div", { class: "row__actions" },
                                         h("button", { class: "btn btn--primary btn--xs", type: "button", onclick: () => go(videoView(c, video)) }, "تشغيل داخل الموقع"),
                                         h("a", { class: "btn btn--outline btn--xs", href: video.url, target: "_blank", rel: "noopener noreferrer" }, video.provider === "drive" ? "فتح على Drive" : "فتح على YouTube")
                                     )
-                                )
-                            ));
+                                );
+                                loadYoutubeMetadata(video, row);
+                                return row;
+                            });
+                            list.replaceChildren(...rows);
                         } else {
                             list.replaceChildren(h("p", { class: "panel__desc" }, "لا توجد فيديوهات شرح متاحة لهذه المادة حاليًا."));
                         }
