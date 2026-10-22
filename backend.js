@@ -212,6 +212,23 @@
             const r = await rest("POST", "schedule_items", { user_id: uid(), title, kind: body.kind, day: body.day, time, place: clean(body.place, 80) }, { Prefer: "return=representation" });
             return sched(r[0]);
         }
+        if (path === "/api/study-sessions" && method === "GET") {
+            const since = new Date();
+            since.setDate(since.getDate() - 30);
+            const start = since.getFullYear() + "-" + String(since.getMonth() + 1).padStart(2, "0") + "-" + String(since.getDate()).padStart(2, "0");
+            const r = await rest("GET", `study_daily?user_id=${eq(uid())}&studied_on=gte.${start}&select=studied_on,seconds&order=studied_on.desc&limit=31`);
+            return r.map((item) => ({ date: item.studied_on, seconds: item.seconds }));
+        }
+        if (path === "/api/study-sessions" && method === "POST") {
+            const date = String(body.date || "");
+            const seconds = Number(body.seconds);
+            const eventId = String(body.eventId || "");
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !Number.isInteger(seconds) || seconds < 1 || seconds > 86400 || !/^[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}$/i.test(eventId)) {
+                throw fail("بيانات وقت المذاكرة غير صالحة", 400);
+            }
+            await rest("POST", "rpc/add_study_seconds", { p_studied_on: date, p_seconds: seconds, p_event_id: eventId });
+            return { ok: true };
+        }
         if ((m = path.match(/^\/api\/schedule\/(\d+)$/)) && method === "DELETE") {
             await rest("DELETE", `schedule_items?id=eq.${m[1]}&user_id=${eq(uid())}`);
             return { ok: true };

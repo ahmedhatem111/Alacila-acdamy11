@@ -79,7 +79,42 @@ drop trigger if exists trg_limit_schedule on public.schedule_items;
 create trigger trg_limit_schedule before insert on public.schedule_items
   for each row execute function public.limit_schedule();
 
--- ---------- 4) طلبات زملاء المشروع (مشتركة بين كل الطلاب) ----------
+-- ---------- 4) إحصائيات المذاكرة اليومية ----------
+create table if not exists public.study_daily (
+  user_id    uuid not null references auth.users(id) on delete cascade,
+  studied_on date not null,
+  seconds    int not null check (seconds between 0 and 86400),
+  primary key (user_id, studied_on)
+);
+
+create table if not exists public.study_events (
+  user_id    uuid not null references auth.users(id) on delete cascade,
+  event_id   uuid not null,
+  studied_on date not null,
+  seconds    int not null check (seconds between 1 and 86400),
+  primary key (user_id, event_id)
+);
+
+create or replace function public.add_study_seconds(p_studied_on date, p_seconds int, p_event_id uuid)
+returns void language plpgsql as $$
+declare
+  inserted_count int;
+begin
+  if auth.uid() is null or p_seconds < 1 or p_seconds > 86400 or p_event_id is null then
+    raise exception 'بيانات وقت المذاكرة غير صالحة';
+  end if;
+  insert into public.study_events (user_id, event_id, studied_on, seconds)
+  values (auth.uid(), p_event_id, p_studied_on, p_seconds)
+  on conflict (user_id, event_id) do nothing;
+  get diagnostics inserted_count = row_count;
+  if inserted_count = 0 then return; end if;
+  insert into public.study_daily (user_id, studied_on, seconds)
+  values (auth.uid(), p_studied_on, p_seconds)
+  on conflict (user_id, studied_on) do update
+    set seconds = least(86400, public.study_daily.seconds + excluded.seconds);
+end $$;
+
+-- ---------- 5) طلبات زملاء المشروع (مشتركة بين كل الطلاب) ----------
 create table if not exists public.team_posts (
   id          text primary key default substr(md5(random()::text || clock_timestamp()::text), 1, 12),
   user_id     uuid not null references auth.users(id) on delete cascade,
@@ -112,13 +147,15 @@ drop trigger if exists trg_prepare_team_post on public.team_posts;
 create trigger trg_prepare_team_post before insert on public.team_posts
   for each row execute function public.prepare_team_post();
 
--- ---------- 5) الحماية (Row Level Security) ----------
+-- ---------- 6) الحماية (Row Level Security) ----------
 -- مفتاح anon ظاهر في الموقع بطبيعته؛ اللي بيحمي البيانات هي السياسات دي.
 alter table public.profiles         enable row level security;
 alter table public.enrollments      enable row level security;
 alter table public.lecture_progress enable row level security;
 alter table public.course_progress  enable row level security;
 alter table public.schedule_items   enable row level security;
+alter table public.study_daily      enable row level security;
+alter table public.study_events     enable row level security;
 alter table public.team_posts       enable row level security;
 
 drop policy if exists "own profile read" on public.profiles;
@@ -141,6 +178,14 @@ drop policy if exists "own schedule" on public.schedule_items;
 create policy "own schedule" on public.schedule_items
   for all to authenticated using (user_id = auth.uid()) with check (user_id = auth.uid());
 
+drop policy if exists "own study stats" on public.study_daily;
+create policy "own study stats" on public.study_daily
+  for all to authenticated using (user_id = auth.uid()) with check (user_id = auth.uid());
+
+drop policy if exists "own study events" on public.study_events;
+create policy "own study events" on public.study_events
+  for all to authenticated using (user_id = auth.uid()) with check (user_id = auth.uid());
+
 drop policy if exists "posts readable by students" on public.team_posts;
 create policy "posts readable by students" on public.team_posts
   for select to authenticated using (true);
@@ -154,10 +199,12 @@ drop policy if exists "posts delete own" on public.team_posts;
 create policy "posts delete own" on public.team_posts
   for delete to authenticated using (user_id = auth.uid());
 
--- ---------- 6) صلاحيات الجداول ----------
+-- ---------- 7) صلاحيات الجداول ----------
 -- المستخدم المسجّل بس. الزائر (anon) ما يقدرش يقرأ أو يكتب أي حاجة.
 revoke all on public.profiles, public.enrollments, public.lecture_progress,
-              public.course_progress, public.schedule_items, public.team_posts from anon;
+              public.course_progress, public.schedule_items, public.study_daily, public.study_events, public.team_posts from anon;
 grant select on public.profiles to authenticated;
 grant select, insert, update, delete on public.enrollments, public.lecture_progress,
-      public.course_progress, public.schedule_items, public.team_posts to authenticated;
+      public.course_progress, public.schedule_items, public.study_daily, public.study_events, public.team_posts to authenticated;
+revoke all on function public.add_study_seconds(date, int, uuid) from public, anon;
+grant execute on function public.add_study_seconds(date, int, uuid) to authenticated;

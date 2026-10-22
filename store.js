@@ -44,7 +44,7 @@
 
     function localRequest(method, url, body) {
         const parsed = new URL(url, location.href);
-        const path = parsed.pathname;
+        const path = location.protocol === "file:" ? parsed.pathname.replace(/^\/[a-z]:/i, "") : parsed.pathname;
         body = body || {};
         const user = getUser();
         if (!user) throw Object.assign(new Error("سجّل دخولك كضيف أولاً"), { status: 401 });
@@ -87,6 +87,33 @@
                 items.push(item);
                 localWrite(key, items);
                 return item;
+            }
+        }
+        if (path === "/api/study-sessions") {
+            const suffix = encodeURIComponent(String(user.email || user.id).trim().toLowerCase());
+            const key = "ahlia_study_daily:" + suffix;
+            const previous = localRead(key, {});
+            const records = previous.daily && Array.isArray(previous.events) ? previous : { daily: previous, events: [] };
+            if (method === "GET") {
+                return Object.keys(records.daily).sort().reverse().map((date) => ({ date, seconds: records.daily[date] }));
+            }
+            if (method === "POST") {
+                const date = String(body.date || "");
+                const seconds = Number(body.seconds);
+                const eventId = String(body.eventId || "");
+                if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !Number.isInteger(seconds) || seconds < 1 || seconds > 86400 || !/^[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}$/i.test(eventId)) {
+                    throw Object.assign(new Error("بيانات وقت المذاكرة غير صالحة"), { status: 400 });
+                }
+                if (records.events.includes(eventId)) return { ok: true };
+                records.events.push(eventId);
+                if (records.events.length > 1000) records.events.splice(0, records.events.length - 1000);
+                records.daily[date] = Math.min(86400, Number(records.daily[date] || 0) + seconds);
+                try {
+                    localStorage.setItem(key, JSON.stringify(records));
+                } catch (e) {
+                    throw Object.assign(new Error("مساحة التخزين على الجهاز ممتلئة، تعذّر حفظ إحصائيات المذاكرة"), { status: 507 });
+                }
+                return { ok: true };
             }
         }
         const scheduleMatch = path.match(/^\/api\/schedule\/([\w-]+)$/);
@@ -133,7 +160,7 @@
             if (method === "DELETE") { localWrite(key, posts.filter((item) => item.id !== postMatch[1])); return { ok: true }; }
         }
 
-        throw Object.assign(new Error("العملية غير متاحة في وضع الضيف المحلي"), { status: 404 });
+        throw Object.assign(new Error("تعذّر إتمام العملية الآن"), { status: 404 });
     }
 
     /* طلب للسيرفر (بيضيف الهيدر المطلوب للحماية من CSRF) */

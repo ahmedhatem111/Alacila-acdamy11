@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="نظّم وقت مذاكرتك مع مؤقّت بومودورو وأصوات هادئة وإحصائيات يومية.">
+    <title>ركن المذاكرة | أهلية أكاديمي</title>
+    <script>
+        try {
+            if (!JSON.parse(localStorage.getItem("ahlia_user"))) throw 0;
+        } catch (e) {
+            location.replace("login.html?next=" + encodeURIComponent(location.pathname.split("/").pop()));
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=20261023">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#050a2a">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <link rel="icon" href="icons/icon-192.png">
+    <script src="theme.js"></script>
+    <script src="config.js"></script>
+    <script src="backend.js"></script>
+    <script src="store.js"></script>
+</head>
+
+<body data-page="pomodoro">
+    <canvas id="stars" aria-hidden="true"></canvas>
+    <header class="header">
+        <div class="container header__inner">
+            <a href="index.html" class="logo">
+                <svg class="logo__icon" viewBox="0 0 48 48" aria-hidden="true">
+                    <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f7bff"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs>
+                    <path d="M24 3 L44 44 L34 44 L24 22 L14 44 L4 44 Z" fill="url(#lg)"/><path d="M24 30 L30 44 L18 44 Z" fill="#a78bfa"/>
+                </svg>
+                <span>أهلية أكاديمي</span>
+            </a>
+            <nav class="nav" id="nav" aria-label="القائمة الرئيسية"></nav>
+            <div class="header__actions">
+                <button type="button" class="theme-toggle" id="themeToggle" aria-pressed="false" aria-label="تفعيل الألوان المريحة للعين" title="تفعيل الألوان المريحة للعين"><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+                <span class="hello">أهلاً، <b data-user-name></b></span>
+                <button type="button" class="btn btn--outline btn--sm" id="logout">خروج</button>
+                <button class="burger" id="burger" type="button" aria-label="فتح القائمة" aria-expanded="false"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container page study-page">
+        <p class="crumbs"><a href="index.html">الرئيسية</a> / <span>ركن المذاكرة</span></p>
+        <section class="page-hero">
+            <div>
+                <h1>ركن المذاكرة</h1>
+                <p>ركّز على خطوة واحدة كل مرة، وخلي الاستراحة جزءًا من خطتك.</p>
+            </div>
+        </section>
+
+        <section class="study-layout" aria-label="مؤقّت المذاكرة">
+            <div class="card study-timer">
+                <button class="btn btn--outline study-open-settings" id="openStudySettings" type="button" aria-label="إعدادات الجلسة والأصوات" title="إعدادات الجلسة والأصوات" aria-haspopup="dialog" aria-controls="studySettingsDialog">
+                    <span aria-hidden="true">⚙</span>
+                </button>
+                <p class="study-eyebrow" id="timerPhase">وقت التركيز</p>
+                <div class="study-clock" id="timerClock" role="timer" aria-live="off">25:00</div>
+                <p class="study-cycle" id="cycleLabel">جلسة تركيز • بعدها استراحة قصيرة</p>
+                <div class="study-progress" aria-hidden="true"><span id="timerProgress"></span></div>
+                <div class="study-actions">
+                    <button type="button" class="btn btn--primary" id="timerToggle">ابدأ المذاكرة</button>
+                    <button type="button" class="btn btn--outline" id="timerReset">إعادة ضبط</button>
+                </div>
+                <p class="study-message" id="studyMessage" role="status" aria-live="polite"></p>
+            </div>
+        </section>
+
+        <section class="section study-stats">
+            <div class="section__head">
+                <div>
+                    <h2>إنجازك الدراسي</h2>
+                    <p>ساعات تركيزك اليوم وخلال الأيام السبعة الماضية</p>
+                </div>
+                <span class="study-today-total"><strong id="todayHours">0 د</strong><small>ذاكرت اليوم</small></span>
+            </div>
+            <div class="card study-history" id="studyHistory" aria-live="polite">
+                <p class="study-hint">جارٍ تحميل إحصائياتك…</p>
+            </div>
+        </section>
+    </main>
+
+    <dialog class="study-dialog" id="studySettingsDialog" aria-labelledby="studyDialogTitle">
+        <div class="study-dialog__head">
+            <div>
+                <p class="study-eyebrow">خصص أجواءك</p>
+                <h2 id="studyDialogTitle">إعدادات الجلسة والأصوات</h2>
+            </div>
+            <button class="study-dialog__close" type="button" id="closeStudySettings" aria-label="إغلاق الإعدادات">×</button>
+        </div>
+        <div class="study-dialog__timer-status" aria-live="off">
+            <span id="dialogTimerPhase">وقت التركيز</span>
+            <strong id="dialogTimerClock">25:00</strong>
+        </div>
+        <section class="study-dialog__section">
+            <h3>مدة الجلسة</h3>
+            <div class="field-row">
+                <label class="field"><span>مدة التركيز (دقيقة)</span><input id="focusMinutes" type="number" min="1" max="180" value="25" inputmode="numeric"></label>
+                <label class="field"><span>مدة الاستراحة (دقيقة)</span><input id="breakMinutes" type="number" min="1" max="60" value="5" inputmode="numeric"></label>
+            </div>
+            <p class="study-hint">يتناوب المؤقّت تلقائيًا بين التركيز والاستراحة.</p>
+        </section>
+        <section class="study-dialog__section">
+            <div class="study-dialog__sounds-head">
+                <div>
+                    <h3>أصوات تساعدك على التركيز</h3>
+                    <p class="study-hint">اختر الأصوات التي تناسبك وامزجها أثناء المذاكرة.</p>
+                </div>
+                <span class="study-sound-count" id="activeSoundCount">0 أصوات تعمل</span>
+            </div>
+            <div class="study-sound-add">
+                <label class="field" for="studySoundType">
+                    <span>اختر صوتًا</span>
+                    <select id="studySoundType">
+                        <option value="rain">صوت المطر</option>
+                        <option value="forest">الغابة والطيور</option>
+                        <option value="ocean">أمواج البحر</option>
+                        <option value="cafe">ضوضاء المقهى</option>
+                        <option value="fire">طقطقة المدفأة</option>
+                        <option value="wind">نسيم الهواء</option>
+                        <option value="river">جدول ماء</option>
+                        <option value="white">ضوضاء بيضاء</option>
+                        <option value="pink">ضوضاء وردية</option>
+                        <option value="brown">ضوضاء بنية</option>
+                        <option value="thunder">رعد بعيد</option>
+                        <option value="night">أصوات الليل والزيز</option>
+                        <option value="fan">مروحة هادئة</option>
+                        <option value="train">قطار بعيد</option>
+                        <option value="keyboard">نقر لوحة المفاتيح</option>
+                    </select>
+                </label>
+                <button type="button" class="btn btn--primary" id="addStudySound">إضافة الصوت</button>
+            </div>
+            <div class="study-sound-slots" id="studySoundSlots" aria-live="polite"></div>
+            <div class="study-quran-picker">
+                <h4>تلاوات القرآن الكريم</h4>
+                <div class="study-quran-picker__fields">
+                    <label class="field" for="quranReciterSelect">
+                        <span>القارئ والرواية</span>
+                        <select id="quranReciterSelect" disabled>
+                            <option value="">جارٍ تحميل القرّاء…</option>
+                        </select>
+                    </label>
+                    <label class="field" for="quranSurahSelect">
+                        <span>السورة</span>
+                        <select id="quranSurahSelect" disabled>
+                            <option value="">جارٍ تحميل السور…</option>
+                        </select>
+                    </label>
+                </div>
+                <button type="button" class="btn btn--outline" id="addQuranRecitation" disabled>إضافة التلاوة</button>
+                <p class="study-hint" id="quranLoadStatus" role="status" aria-live="polite">تحميل قائمة القرّاء والسور…</p>
+            </div>
+            <p class="study-hint">يمكنك مزج الأصوات وضبط كل مستوى بشكل مستقل. التلاوات تُبث عبر الإنترنت.</p>
+        </section>
+        <div class="study-dialog__footer">
+            <button class="btn btn--primary" type="button" id="doneStudySettings">تم</button>
+        </div>
+    </dialog>
+
+    <footer class="footer">
+        <div class="container footer__inner">
+            <p class="footer__text">معاً نحو مستقبل أفضل &nbsp;|&nbsp; طلاب أهلية &nbsp;|&nbsp; <a href="team.html" class="footer__link">فريق العمل</a></p>
+        </div>
+    </footer>
+
+    <script src="script.js?v=20261023"></script>
+    <script src="page.js"></script>
+    <script src="pomodoro.js"></script>
+    <script src="mobile.js"></script>
+</body>
+
+</html>
